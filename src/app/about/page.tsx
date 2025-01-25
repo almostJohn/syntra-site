@@ -29,7 +29,14 @@ export default function AboutPage() {
 						effort.
 					</p>
 					<p className="text-balance">
-						Noted is an open-source project available on GitHub, created by{" "}
+						Noted is an open-source project available on{" "}
+						<Link
+							href="https://github.com/almostJohn/noted"
+							className="text-blue-600 hover:underline"
+						>
+							GitHub
+						</Link>
+						, created by{" "}
 						<Link
 							href="https://almostjohn.vercel.app"
 							className="text-blue-600 hover:underline"
