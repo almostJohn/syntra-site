@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Frame } from "lucide-react";
+import { NotepadText } from "lucide-react";
 
 export const metadata: Metadata = {
 	title: "About",
@@ -14,24 +14,24 @@ export default function AboutPage() {
 				<div className="flex flex-col space-y-4 mt-8 md:mt-0">
 					<div className="flex flex-col space-y-0.5">
 						<h1 className="text-2xl font-bold tracking-tight md:text-5xl">
-							noted
+							simplynote
 						</h1>
 						<span className="font-light italic text-neutral-500">
 							&quot;Simple tools for everyday tasks.&quot;
 						</span>
 					</div>
 					<p className="text-balance">
-						Welcome to Noted, Noted is your go-to utility website designed to
-						simplify your daily tasks. Whether you need a quick and easy place
-						to jot down notes or calculate important dates with precision, Noted
-						has you covered. Our goal is to provide a seamless and efficient
-						experience, helping you stay organized and productive with minimal
-						effort.
+						Welcome to simplynote, simplynote is your go-to utility website
+						designed to simplify your daily tasks. Whether you need a quick and
+						easy place to jot down notes or calculate important dates with
+						precision, simplynote has you covered. Our goal is to provide a
+						seamless and efficient experience, helping you stay organized and
+						productive with minimal effort.
 					</p>
 					<p className="text-balance">
-						Noted is an open-source project available on{" "}
+						simplynote is an open-source project available on{" "}
 						<Link
-							href="https://github.com/almostJohn/noted"
+							href="https://github.com/almostJohn/simplynote"
 							className="text-blue-600 hover:underline"
 						>
 							GitHub
@@ -48,7 +48,7 @@ export default function AboutPage() {
 					</p>
 				</div>
 				<div className="flex">
-					<Frame className="size-32 shrink-0" />
+					<NotepadText className="size-40 shrink-0" />
 				</div>
 			</div>
 		</div>

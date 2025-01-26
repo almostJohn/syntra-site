@@ -7,8 +7,8 @@ import { SiteFooter } from "~/components/site-footer";
 
 export const metadata: Metadata = {
 	title: {
-		template: "%s | noted",
-		default: "noted - Simple tools for everyday tasks.",
+		template: "%s | simplynote",
+		default: "simplynote - Simple tools for everyday tasks.",
 	},
 	icons: {
 		other: [
@@ -20,13 +20,13 @@ export const metadata: Metadata = {
 		],
 	},
 	appleWebApp: {
-		title: "noted",
+		title: "simplynote",
 	},
-	applicationName: "noted",
+	applicationName: "simplynote",
 	openGraph: {
-		siteName: "noted",
+		siteName: "simplynote",
 		type: "website",
-		title: "noted",
+		title: "simplynote",
 	},
 	twitter: {
 		card: "summary_large_image",

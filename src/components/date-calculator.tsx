@@ -68,28 +68,35 @@ export function DateCalculator() {
 						id="startDate"
 						value={startDate}
 						onChange={(e) => setStartDate(e.target.value)}
+						placeholder="dd/mm/yyyy"
 					/>
 				</div>
 				<RadioGroup
 					value={operation}
 					onValueChange={setOperation}
-					className="flex"
+					className="flex items-center flex-wrap gap-3"
 				>
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center space-x-1">
 						<RadioGroupItem value="difference" id="difference" />
-						<label htmlFor="difference" className="font-medium leading-snug">
+						<label
+							htmlFor="difference"
+							className="font-medium text-sm leading-snug"
+						>
 							Calculate Difference
 						</label>
 					</div>
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center space-x-1">
 						<RadioGroupItem value="add" id="add" />
-						<label htmlFor="add" className="font-medium leading-snug">
+						<label htmlFor="add" className="font-medium text-sm leading-snug">
 							Add Days
 						</label>
 					</div>
-					<div className="flex items-center space-x-2">
+					<div className="flex items-center space-x-1">
 						<RadioGroupItem value="subtract" id="subtract" />
-						<label htmlFor="subtract" className="font-medium leading-snug">
+						<label
+							htmlFor="subtract"
+							className="font-medium text-sm leading-snug"
+						>
 							Subtract Days
 						</label>
 					</div>
