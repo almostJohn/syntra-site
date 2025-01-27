@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+code {
+	@apply inline-flex items-center px-0.5 rounded bg-neutral-400/60 text-neutral-950;
+}

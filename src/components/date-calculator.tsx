@@ -10,12 +10,14 @@ export function DateCalculator() {
 	const [startDate, setStartDate] = React.useState("");
 	const [endDate, setEndDate] = React.useState("");
 	const [result, setResult] = React.useState("");
+	const [error, setError] = React.useState<string | null>(null);
 	const [operation, setOperation] = React.useState("difference");
 	const [days, setDays] = React.useState("0");
 
 	function calculateDifference() {
 		if (!startDate || (operation === "difference" && !endDate)) {
-			setResult("Please fill in all required fields.");
+			setResult("");
+			setError("Please fill in all required fields.");
 			return;
 		}
 
@@ -27,10 +29,12 @@ export function DateCalculator() {
 			const daysDiff = Math.ceil(difference / (1_000 * 3_600 * 24));
 
 			setResult(`The difference is ${daysDiff} days`);
+			setError("");
 		} else {
 			const daysNum = Number.parseInt(days);
 			if (isNaN(daysNum)) {
-				setResult("Please enter a valid number of days.");
+				setResult("");
+				setError("Please enter a valid number of days.");
 				return;
 			}
 
@@ -47,28 +51,47 @@ export function DateCalculator() {
 					resultDate.toISOString().split("T")[0],
 				)}`,
 			);
+			setError("");
 		}
 	}
 
+	function clearForm() {
+		setStartDate("");
+		setEndDate("");
+		setDays("");
+		setResult("");
+	}
+
 	return (
-		<div className="block p-6 border border-neutral-300 rounded-md shadow-sm">
+		<div className="block p-5 border border-neutral-300 rounded-md shadow-sm">
 			<div className="flex flex-col space-y-4">
-				<div className="flex flex-col space-y-0.5">
-					<h3 className="font-medium tracking-tight">Date Calculator</h3>
-					<p className="italic text-sm font-light text-neutral-500">
-						Tip: Refreshing the site will clear the form.
-					</p>
+				<div className="flex items-center justify-between w-full">
+					<div className="flex flex-col space-y-1">
+						<h3 className="font-medium tracking-tight">Date Calculator</h3>
+						<p className="italic text-xs font-light text-neutral-500">
+							Result Date Format: mm/dd/yyyy (eg: 01/01/2025)
+						</p>
+					</div>
+					<div className="flex items-center justify-end">
+						<Button
+							variant="link"
+							className="underline-offset-1"
+							onClick={clearForm}
+						>
+							Clear
+						</Button>
+					</div>
 				</div>
 				<div className="flex flex-col space-y-2">
 					<label htmlFor="startDate" className="font-medium leading-snug">
-						Start Date
+						Start Date{" "}
+						<span className="text-lg font-medium text-red-600">*</span>
 					</label>
 					<Input
 						type="date"
 						id="startDate"
 						value={startDate}
 						onChange={(e) => setStartDate(e.target.value)}
-						placeholder="dd/mm/yyyy"
 					/>
 				</div>
 				<RadioGroup
@@ -104,7 +127,8 @@ export function DateCalculator() {
 				{operation === "difference" ? (
 					<div className="flex flex-col space-y-2">
 						<label htmlFor="endDate" className="font-medium leading-snug">
-							End Date
+							End Date{" "}
+							<span className="text-lg font-medium text-red-600">*</span>
 						</label>
 						<Input
 							type="date"
@@ -116,7 +140,8 @@ export function DateCalculator() {
 				) : (
 					<div className="flex flex-col space-y-2">
 						<label htmlFor="days" className="font-medium leading-snug">
-							Number of Days
+							Number of Days{" "}
+							<span className="text-lg font-medium text-red-600">*</span>
 						</label>
 						<Input
 							type="number"
@@ -127,16 +152,8 @@ export function DateCalculator() {
 					</div>
 				)}
 				<Button onClick={calculateDifference}>Calculate</Button>
-				{operation === "difference"
-					? result && <p className="font-medium">{result}</p>
-					: result && (
-							<p className="font-medium">
-								{result}{" "}
-								<span className="text-blue-600 italic font-normal">
-									(format: mm/dd/yyyy)
-								</span>
-							</p>
-					  )}
+				{result && <p className="text-sm">{result}</p>}
+				{error && <p className="text-sm text-red-600">{error}</p>}
 			</div>
 		</div>
 	);
