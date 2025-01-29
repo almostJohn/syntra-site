@@ -2,15 +2,27 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { Copy, CopyCheck } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { transformText } from "~/util/transformText";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
+	const [interacted, setInteracted] = React.useState(false);
 
 	function clearText() {
 		setText("");
+	}
+
+	function copyToClipboad() {
+		navigator.clipboard.writeText(text).then(() => {
+			setInteracted(true);
+
+			setTimeout(() => {
+				setInteracted(false);
+			}, 3_000);
+		});
 	}
 
 	return (
@@ -50,10 +62,28 @@ export function Notepad() {
 					placeholder="Start typing here..."
 					className="h-72 text-sm"
 				/>
-				<div
-					className="h-72 p-3 text-sm rounded-md overflow-auto border border-neutral-300 bg-neutral-200"
-					dangerouslySetInnerHTML={{ __html: transformText(text) }}
-				/>
+				<div className="relative h-72 p-3 text-sm rounded-md overflow-y-auto border border-neutral-300 bg-transparent">
+					<Button
+						variant="outline"
+						size="sm"
+						className="absolute z-50 top-3 right-3"
+						onClick={copyToClipboad}
+					>
+						{interacted ? (
+							<>
+								<CopyCheck className="text-teal-500 size-4 shrink-0" /> Copied
+							</>
+						) : (
+							<>
+								<Copy className="size-4 shrink-0" /> Copy
+							</>
+						)}
+					</Button>
+					<div
+						className="overflow-auto mr-24"
+						dangerouslySetInnerHTML={{ __html: transformText(text) }}
+					/>
+				</div>
 			</div>
 		</div>
 	);
