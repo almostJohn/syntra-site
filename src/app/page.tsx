@@ -13,10 +13,25 @@ export default function IndexPage() {
 					<LiveClock />
 				</div>
 				<Tabs defaultValue="notepad" className="w-full">
-					<TabsList className="inline-flex items-center justify-start bg-transparent border-b-2 border-border rounded-none w-full">
-						<TabsTrigger value="notepad">Notepad</TabsTrigger>
-						<TabsTrigger value="date-calculator">Date Calculator</TabsTrigger>
-						<TabsTrigger value="to-do-list">to-do-list</TabsTrigger>
+					<TabsList className="inline-flex items-center justify-start bg-transparent border-b-2 rounded-none w-full">
+						<TabsTrigger
+							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
+							value="notepad"
+						>
+							notepad
+						</TabsTrigger>
+						<TabsTrigger
+							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
+							value="date-calculator"
+						>
+							date calculator
+						</TabsTrigger>
+						<TabsTrigger
+							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
+							value="to-do-list"
+						>
+							to-do-list
+						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="notepad">
 						<div className="mt-4">

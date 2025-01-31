@@ -6,36 +6,29 @@ export function Changelog() {
 	return (
 		<HoverCard>
 			<HoverCardTrigger asChild>
-				<span className="inline-flex items-center justify-center px-3 py-0.5 rounded-full text-xs font-bold cursor-pointer border border-neutral-300 bg-neutral-200">
-					v0.1.2
+				<span className="inline-flex items-center justify-center px-3 py-0.5 rounded-full text-xs font-bold cursor-pointer border bg-muted">
+					v0.1.3
 				</span>
 			</HoverCardTrigger>
 			<HoverCardContent className="w-80">
 				<div className="flex flex-col space-y-4">
-					<div className="block p-4 border border-neutral-300 bg-neutral-200 rounded-md">
+					<div className="block p-4 border border-border bg-muted rounded-md">
 						<div className="flex flex-col space-y-2">
 							<div className="flex items-center space-x-2">
 								<PartyPopper className="size-5 shrink-0" />
 								<h2 className="text-sm font-medium tracking-tight">
-									Add to-do-list (new feature)
+									Update dependencies/bug fixes/refactor styles
 								</h2>
 							</div>
-							<p className="text-xs font-light">
-								Add a to-do-list for creating tasks.
-							</p>
-						</div>
-					</div>
-					<div className="block p-4 border border-neutral-300 bg-neutral-200 rounded-md">
-						<div className="flex flex-col space-y-2">
-							<div className="flex items-center space-x-2">
-								<PartyPopper className="size-5 shrink-0" />
-								<h2 className="text-sm font-medium tracking-tight">
-									Add Copy Button (new feature)
-								</h2>
-							</div>
-							<p className="text-xs font-light">
-								Add a copy button to directly copy your notes to the clipboard.
-							</p>
+							<ul className="space-y-2">
+								<li className="text-sm">
+									- use shadcn-ui as the base React Component
+								</li>
+								<li className="text-sm">
+									- fixed: live-clock synchronization & reduce the refreshed
+									rate to 100ms
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
