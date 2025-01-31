@@ -3,6 +3,7 @@ import { Notepad } from "~/components/notepad";
 import { DateCalculator } from "~/components/date-calculator";
 import { LiveClock } from "~/components/live-clock";
 import { Todolist } from "~/components/todolist";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export default function IndexPage() {
 	return (
@@ -11,15 +12,28 @@ export default function IndexPage() {
 				<div className="flex items-center justify-center">
 					<LiveClock />
 				</div>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div className="w-full">
-						<Notepad />
-					</div>
-					<div className="flex flex-col gap-4 w-full">
-						<DateCalculator />
-						<Todolist />
-					</div>
-				</div>
+				<Tabs defaultValue="notepad" className="w-full">
+					<TabsList className="inline-flex items-center justify-start bg-transparent border-b-2 border-border rounded-none w-full">
+						<TabsTrigger value="notepad">Notepad</TabsTrigger>
+						<TabsTrigger value="date-calculator">Date Calculator</TabsTrigger>
+						<TabsTrigger value="to-do-list">to-do-list</TabsTrigger>
+					</TabsList>
+					<TabsContent value="notepad">
+						<div className="mt-4">
+							<Notepad />
+						</div>
+					</TabsContent>
+					<TabsContent value="date-calculator">
+						<div className="mt-4">
+							<DateCalculator />
+						</div>
+					</TabsContent>
+					<TabsContent value="to-do-list">
+						<div className="mt-4">
+							<Todolist />
+						</div>
+					</TabsContent>
+				</Tabs>
 			</div>
 		</div>
 	);

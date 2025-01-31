@@ -42,7 +42,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} bg-neutral-50 text-neutral-950 selection:bg-teal-300 selection:text-neutral-950 antialiased`}
+				className={`${inter.className} bg-background text-foreground selection:bg-teal-300 selection:text-neutral-950 antialiased`}
 			>
 				<main className="min-h-screen">
 					<SiteHeader />

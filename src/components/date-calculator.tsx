@@ -63,12 +63,12 @@ export function DateCalculator() {
 	}
 
 	return (
-		<div className="block p-5 border border-neutral-300 rounded-md shadow-sm">
-			<div className="flex flex-col space-y-4">
+		<div className="block p-4 border border-border rounded-md bg-background shadow-sm">
+			<div className="flex flex-col space-y-6">
 				<div className="flex items-center justify-between w-full">
 					<div className="flex flex-col space-y-1">
 						<h3 className="font-medium tracking-tight">Date Calculator</h3>
-						<p className="italic text-xs font-light text-neutral-500">
+						<p className="italic text-xs font-light text-muted-foreground">
 							Result Date Format: mm/dd/yyyy (eg: 01/01/2025)
 						</p>
 					</div>
@@ -82,22 +82,57 @@ export function DateCalculator() {
 						</Button>
 					</div>
 				</div>
-				<div className="flex flex-col space-y-2">
-					<label htmlFor="startDate" className="font-medium leading-snug">
-						Start Date{" "}
-						<span className="text-lg font-medium text-red-600">*</span>
-					</label>
-					<Input
-						type="date"
-						id="startDate"
-						value={startDate}
-						onChange={(e) => setStartDate(e.target.value)}
-					/>
+				<div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+					<div className="flex flex-col space-y-2">
+						<label
+							htmlFor="startDate"
+							className="text-sm font-medium leading-snug"
+						>
+							Start Date{" "}
+							<span className="text-lg font-medium text-red-600">*</span>
+						</label>
+						<Input
+							type="date"
+							id="startDate"
+							value={startDate}
+							onChange={(e) => setStartDate(e.target.value)}
+						/>
+					</div>
+					{operation === "difference" ? (
+						<div className="flex flex-col space-y-2">
+							<label
+								htmlFor="endDate"
+								className="text-sm font-medium leading-snug"
+							>
+								End Date{" "}
+								<span className="text-lg font-medium text-red-600">*</span>
+							</label>
+							<Input
+								type="date"
+								id="endDate"
+								value={endDate}
+								onChange={(e) => setEndDate(e.target.value)}
+							/>
+						</div>
+					) : (
+						<div className="flex flex-col space-y-2">
+							<label htmlFor="days" className="font-medium leading-snug">
+								Number of Days{" "}
+								<span className="text-lg font-medium text-red-600">*</span>
+							</label>
+							<Input
+								type="number"
+								id="days"
+								value={days}
+								onChange={(e) => setDays(e.target.value)}
+							/>
+						</div>
+					)}
 				</div>
 				<RadioGroup
 					value={operation}
 					onValueChange={setOperation}
-					className="flex items-center flex-wrap gap-3"
+					className="flex-wrap gap-3"
 				>
 					<div className="flex items-center space-x-1">
 						<RadioGroupItem value="difference" id="difference" />
@@ -124,34 +159,9 @@ export function DateCalculator() {
 						</label>
 					</div>
 				</RadioGroup>
-				{operation === "difference" ? (
-					<div className="flex flex-col space-y-2">
-						<label htmlFor="endDate" className="font-medium leading-snug">
-							End Date{" "}
-							<span className="text-lg font-medium text-red-600">*</span>
-						</label>
-						<Input
-							type="date"
-							id="endDate"
-							value={endDate}
-							onChange={(e) => setEndDate(e.target.value)}
-						/>
-					</div>
-				) : (
-					<div className="flex flex-col space-y-2">
-						<label htmlFor="days" className="font-medium leading-snug">
-							Number of Days{" "}
-							<span className="text-lg font-medium text-red-600">*</span>
-						</label>
-						<Input
-							type="number"
-							id="days"
-							value={days}
-							onChange={(e) => setDays(e.target.value)}
-						/>
-					</div>
-				)}
-				<Button onClick={calculateDifference}>Calculate</Button>
+				<div className="flex items-center justify-start">
+					<Button onClick={calculateDifference}>Calculate</Button>
+				</div>
 				{result && <p className="text-sm">{result}</p>}
 				{error && <p className="text-sm text-red-600">{error}</p>}
 			</div>

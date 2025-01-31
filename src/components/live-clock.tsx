@@ -7,12 +7,16 @@ export function LiveClock() {
 	const [time, setTime] = React.useState<Date | null>(null);
 
 	React.useEffect(() => {
-		const timer = setInterval(() => {
+		const updateClock = () => {
 			setTime(new Date());
-		}, 1_000);
+		};
+
+		updateClock();
+
+		const intervalId = setInterval(updateClock, 100);
 
 		return () => {
-			clearInterval(timer);
+			clearInterval(intervalId);
 		};
 	}, []);
 
@@ -46,11 +50,15 @@ export function LiveClock() {
 	}
 
 	return (
-		<div className="block p-6 border border-neutral-300 rounded-md shadow-sm w-full md:w-1/2">
+		<div className="block p-7 border border-neutral-300 rounded-md shadow-sm w-full md:w-1/2">
 			<div className="flex items-center justify-center">
 				<div className="flex flex-col space-y-1">
-					<span className="text-sm text-center font-medium">Live Clock</span>
-					<p className={`${jetBrainsMono.className} text-4xl text-teal-500`}>
+					<span className="text-sm text-center font-medium md:text-lg">
+						Live Clock
+					</span>
+					<p
+						className={`${jetBrainsMono.className} text-5xl transition text-teal-500`}
+					>
 						{formatTime(time)}
 					</p>
 				</div>
