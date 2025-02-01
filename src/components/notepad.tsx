@@ -62,11 +62,11 @@ export function Notepad() {
 								setText(e.target.value);
 							}}
 							placeholder="Start typing here..."
-							className="h-72 text-sm"
+							className="h-80 text-sm"
 						/>
 					</div>
 					<div className="w-full">
-						<div className="relative h-72 p-3 text-sm rounded-md overflow-y-auto border bg-background">
+						<div className="relative h-80 p-3 text-sm rounded-md overflow-y-auto border bg-background">
 							<Button
 								variant="outline"
 								size="sm"

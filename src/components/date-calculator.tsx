@@ -1,14 +1,18 @@
 "use client";
 
 import * as React from "react";
+import { format, addDays, subDays, differenceInDays } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Input } from "./ui/input";
-import { formatDate } from "~/util/formatDate";
+import { cn } from "~/lib/utils";
 
 export function DateCalculator() {
-	const [startDate, setStartDate] = React.useState("");
-	const [endDate, setEndDate] = React.useState("");
+	const [startDate, setStartDate] = React.useState<Date | undefined>();
+	const [endDate, setEndDate] = React.useState<Date | undefined>();
 	const [result, setResult] = React.useState("");
 	const [error, setError] = React.useState<string | null>(null);
 	const [operation, setOperation] = React.useState("difference");
@@ -21,15 +25,12 @@ export function DateCalculator() {
 			return;
 		}
 
-		const start = new Date(startDate);
-
 		if (operation === "difference") {
-			const end = new Date(endDate);
-			const difference = Math.abs(end.getTime() - start.getTime());
-			const daysDiff = Math.ceil(difference / (1_000 * 3_600 * 24));
-
-			setResult(`The difference is ${daysDiff} days`);
-			setError("");
+			if (endDate) {
+				const daysDiff = Math.abs(differenceInDays(endDate, startDate));
+				setResult(`The difference is ${daysDiff} days`);
+				setError("");
+			}
 		} else {
 			const daysNum = Number.parseInt(days);
 			if (isNaN(daysNum)) {
@@ -38,28 +39,22 @@ export function DateCalculator() {
 				return;
 			}
 
-			const resultDate = new Date(start);
+			const resultDate =
+				operation === "add"
+					? addDays(startDate, daysNum)
+					: subDays(startDate, daysNum);
 
-			if (operation === "add") {
-				resultDate.setDate(resultDate.getDate() + daysNum);
-			} else {
-				resultDate.setDate(resultDate.getDate() - daysNum);
-			}
-
-			setResult(
-				`The resulting date is ${formatDate(
-					resultDate.toISOString().split("T")[0],
-				)}`,
-			);
+			setResult(`The resulting date is ${format(resultDate, "MM/dd/yyyy")}`);
 			setError("");
 		}
 	}
 
 	function clearForm() {
-		setStartDate("");
-		setEndDate("");
-		setDays("");
+		setStartDate(undefined);
+		setEndDate(undefined);
+		setDays("0");
 		setResult("");
+		setError(null);
 	}
 
 	return (
@@ -91,12 +86,32 @@ export function DateCalculator() {
 							Start Date{" "}
 							<span className="text-lg font-medium text-red-600">*</span>
 						</label>
-						<Input
-							type="date"
-							id="startDate"
-							value={startDate}
-							onChange={(e) => setStartDate(e.target.value)}
-						/>
+						<Popover>
+							<PopoverTrigger asChild>
+								<Button
+									variant="outline"
+									className={cn(
+										"w-full justify-start text-left font-normal md:w-[250px]",
+										!startDate && "text-muted-foreground",
+									)}
+								>
+									<CalendarIcon className="size-4 mr-2" />
+									{startDate ? (
+										format(startDate, "PPP")
+									) : (
+										<span>Pick a date</span>
+									)}
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent className="w-auto p-0" align="center">
+								<Calendar
+									mode="single"
+									selected={startDate}
+									onSelect={setStartDate}
+									initialFocus
+								/>
+							</PopoverContent>
+						</Popover>
 					</div>
 					{operation === "difference" ? (
 						<div className="flex flex-col space-y-2">
@@ -107,16 +122,39 @@ export function DateCalculator() {
 								End Date{" "}
 								<span className="text-lg font-medium text-red-600">*</span>
 							</label>
-							<Input
-								type="date"
-								id="endDate"
-								value={endDate}
-								onChange={(e) => setEndDate(e.target.value)}
-							/>
+							<Popover>
+								<PopoverTrigger asChild>
+									<Button
+										variant="outline"
+										className={cn(
+											"w-full justify-start text-left font-normal md:w-[250px]",
+											!endDate && "text-muted-foreground",
+										)}
+									>
+										<CalendarIcon className="size-4 mr-2" />
+										{endDate ? (
+											format(endDate, "PPP")
+										) : (
+											<span>Pick a date</span>
+										)}
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent className="w-auto p-0" align="center">
+									<Calendar
+										mode="single"
+										selected={endDate}
+										onSelect={setEndDate}
+										initialFocus
+									/>
+								</PopoverContent>
+							</Popover>
 						</div>
 					) : (
 						<div className="flex flex-col space-y-2">
-							<label htmlFor="days" className="font-medium leading-snug">
+							<label
+								htmlFor="days"
+								className="text-sm font-medium leading-snug"
+							>
 								Number of Days{" "}
 								<span className="text-lg font-medium text-red-600">*</span>
 							</label>

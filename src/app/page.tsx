@@ -18,19 +18,19 @@ export default function IndexPage() {
 							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
 							value="notepad"
 						>
-							notepad
+							Notepad
 						</TabsTrigger>
 						<TabsTrigger
 							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
 							value="date-calculator"
 						>
-							date calculator
+							Date Calculator
 						</TabsTrigger>
 						<TabsTrigger
 							className="transition py-2.5 data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-2 data-[state=inactive]:border-border border-foreground rounded-none"
 							value="to-do-list"
 						>
-							to-do-list
+							To-Do-List
 						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="notepad">

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { buttonVariants } from "~/components/ui/button";
-import { cn } from "~/util/cn";
+import { cn } from "~/lib/utils";
 
 export const metadata: Metadata = {
 	title: "Contact",

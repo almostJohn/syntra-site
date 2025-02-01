@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { cn } from "~/util/cn";
+import { cn } from "~/lib/utils";
 
 export function MainNav() {
 	return (
