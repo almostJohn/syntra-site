@@ -198,7 +198,9 @@ export function DateCalculator() {
 					</div>
 				</RadioGroup>
 				<div className="flex items-center justify-start">
-					<Button onClick={calculateDifference}>Calculate</Button>
+					<Button size="sm" onClick={calculateDifference}>
+						Calculate
+					</Button>
 				</div>
 				{result && <p className="text-sm">{result}</p>}
 				{error && <p className="text-sm text-red-600">{error}</p>}

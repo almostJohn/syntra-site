@@ -7,7 +7,7 @@ export function Changelog() {
 		<HoverCard>
 			<HoverCardTrigger asChild>
 				<span className="inline-flex items-center justify-center px-3 py-0.5 rounded-full text-xs font-bold cursor-pointer border bg-muted">
-					v0.1.3
+					v0.1.6
 				</span>
 			</HoverCardTrigger>
 			<HoverCardContent className="w-80">
@@ -17,16 +17,17 @@ export function Changelog() {
 							<div className="flex items-center space-x-2">
 								<PartyPopper className="size-5 shrink-0" />
 								<h2 className="text-sm font-medium tracking-tight">
-									Update dependencies/bug fixes/refactor styles
+									Update: new features such as date-picker, etc
 								</h2>
 							</div>
 							<ul className="space-y-2">
 								<li className="text-sm">
-									- use shadcn-ui as the base React Component
+									- Users can now simply pick a date from the calendar selection
+									to save time on writing dates.
 								</li>
 								<li className="text-sm">
-									- fixed: live-clock synchronization & reduce the refreshed
-									rate to 100ms
+									- Users can now create and add notes, as well as copy and
+									paste them to save time when writing new ones.
 								</li>
 							</ul>
 						</div>
