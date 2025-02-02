@@ -17,17 +17,13 @@ export function Changelog() {
 							<div className="flex items-center space-x-2">
 								<PartyPopper className="size-5 shrink-0" />
 								<h2 className="text-sm font-medium tracking-tight">
-									Update: new features such as date-picker, etc
+									Update: new features/bug fixes
 								</h2>
 							</div>
 							<ul className="space-y-2">
 								<li className="text-sm">
 									- Users can now simply pick a date from the calendar selection
 									to save time on writing dates.
-								</li>
-								<li className="text-sm">
-									- Users can now create and add notes, as well as copy and
-									paste them to save time when writing new ones.
 								</li>
 							</ul>
 						</div>

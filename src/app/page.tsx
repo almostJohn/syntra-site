@@ -1,13 +1,13 @@
 import * as React from "react";
-import { Notepad } from "~/components/notepad";
 import { DateCalculator } from "~/components/date-calculator";
 import { LiveClock } from "~/components/live-clock";
+import { Notepad } from "~/components/notepad";
 import { Todolist } from "~/components/todolist";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export default function IndexPage() {
 	return (
-		<div className="min-h-screen px-5 py-8 md:pb-16">
+		<div className="min-h-screen px-5 py-8">
 			<div className="flex flex-col space-y-6">
 				<div className="flex items-center justify-center">
 					<LiveClock />
