@@ -1,14 +1,54 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, NotepadText } from "lucide-react";
 import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
 import { transformText } from "~/util/transformText";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
 	const [interacted, setInteracted] = React.useState(false);
+	const [lineCount, setLineCount] = React.useState(1);
+	const [colCount, setColCount] = React.useState(1);
+	const [charCount, setCharCount] = React.useState(0);
+
+	React.useEffect(() => {
+		const savedText = localStorage.getItem("notepadText");
+		if (savedText) {
+			setText(savedText);
+		}
+	}, []);
+
+	React.useEffect(() => {
+		localStorage.setItem("notepadText", text);
+	}, [text]);
+
+	function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+		e.preventDefault();
+
+		const newText = e.target.value;
+		setText(newText);
+		setCharCount(newText.length);
+
+		const lines = newText.split("\n");
+		setLineCount(lines.length);
+
+		const position = e.target.selectionStart;
+		let currentLine = 1;
+		let currentCol = 1;
+
+		for (let i = 0; i < position; i++) {
+			if (newText[i] === "\n") {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				currentLine++;
+				currentCol = 1;
+			} else {
+				currentCol++;
+			}
+		}
+
+		setColCount(currentCol);
+	}
 
 	function copyToClipboard() {
 		navigator.clipboard.writeText(text).then(() => {
@@ -22,45 +62,54 @@ export function Notepad() {
 
 	function clearText() {
 		setText("");
+		localStorage.removeItem("notepadText");
 	}
 
 	return (
-		<div className="block p-4 rounded-md border bg-background shadow-lg">
+		<div className="block p-4 rounded-none bg-background">
 			<div className="flex flex-col space-y-4">
-				<div className="flex items-center justify-between w-full">
-					<div className="flex flex-col space-y-1">
-						<h2 className="font-medium tracking-tight">Notepad</h2>
-						<span className="italic text-xs font-light text-muted-foreground">
-							Tip: Use **bold**, *italic*, __underline__, or `inline code` for
-							text formatting.
-						</span>
-					</div>
-					<div className="flex items-center justify-end">
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={clearText}
-							className="hover:bg-transparent hover:underline"
-						>
-							Clear
-						</Button>
-					</div>
-				</div>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<div className="grid grid-cols-1 gap-4">
 					<div className="w-full">
-						<Textarea
-							value={text}
-							onChange={(e) => setText(e.target.value)}
-							className="h-80 resize-none font-mono p-3"
-							placeholder="Type here..."
-						/>
+						<div className="flex flex-col h-[550px] bg-background border rounded-md shadow-lg">
+							<div className="flex items-center justify-between w-full bg-muted border-b px-3 py-0.5">
+								<div className="flex items-center space-x-2">
+									<NotepadText className="size-5" />
+									<span className="text-sm">Untitled</span>
+								</div>
+								<div className="flex items-center justify-end">
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={clearText}
+										className="p-0 hover:bg-transparent hover:underline"
+									>
+										Clear text
+									</Button>
+								</div>
+							</div>
+							<textarea
+								value={text}
+								onChange={handleTextChange}
+								className="flex-1 resize-none font-mono p-3 w-full rounded-none transition focus:ring-0 focus:outline-none"
+								spellCheck={false}
+							/>
+							<div className="flex items-center justify-between w-full px-2 py-1 text-xs bg-muted border-t">
+								<div className="flex items-center">
+									<span>{`Ln ${lineCount}, Col ${colCount}`}</span>
+								</div>
+								<div className="flex items-center justify-end gap-4">
+									<span>{`${charCount} characters`}</span>
+									<span>UTF-8</span>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div className="w-full">
-						<div className="relative block p-3 border bg-background rounded-md h-80 overflow-y-auto">
+						<div className="relative block p-3 h-72 border bg-background rounded-md overflow-y-auto">
 							<Button
 								variant="outline"
 								size="icon"
-								className="absolute z-50 top-3 right-3"
+								className="absolute top-3 right-3"
 								onClick={copyToClipboard}
 							>
 								{interacted ? (
@@ -70,7 +119,7 @@ export function Notepad() {
 								)}
 							</Button>
 							<div
-								className="overflow-auto text-sm mr-24"
+								className="overflow-auto text-sm mr-16"
 								dangerouslySetInnerHTML={{ __html: transformText(text) }}
 							/>
 						</div>

@@ -2,13 +2,11 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { inter } from "~/util/fonts";
 import "../styles/globals.css";
-import { SiteHeader } from "~/components/site-header";
-import { SiteFooter } from "~/components/site-footer";
 
 export const metadata: Metadata = {
 	title: {
 		template: "%s | simplynote",
-		default: "simplynote - Simple tools for everyday tasks.",
+		default: "simplynote - Simple tool for everyday tasks.",
 	},
 	icons: {
 		other: [
@@ -42,13 +40,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} bg-background text-foreground antialiased selection:bg-teal-500 selection:text-background`}
+				className={`${inter.className} bg-background text-foreground antialiased`}
 			>
-				<main className="min-h-screen">
-					<SiteHeader />
-					{children}
-					<SiteFooter />
-				</main>
+				{children}
 			</body>
 		</html>
 	);

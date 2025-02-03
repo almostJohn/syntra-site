@@ -1,28 +1,41 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
+import { usePathname } from "next/navigation";
 import { cn } from "~/lib/utils";
 
 export function MainNav() {
+	const pathname = usePathname();
+
 	return (
-		<nav className="hidden justify-end items-center gap-4 md:flex">
+		<nav className="flex justify-end items-center gap-5">
 			<Link
 				href="/"
-				className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+				className={cn(
+					"text-sm font-medium transition-colors hover:text-blue-500",
+					pathname === "/" ? "text-blue-500" : "hover:text-blue-500",
+				)}
 			>
 				Home
 			</Link>
 			<Link
 				href="/about"
-				className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+				className={cn(
+					"text-sm font-medium transition-colors hover:text-blue-500",
+					pathname === "/about" ? "text-blue-500" : "hover:text-blue-500",
+				)}
 			>
 				About
 			</Link>
 			<Link
-				href="/contact"
-				className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+				href="/notepad"
+				className={cn(
+					"text-sm font-medium transition-colors hover:text-blue-500",
+					pathname === "/notepad" ? "text-blue-500" : "hover:text-blue-500",
+				)}
 			>
-				Contact
+				Notepad
 			</Link>
 		</nav>
 	);
