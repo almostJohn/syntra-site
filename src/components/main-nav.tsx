@@ -13,7 +13,7 @@ export function MainNav() {
 			<Link
 				href="/"
 				className={cn(
-					"text-sm font-medium transition-colors hover:text-blue-500",
+					"text-sm font-medium transition-colors hover:text-blue-600",
 					pathname === "/" ? "text-blue-500" : "hover:text-blue-500",
 				)}
 			>

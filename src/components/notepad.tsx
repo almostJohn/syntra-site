@@ -1,16 +1,29 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Check, NotepadText } from "lucide-react";
 import { Button } from "./ui/button";
 import { transformText } from "~/util/transformText";
+import { X } from "lucide-react";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
+	const [suggestions, setSuggestions] = React.useState<string[]>([]);
+	const [selectedSuggestion, setSelectedSuggestion] = React.useState(-1);
 	const [interacted, setInteracted] = React.useState(false);
-	const [lineCount, setLineCount] = React.useState(1);
-	const [colCount, setColCount] = React.useState(1);
-	const [charCount, setCharCount] = React.useState(0);
+	const [savedPhrases, setSavedPhrases] = React.useState<string[]>([]);
+	const [newPhrase, setNewPhrase] = React.useState("");
+	const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+	React.useEffect(() => {
+		const storedPhrases = localStorage.getItem("autocompletePhrases");
+		if (storedPhrases) {
+			setSavedPhrases(JSON.parse(storedPhrases));
+		}
+	}, []);
+
+	React.useEffect(() => {
+		localStorage.setItem("autocompletePhrases", JSON.stringify(savedPhrases));
+	}, [savedPhrases]);
 
 	React.useEffect(() => {
 		const savedText = localStorage.getItem("notepadText");
@@ -23,31 +36,50 @@ export function Notepad() {
 		localStorage.setItem("notepadText", text);
 	}, [text]);
 
-	function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-		e.preventDefault();
-
-		const newText = e.target.value;
-		setText(newText);
-		setCharCount(newText.length);
-
-		const lines = newText.split("\n");
-		setLineCount(lines.length);
-
-		const position = e.target.selectionStart;
-		let currentLine = 1;
-		let currentCol = 1;
-
-		for (let i = 0; i < position; i++) {
-			if (newText[i] === "\n") {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				currentLine++;
-				currentCol = 1;
-			} else {
-				currentCol++;
-			}
+	React.useEffect(() => {
+		if (textareaRef.current) {
+			textareaRef.current.setSelectionRange(text.length, text.length);
 		}
+	}, [text]);
 
-		setColCount(currentCol);
+	function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+		const newText = e.target.value;
+
+		setText(newText);
+
+		const lastWord = newText.split(" ").pop() || "";
+		if (lastWord.length > 1) {
+			const newSuggestions = savedPhrases.filter((phrases) =>
+				phrases.toLowerCase().startsWith(lastWord.toLowerCase()),
+			);
+			setSuggestions(newSuggestions);
+			setSelectedSuggestion(-1);
+		} else {
+			setSuggestions([]);
+		}
+	}
+
+	function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			setSelectedSuggestion((prev) =>
+				Math.min(prev + 1, suggestions.length - 1),
+			);
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			setSelectedSuggestion((prev) => Math.max(prev - 1, -1));
+		} else if (e.key === "Enter" && selectedSuggestion > -1) {
+			e.preventDefault();
+			applySuggestion(suggestions[selectedSuggestion]);
+		}
+	}
+
+	function applySuggestion(suggestion: string) {
+		const words = text.split(" ");
+		words[words.length - 1] = suggestion;
+		setText(words.join(" ") + " ");
+		setSuggestions([]);
+		textareaRef.current?.focus();
 	}
 
 	function copyToClipboard() {
@@ -60,63 +92,135 @@ export function Notepad() {
 		});
 	}
 
+	function savePhrase() {
+		if (newPhrase && !savedPhrases.includes(newPhrase)) {
+			setSavedPhrases([...savedPhrases, newPhrase]);
+			setNewPhrase("");
+		}
+	}
+
+	function deletePhrase(phrase: string) {
+		setSavedPhrases(savedPhrases.filter((p) => p !== phrase));
+	}
+
 	function clearText() {
 		setText("");
 		localStorage.removeItem("notepadText");
 	}
 
 	return (
-		<div className="block p-4 rounded-none bg-background">
-			<div className="flex flex-col space-y-4">
+		<div className="container max-w-screen-2xl">
+			<div className="flex flex-col space-y-4 pt-6 pb-12">
+				<div className="flex flex-col-reverse space-y-3 md:items-center md:flex-row md:justify-between md:space-y-0 w-full">
+					{savedPhrases.length > 0 ? (
+						<div className="flex flex-col space-y-2 mt-6 md:mt-0">
+							<h1 className="text-lg font-medium leading-snug">
+								Saved Phrases
+							</h1>
+							<div className="flex flex-row flex-wrap gap-4">
+								{savedPhrases.map((phrase) => (
+									<li
+										key={phrase}
+										className="inline-flex items-center justify-between text-sm font-medium px-2 py-0.5 bg-muted border"
+									>
+										<span>{phrase}</span>
+										<Button
+											variant="ghost"
+											size="icon"
+											className="hover:bg-transparent transition hover:text-red-600"
+											onClick={() => deletePhrase(phrase)}
+										>
+											<X className="size-4 shrink-0" />
+										</Button>
+									</li>
+								))}
+							</div>
+						</div>
+					) : (
+						<div className="flex flex-col space-y-0.5 mt-6 md:mt-0">
+							<h1 className="text-lg font-medium leading-snug">
+								Saved Phrases
+							</h1>
+							<p className="text-sm text-muted-foreground">
+								No saved phrases yet
+							</p>
+						</div>
+					)}
+					<div className="flex items-center justify-end space-x-3">
+						<input
+							type="text"
+							value={newPhrase}
+							onChange={(e) => setNewPhrase(e.target.value)}
+							placeholder="Enter a new phrase to save..."
+							className="inline-flex p-2 items-center text-sm font-medium w-full border border-neutral-300 rounded-none transition hover:border-blue-600 focus:border-blue-600 focus:ring-0 focus:outline-none sm:w-72"
+						/>
+						<Button
+							variant="ghost"
+							onClick={savePhrase}
+							size="sm"
+							className="px-2 py-0.5 text-xs rounded-none font-bold bg-blue-500 text-white transition hover:bg-blue-600 hover:text-white"
+						>
+							Save Phrase
+						</Button>
+					</div>
+				</div>
 				<div className="grid grid-cols-1 gap-4">
 					<div className="w-full">
-						<div className="flex flex-col h-[550px] bg-background border rounded-md shadow-lg">
-							<div className="flex items-center justify-between w-full bg-muted border-b px-3 py-0.5">
-								<div className="flex items-center space-x-2">
-									<NotepadText className="size-5" />
-									<span className="text-sm">Untitled</span>
+						<div className="flex flex-col space-y-2">
+							<div className="flex items-center justify-between w-full">
+								<div className="flex flex-col space-y-0.5">
+									<h1 className="text-lg font-medium leading-snug">Notepad</h1>
+									<p className="text-xs text-muted-foreground italic font-light mr-2 md:mr-0">
+										Tip: Use **bold**, *italic* or __underline__ for text
+										formatting.
+									</p>
 								</div>
-								<div className="flex items-center justify-end">
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={clearText}
-										className="p-0 hover:bg-transparent hover:underline"
-									>
-										Clear text
-									</Button>
-								</div>
+								<Button
+									variant="ghost"
+									onClick={clearText}
+									size="sm"
+									className="rounded-none h-8 px-2 py-0.5 text-xs font-bold border border-red-600 text-red-600 bg-transparent transition hover:bg-red-600 hover:text-white"
+								>
+									Clear
+								</Button>
 							</div>
+							{suggestions.length > 0 && (
+								<ul className="inline-flex items-center text-sm font-medium mt-1 border border-blue-600 text-blue-600 shadow-lg w-full">
+									{suggestions.map((suggestion, i) => (
+										<li
+											key={i}
+											className={`w-full px-3 py-2 cursor-pointer ${
+												i === selectedSuggestion
+													? "bg-blue-600 text-white"
+													: "hover:bg-blue-600 hover:text-white"
+											}`}
+											onClick={() => applySuggestion(suggestion)}
+										>
+											{suggestion}
+										</li>
+									))}
+								</ul>
+							)}
 							<textarea
+								ref={textareaRef}
 								value={text}
-								onChange={handleTextChange}
-								className="flex-1 resize-none font-mono p-3 w-full rounded-none transition focus:ring-0 focus:outline-none"
-								spellCheck={false}
+								onChange={handleChange}
+								onKeyDown={handleKeyDown}
+								className="resize-none h-96 rounded-none bg-background text-sm p-3 w-full border border-neutral-300 transition focus:outline-none shadow-lg focus:ring-0 hover:border-blue-600 focus:border-blue-600"
+								spellCheck={true}
+								placeholder="Start typing here..."
 							/>
-							<div className="flex items-center justify-between w-full px-2 py-1 text-xs bg-muted border-t">
-								<div className="flex items-center">
-									<span>{`Ln ${lineCount}, Col ${colCount}`}</span>
-								</div>
-								<div className="flex items-center justify-end gap-4">
-									<span>{`${charCount} characters`}</span>
-									<span>UTF-8</span>
-								</div>
-							</div>
 						</div>
 					</div>
 					<div className="w-full">
-						<div className="relative block p-3 h-72 border bg-background rounded-md overflow-y-auto">
+						<div className="relative block p-3 w-full h-[435px] rounded-none border border-blue-600 shadow-lg bg-background overflow-y-auto">
 							<Button
-								variant="outline"
-								size="icon"
-								className="absolute top-3 right-3"
+								variant="ghost"
 								onClick={copyToClipboard}
+								size="sm"
+								className="absolute top-3 right-3 rounded-none h-8 px-3 py-[1px] text-xs font-bold border border-blue-600 text-blue-600 bg-transparent transition hover:bg-blue-600 hover:text-white"
 							>
-								{interacted ? (
-									<Check className="size-5 shrink-0" />
-								) : (
-									<Copy className="size-5 shrink-0" />
-								)}
+								{interacted ? "Copied" : "Copy"}
 							</Button>
 							<div
 								className="overflow-auto text-sm mr-16"

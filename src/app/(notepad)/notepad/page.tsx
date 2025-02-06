@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function NotepadPage() {
 	return (
-		<div>
+		<>
 			<Notepad />
-		</div>
+		</>
 	);
 }

@@ -28,7 +28,7 @@ export default function IndexPage() {
 					</div>
 					<div className="flex items-center justify-center">
 						<Button
-							className="bg-blue-500 text-white hover:bg-blue-600"
+							className="bg-blue-500 text-white hover:bg-blue-600 rounded-none"
 							size="lg"
 							asChild
 						>
