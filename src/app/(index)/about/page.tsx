@@ -16,7 +16,7 @@ export default function AboutPage() {
 						SimplyNote
 					</h1>
 					<p className="text-balance">
-						simplynote is a fast, stand-alone, and free browser-based text
+						SimplyNote is a fast, stand-alone, and free browser-based text
 						editor for quick note-taking and editing. No installs or
 						sign-ups—just a simple, distraction-free experience with autosave
 						and privacy. Our goal is to provide a seamless and efficient
@@ -24,7 +24,7 @@ export default function AboutPage() {
 						effort.
 					</p>
 					<p className="text-balance">
-						simplynote is an open-source project available on{" "}
+						SimplyNote is an open-source project available on{" "}
 						<Link
 							href="https://github.com/almostJohn/simplynote"
 							className="text-blue-600 hover:underline"
