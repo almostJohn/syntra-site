@@ -2,28 +2,57 @@
 
 import * as React from "react";
 import { Button } from "./ui/button";
-import { transformText } from "~/util/transformText";
-import { X } from "lucide-react";
+import {
+	NotebookIcon,
+	FileDown,
+	Save,
+	Trash,
+	Copy,
+	Check,
+	X,
+} from "lucide-react";
+import { geistMono } from "~/util/fonts";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
+	const [savedNotes, setSavedNotes] = React.useState<string[]>([]);
 	const [suggestions, setSuggestions] = React.useState<string[]>([]);
 	const [selectedSuggestion, setSelectedSuggestion] = React.useState(-1);
+	const [wordSet, setWordSet] = React.useState<Set<string>>(new Set());
 	const [interacted, setInteracted] = React.useState(false);
-	const [savedPhrases, setSavedPhrases] = React.useState<string[]>([]);
-	const [newPhrase, setNewPhrase] = React.useState("");
+	const [colCount, setColCount] = React.useState(1);
+	const [rowCount, setRowCount] = React.useState(1);
+	const [charCount, setCharCount] = React.useState(0);
+	const [error, setError] = React.useState<string | null>(null);
 	const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+	const suggestionsRef = React.useRef<HTMLUListElement>(null);
 
 	React.useEffect(() => {
-		const storedPhrases = localStorage.getItem("autocompletePhrases");
-		if (storedPhrases) {
-			setSavedPhrases(JSON.parse(storedPhrases));
-		}
+		const loadWords = async () => {
+			try {
+				const words = await import("an-array-of-english-words");
+				setWordSet(new Set(words.default));
+			} catch (error_) {
+				const error = error_ as Error;
+				console.error(error, error.message);
+				setWordSet(
+					new Set([
+						"the",
+						"be",
+						"to",
+						"of",
+						"and",
+						"in",
+						"that",
+						"have",
+						"it",
+						"for",
+					]),
+				);
+			}
+		};
+		loadWords();
 	}, []);
-
-	React.useEffect(() => {
-		localStorage.setItem("autocompletePhrases", JSON.stringify(savedPhrases));
-	}, [savedPhrases]);
 
 	React.useEffect(() => {
 		const savedText = localStorage.getItem("notepadText");
@@ -31,6 +60,17 @@ export function Notepad() {
 			setText(savedText);
 		}
 	}, []);
+
+	React.useEffect(() => {
+		const storedNotes = localStorage.getItem("storedNotes");
+		if (storedNotes) {
+			setSavedNotes(JSON.parse(storedNotes));
+		}
+	}, []);
+
+	React.useEffect(() => {
+		localStorage.setItem("storedNotes", JSON.stringify(savedNotes));
+	}, [savedNotes]);
 
 	React.useEffect(() => {
 		localStorage.setItem("notepadText", text);
@@ -42,44 +82,100 @@ export function Notepad() {
 		}
 	}, [text]);
 
+	React.useEffect(() => {
+		setCharCount(text.length);
+		setRowCount(text.split("\n").length);
+		setColCount(text.split(/\s+/).filter((word) => word.length > 0).length);
+	}, [text]);
+
 	function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
 		const newText = e.target.value;
-
+		const cursorPosition = e.target.selectionStart;
 		setText(newText);
 
-		const lastWord = newText.split(" ").pop() || "";
-		if (lastWord.length > 1) {
-			const newSuggestions = savedPhrases.filter((phrases) =>
-				phrases.toLowerCase().startsWith(lastWord.toLowerCase()),
-			);
-			setSuggestions(newSuggestions);
+		const wordBeforeCursor =
+			newText.slice(0, cursorPosition).split(/\s+/).pop() || "";
+
+		if (wordBeforeCursor.length > 1) {
+			const suggestions = Array.from(wordSet)
+				.filter((word) =>
+					word.toLowerCase().startsWith(wordBeforeCursor.toLowerCase()),
+				)
+				.slice(0, 5);
+			setSuggestions(suggestions);
 			setSelectedSuggestion(-1);
 		} else {
 			setSuggestions([]);
 		}
+
+		setTimeout(() => {
+			if (textareaRef.current) {
+				textareaRef.current.selectionStart = cursorPosition;
+				textareaRef.current.selectionEnd = cursorPosition;
+			}
+		}, 0);
 	}
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		if (suggestions.length === 0) return;
+
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
-			setSelectedSuggestion((prev) =>
-				Math.min(prev + 1, suggestions.length - 1),
-			);
+			setSelectedSuggestion((prev) => (prev + 1) % suggestions.length);
+			scrollToSelectedSuggestion();
 		} else if (e.key === "ArrowUp") {
 			e.preventDefault();
-			setSelectedSuggestion((prev) => Math.max(prev - 1, -1));
+			setSelectedSuggestion(
+				(prev) => (prev - 1 + suggestions.length) % suggestions.length,
+			);
+			scrollToSelectedSuggestion();
 		} else if (e.key === "Enter" && selectedSuggestion > -1) {
 			e.preventDefault();
 			applySuggestion(suggestions[selectedSuggestion]);
+		} else if (e.key === "Tab" && suggestions.length > 0) {
+			e.preventDefault();
+			applySuggestion(
+				suggestions[selectedSuggestion === -1 ? 0 : selectedSuggestion],
+			);
+		} else if (e.key === "Escape") {
+			setSuggestions([]);
+			setSelectedSuggestion(-1);
+		}
+	}
+
+	function scrollToSelectedSuggestion() {
+		if (suggestionsRef.current && selectedSuggestion !== -1) {
+			const selectedElement = suggestionsRef.current.children[
+				selectedSuggestion
+			] as HTMLElement;
+			if (selectedElement) {
+				selectedElement.scrollIntoView({ block: "nearest" });
+			}
 		}
 	}
 
 	function applySuggestion(suggestion: string) {
-		const words = text.split(" ");
-		words[words.length - 1] = suggestion;
-		setText(words.join(" ") + " ");
+		if (textareaRef.current) {
+			const cursorPosition = textareaRef.current.selectionStart;
+			const textBeforeCursor = text.slice(0, cursorPosition);
+			const textAfterCursor = text.slice(cursorPosition);
+			const lastWordBeforeCursor = textBeforeCursor.split(/\s+/).pop() || "";
+			const newTextBeforeCursor =
+				textBeforeCursor.slice(0, -lastWordBeforeCursor.length) + suggestion;
+			const newText = newTextBeforeCursor + " " + textAfterCursor.trimStart();
+
+			setText(newText);
+
+			const newCursorPosition = newTextBeforeCursor.length + 1;
+			setTimeout(() => {
+				if (textareaRef.current) {
+					textareaRef.current.selectionStart = newCursorPosition;
+					textareaRef.current.selectionEnd = newCursorPosition;
+					textareaRef.current.focus();
+				}
+			}, 0);
+		}
 		setSuggestions([]);
-		textareaRef.current?.focus();
 	}
 
 	function copyToClipboard() {
@@ -92,15 +188,21 @@ export function Notepad() {
 		});
 	}
 
-	function savePhrase() {
-		if (newPhrase && !savedPhrases.includes(newPhrase)) {
-			setSavedPhrases([...savedPhrases, newPhrase]);
-			setNewPhrase("");
+	function saveNote() {
+		if (!text) {
+			setError("Please provide at least a text!");
+			return;
+		}
+
+		if (!savedNotes.includes(text)) {
+			setSavedNotes([...savedNotes, text]);
+			setText("");
+			setError(null);
 		}
 	}
 
-	function deletePhrase(phrase: string) {
-		setSavedPhrases(savedPhrases.filter((p) => p !== phrase));
+	function deleteNote(note: string) {
+		setSavedNotes(savedNotes.filter((n) => n !== note));
 	}
 
 	function clearText() {
@@ -108,125 +210,159 @@ export function Notepad() {
 		localStorage.removeItem("notepadText");
 	}
 
+	function exportToTxt() {
+		const element = document.createElement("a");
+		const file = new Blob([text], { type: "text/plain" });
+		element.href = URL.createObjectURL(file);
+		element.download = "notepad_export.txt";
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
+
+	function handleSuggestionClick(suggestion: string) {
+		applySuggestion(suggestion);
+	}
+
+	function handleSuggestionMouseEnter(index: number) {
+		setSelectedSuggestion(index);
+	}
+
 	return (
 		<div className="container max-w-screen-2xl">
 			<div className="flex flex-col space-y-4 pt-6 pb-12">
-				<div className="flex flex-col-reverse space-y-3 md:items-center md:flex-row md:justify-between md:space-y-0 w-full">
-					{savedPhrases.length > 0 ? (
-						<div className="flex flex-col space-y-2 mt-6 md:mt-0">
-							<h1 className="text-lg font-medium leading-snug">
-								Saved Phrases
-							</h1>
-							<div className="flex flex-row flex-wrap gap-4">
-								{savedPhrases.map((phrase) => (
-									<li
-										key={phrase}
-										className="inline-flex items-center justify-between text-sm font-medium px-2 py-0.5 bg-muted border"
-									>
-										<span>{phrase}</span>
-										<Button
-											variant="ghost"
-											size="icon"
-											className="hover:bg-transparent transition hover:text-red-600"
-											onClick={() => deletePhrase(phrase)}
-										>
-											<X className="size-4 shrink-0" />
-										</Button>
-									</li>
-								))}
-							</div>
-						</div>
-					) : (
-						<div className="flex flex-col space-y-0.5 mt-6 md:mt-0">
-							<h1 className="text-lg font-medium leading-snug">
-								Saved Phrases
-							</h1>
-							<p className="text-sm text-muted-foreground">
-								No saved phrases yet
-							</p>
-						</div>
-					)}
-					<div className="flex items-center justify-end space-x-3">
-						<input
-							type="text"
-							value={newPhrase}
-							onChange={(e) => setNewPhrase(e.target.value)}
-							placeholder="Enter a new phrase to save..."
-							className="inline-flex p-2 items-center text-sm font-medium w-full border border-neutral-300 rounded-none transition hover:border-blue-600 focus:border-blue-600 focus:ring-0 focus:outline-none sm:w-72"
-						/>
-						<Button
-							variant="ghost"
-							onClick={savePhrase}
-							size="sm"
-							className="px-2 py-0.5 text-xs rounded-none font-bold bg-blue-500 text-white transition hover:bg-blue-600 hover:text-white"
-						>
-							Save Phrase
-						</Button>
-					</div>
-				</div>
 				<div className="grid grid-cols-1 gap-4">
 					<div className="w-full">
-						<div className="flex flex-col space-y-2">
-							<div className="flex items-center justify-between w-full">
-								<div className="flex flex-col space-y-0.5">
-									<h1 className="text-lg font-medium leading-snug">Notepad</h1>
-									<p className="text-xs text-muted-foreground italic font-light mr-2 md:mr-0">
-										Tip: Use **bold**, *italic* or __underline__ for text
-										formatting.
-									</p>
+						<div className="relative flex flex-col bg-background border rounded-lg shadow-2xl">
+							<div className="flex items-center w-full bg-muted border-b px-3 py-1">
+								<div className="flex items-center space-x-2">
+									<NotebookIcon className="size-4 shrink-0 text-blue-500" />
+									<span className="text-sm leading-snug">Untitled</span>
 								</div>
+							</div>
+							<div className="flex items-center gap-2 w-full bg-muted/20 border-b p-2">
 								<Button
-									variant="ghost"
-									onClick={clearText}
-									size="sm"
-									className="rounded-none h-8 px-2 py-0.5 text-xs font-bold border border-red-600 text-red-600 bg-transparent transition hover:bg-red-600 hover:text-white"
+									variant="outline"
+									size="icon"
+									className="size-8 rounded-lg"
+									title="Save"
+									aria-label="Save"
+									onClick={saveNote}
 								>
-									Clear
+									<Save className="size-4 shrink-0" />
+								</Button>
+								<Button
+									variant="outline"
+									size="icon"
+									className="size-8 rounded-lg"
+									title="Export"
+									aria-label="Export"
+									onClick={exportToTxt}
+								>
+									<FileDown className="size-4 shrink-0" />
+								</Button>
+								<Button
+									variant="outline"
+									onClick={copyToClipboard}
+									size="icon"
+									className="size-8 rounded-lg"
+									title="Copy to Clipboard"
+									aria-label="Copy to Clipboard"
+								>
+									{interacted ? (
+										<>
+											<Check className="size-4 shrink-0" />
+										</>
+									) : (
+										<>
+											<Copy className="size-4 shrink-0" />
+										</>
+									)}
+								</Button>
+								<Button
+									variant="outline"
+									onClick={clearText}
+									size="icon"
+									className="size-8 rounded-lg"
+									title="Clear Text"
+									aria-label="Clear Text"
+								>
+									<Trash className="size-4 shrink-0" />
 								</Button>
 							</div>
+							<textarea
+								aria-label="Notepad"
+								ref={textareaRef}
+								value={text}
+								onChange={handleChange}
+								onKeyDown={handleKeyDown}
+								className={`${geistMono.className} resize-none h-96 rounded-none bg-background text-sm p-3 w-full focus:outline-none focus:ring-0`}
+								spellCheck={true}
+								rows={5}
+							/>
 							{suggestions.length > 0 && (
-								<ul className="inline-flex items-center text-sm font-medium mt-1 border border-blue-600 text-blue-600 shadow-lg w-full">
+								<ul
+									ref={suggestionsRef}
+									className="absolute  z-10 w-full mt-4 bottom-0 flex flex-col bg-background border shadow-lg overflow-auto"
+								>
 									{suggestions.map((suggestion, i) => (
 										<li
-											key={i}
-											className={`w-full px-3 py-2 cursor-pointer ${
-												i === selectedSuggestion
-													? "bg-blue-600 text-white"
-													: "hover:bg-blue-600 hover:text-white"
-											}`}
-											onClick={() => applySuggestion(suggestion)}
+											key={suggestion}
+											className="inline-flex items-center px-2 py-0.5 cursor-pointer w-full text-sm font-medium transition hover:bg-muted"
+											onClick={() => handleSuggestionClick(suggestion)}
+											onMouseEnter={() => handleSuggestionMouseEnter(i)}
 										>
 											{suggestion}
 										</li>
 									))}
 								</ul>
 							)}
-							<textarea
-								ref={textareaRef}
-								value={text}
-								onChange={handleChange}
-								onKeyDown={handleKeyDown}
-								className="resize-none h-96 rounded-none bg-background text-sm p-3 w-full border border-neutral-300 transition focus:outline-none shadow-lg focus:ring-0 hover:border-blue-600 focus:border-blue-600"
-								spellCheck={true}
-								placeholder="Start typing here..."
-							/>
+							<div className="flex items-center justify-between px-3 py-1 bg-muted border shadow rounded-b-lg">
+								<div className="flex items-center gap-3">
+									<span className="text-sm">col {colCount}</span>
+									<span className="text-sm">row {rowCount}</span>
+								</div>
+								<div className="flex items-center gap-3 justify-end">
+									<span className="text-sm">{charCount} characters</span>
+									<span className="text-sm">EN-US</span>
+									<span className="text-sm">UTF-8</span>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className="w-full">
-						<div className="relative block p-3 w-full h-[435px] rounded-none border border-blue-600 shadow-lg bg-background overflow-y-auto">
-							<Button
-								variant="ghost"
-								onClick={copyToClipboard}
-								size="sm"
-								className="absolute top-3 right-3 rounded-none h-8 px-3 py-[1px] text-xs font-bold border border-blue-600 text-blue-600 bg-transparent transition hover:bg-blue-600 hover:text-white"
-							>
-								{interacted ? "Copied" : "Copy"}
-							</Button>
-							<div
-								className="overflow-auto text-sm mr-16"
-								dangerouslySetInnerHTML={{ __html: transformText(text) }}
-							/>
-						</div>
+						{error && (
+							<div className="mt-3">
+								<p className="text-sm text-red-600">{error}</p>
+							</div>
+						)}
+						{savedNotes.length > 0 && (
+							<div className="mt-5 flex flex-col space-y-4">
+								<h1 className="text-lg font-medium leading-snug">
+									Saved Notes
+								</h1>
+								<div className="flex flex-row flex-wrap gap-4">
+									{savedNotes.map((note, i) => (
+										<div
+											key={i}
+											className="block p-3 border bg-muted rounded-lg shadow-md w-full md:w-72"
+										>
+											<div className="flex justify-between w-full">
+												<p className="text-sm whitespace-pre-wrap">{note}</p>
+												<Button
+													variant="ghost"
+													size="icon"
+													className="size-8 hover:bg-transparent hover:text-red-600"
+													onClick={() => deleteNote(note)}
+												>
+													<X className="size-4 shrink-0" />
+												</Button>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

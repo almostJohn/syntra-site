@@ -1,30 +1,30 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import { inter } from "~/util/fonts";
+import { geist } from "~/util/fonts";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
 	title: {
-		template: "%s | simplynote",
-		default: "simplynote - Simple tool for everyday tasks.",
+		template: "%s | SimplyNote",
+		default: "SimplyNote - Simple tool for everyday tasks.",
 	},
 	icons: {
 		other: [
 			{
-				url: "/logo.svg",
+				url: "/remasteredLogo.svg",
 				sizes: "16x16",
 				type: "image/svg",
 			},
 		],
 	},
 	appleWebApp: {
-		title: "simplynote",
+		title: "SimplyNote",
 	},
-	applicationName: "simplynote",
+	applicationName: "SimplyNote",
 	openGraph: {
-		siteName: "simplynote",
+		siteName: "SimplyNote",
 		type: "website",
-		title: "simplynote",
+		title: "SimplyNote",
 	},
 	twitter: {
 		card: "summary_large_image",
@@ -40,7 +40,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} bg-background text-foreground antialiased`}
+				className={`${geist.className} bg-background text-foreground antialiased`}
 			>
 				{children}
 			</body>

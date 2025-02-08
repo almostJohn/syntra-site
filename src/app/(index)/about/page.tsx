@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NotepadText } from "lucide-react";
+import { NotebookPen } from "lucide-react";
 
 export const metadata: Metadata = {
 	title: "About",
@@ -13,7 +13,7 @@ export default function AboutPage() {
 			<div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between w-full md:space-y-0">
 				<div className="flex flex-col space-y-4 mt-8 md:mt-0">
 					<h1 className="text-2xl font-bold tracking-tight md:text-5xl">
-						simplynote
+						SimplyNote
 					</h1>
 					<p className="text-balance">
 						simplynote is a fast, stand-alone, and free browser-based text
@@ -43,7 +43,7 @@ export default function AboutPage() {
 					</p>
 				</div>
 				<div className="flex">
-					<NotepadText className="size-40 shrink-0" />
+					<NotebookPen className="size-40 shrink-0 text-blue-500" />
 				</div>
 			</div>
 		</div>

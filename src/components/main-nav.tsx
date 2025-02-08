@@ -13,7 +13,7 @@ export function MainNav() {
 			<Link
 				href="/"
 				className={cn(
-					"text-sm font-medium transition-colors hover:text-blue-600",
+					"text-sm font-medium transition-colors hover:text-blue-700",
 					pathname === "/" ? "text-blue-500" : "hover:text-blue-500",
 				)}
 			>
@@ -22,7 +22,7 @@ export function MainNav() {
 			<Link
 				href="/about"
 				className={cn(
-					"text-sm font-medium transition-colors hover:text-blue-500",
+					"text-sm font-medium transition-colors hover:text-blue-700",
 					pathname === "/about" ? "text-blue-500" : "hover:text-blue-500",
 				)}
 			>
@@ -31,7 +31,7 @@ export function MainNav() {
 			<Link
 				href="/notepad"
 				className={cn(
-					"text-sm font-medium transition-colors hover:text-blue-500",
+					"text-sm font-medium transition-colors hover:text-blue-700",
 					pathname === "/notepad" ? "text-blue-500" : "hover:text-blue-500",
 				)}
 			>
