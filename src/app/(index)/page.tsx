@@ -1,6 +1,13 @@
 import * as React from "react";
 import Link from "next/link";
-import { Copy, FileDown, NotebookPen, Save, Trash } from "lucide-react";
+import {
+	Copy,
+	FileDown,
+	NotebookPen,
+	Save,
+	Trash,
+	Lightbulb,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { geistMono } from "~/util/fonts";
 
@@ -10,6 +17,14 @@ export default function IndexPage() {
 			<div className="container px-4 md:px-6">
 				<div className="flex flex-col items-center space-y-6 text-center">
 					<div className="space-y-3">
+						<Link
+							href="https://www.markdownguide.org/"
+							className="group inline-flex items-center justify-center rounded-full px-6 py-1 border bg-background text-lg font-bold transition hover:bg-muted"
+						>
+							<span className="group-hover:underline">
+								Markdown Syntax Support
+							</span>
+						</Link>
 						<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
 							Free Browser-Based Text Editor
 						</h1>
@@ -77,6 +92,16 @@ export default function IndexPage() {
 									disabled
 								>
 									<Trash className="size-4 shrink-0" />
+								</Button>
+								<Button
+									variant="outline"
+									size="icon"
+									className="size-8 rounded-lg"
+									title="Knowledge Base"
+									aria-label="Knowledge Base"
+									disabled
+								>
+									<Lightbulb className="size-4 shrink-0" />
 								</Button>
 							</div>
 							<div

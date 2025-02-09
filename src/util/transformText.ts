@@ -1,4 +1,4 @@
-import { jetBrainsMono } from "./fonts";
+import { geistMono } from "./fonts";
 
 export function transformText(text: string): string {
 	text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
@@ -9,7 +9,7 @@ export function transformText(text: string): string {
 
 	text = text.replace(
 		/`([^`]+)`/g,
-		`<code class="${jetBrainsMono.className}">$1</code>`,
+		`<code class="${geistMono.className}">$1</code>`,
 	);
 
 	text = text.replace(/\n/g, "<br>");

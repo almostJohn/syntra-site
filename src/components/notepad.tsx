@@ -12,18 +12,25 @@ import {
 	X,
 } from "lucide-react";
 import { geistMono } from "~/util/fonts";
+import { transformText } from "~/util/transformText";
+import { KnowledgeBase } from "./knowledge-base";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
-	const [savedNotes, setSavedNotes] = React.useState<string[]>([]);
+	const [noteTitle, setNoteTitle] = React.useState("");
+	const [savedNotes, setSavedNotes] = React.useState<
+		Array<{ title: string; content: string }>
+	>([]);
 	const [suggestions, setSuggestions] = React.useState<string[]>([]);
 	const [selectedSuggestion, setSelectedSuggestion] = React.useState(-1);
 	const [wordSet, setWordSet] = React.useState<Set<string>>(new Set());
 	const [interacted, setInteracted] = React.useState(false);
+	const [copiedNote, setCopiedNote] = React.useState(false);
 	const [colCount, setColCount] = React.useState(1);
 	const [rowCount, setRowCount] = React.useState(1);
 	const [charCount, setCharCount] = React.useState(0);
 	const [error, setError] = React.useState<string | null>(null);
+	const [isTitleFocus, setIsTitleFocus] = React.useState(false);
 	const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 	const suggestionsRef = React.useRef<HTMLUListElement>(null);
 
@@ -194,15 +201,25 @@ export function Notepad() {
 			return;
 		}
 
-		if (!savedNotes.includes(text)) {
-			setSavedNotes([...savedNotes, text]);
-			setText("");
-			setError(null);
-		}
+		const newNote = { title: noteTitle || "Untitled", content: text };
+		setSavedNotes([...savedNotes, newNote]);
+		setText("");
+		setNoteTitle("");
+		setError(null);
+		localStorage.setItem(
+			"storedNotes",
+			JSON.stringify([...savedNotes, newNote]),
+		);
 	}
 
-	function deleteNote(note: string) {
-		setSavedNotes(savedNotes.filter((n) => n !== note));
+	function deleteNote(noteToDelete: { title: string; content: string }) {
+		const updatedNotes = savedNotes.filter(
+			(note) =>
+				note.title !== noteToDelete.title ||
+				note.content !== noteToDelete.content,
+		);
+		setSavedNotes(updatedNotes);
+		localStorage.setItem("storedNotes", JSON.stringify(updatedNotes));
 	}
 
 	function clearText() {
@@ -214,10 +231,22 @@ export function Notepad() {
 		const element = document.createElement("a");
 		const file = new Blob([text], { type: "text/plain" });
 		element.href = URL.createObjectURL(file);
-		element.download = "notepad_export.txt";
+		element.download = `${
+			noteTitle || "Untitled"
+		}-${new Date().toISOString()}.txt`;
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+	}
+
+	function copyNoteToClipboard(note: string) {
+		navigator.clipboard.writeText(note).then(() => {
+			setCopiedNote(true);
+
+			setTimeout(() => {
+				setCopiedNote(false);
+			}, 2_000);
+		});
 	}
 
 	function handleSuggestionClick(suggestion: string) {
@@ -237,7 +266,17 @@ export function Notepad() {
 							<div className="flex items-center w-full bg-muted border-b px-3 py-1">
 								<div className="flex items-center space-x-2">
 									<NotebookIcon className="size-4 shrink-0 text-blue-500" />
-									<span className="text-sm leading-snug">Untitled</span>
+									<input
+										type="text"
+										value={noteTitle}
+										onChange={(e) => setNoteTitle(e.target.value)}
+										placeholder="Untitled"
+										onFocus={() => setIsTitleFocus(true)}
+										onBlur={() => setIsTitleFocus(false)}
+										className={`text-sm leading-snug bg-transparent border-none outline-none w-full ${
+											isTitleFocus ? "caret-blue-500" : "caret-transparent"
+										}`}
+									/>
 								</div>
 							</div>
 							<div className="flex items-center gap-2 w-full bg-muted/20 border-b p-2">
@@ -289,6 +328,7 @@ export function Notepad() {
 								>
 									<Trash className="size-4 shrink-0" />
 								</Button>
+								<KnowledgeBase />
 							</div>
 							<textarea
 								aria-label="Notepad"
@@ -345,18 +385,40 @@ export function Notepad() {
 									{savedNotes.map((note, i) => (
 										<div
 											key={i}
-											className="block p-3 border bg-muted rounded-lg shadow-md w-full md:w-72"
+											className="block p-3 border bg-muted rounded-lg shadow-md w-full md:w-80"
 										>
 											<div className="flex justify-between w-full">
-												<p className="text-sm whitespace-pre-wrap">{note}</p>
-												<Button
-													variant="ghost"
-													size="icon"
-													className="size-8 hover:bg-transparent hover:text-red-600"
-													onClick={() => deleteNote(note)}
-												>
-													<X className="size-4 shrink-0" />
-												</Button>
+												<div className="flex flex-col space-y-2">
+													<h2 className="font-semibold">{note.title}</h2>
+													<div
+														className="text-sm whitespace-pre-wrap mr-14"
+														dangerouslySetInnerHTML={{
+															__html: transformText(note.content),
+														}}
+													/>
+												</div>
+												<div className="flex justify-end gap-2">
+													<Button
+														variant="ghost"
+														size="icon"
+														className="size-8 hover:bg-transparent hover:text-blue-500"
+														onClick={() => copyNoteToClipboard(note.content)}
+													>
+														{copiedNote ? (
+															<Check className="size-4 shrink-0" />
+														) : (
+															<Copy className="size-4 shrink-0" />
+														)}
+													</Button>
+													<Button
+														variant="ghost"
+														size="icon"
+														className="size-8 hover:bg-transparent hover:text-red-600"
+														onClick={() => deleteNote(note)}
+													>
+														<X className="size-4 shrink-0" />
+													</Button>
+												</div>
 											</div>
 										</div>
 									))}
