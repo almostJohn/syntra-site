@@ -18,7 +18,7 @@ export function KnowledgeBase() {
 					<Lightbulb className="size-4 shrink-0" />
 				</Button>
 			</HoverCardTrigger>
-			<HoverCardContent className="w-80">
+			<HoverCardContent className="w-80 rounded-xl">
 				<div className="flex flex-col space-y-4">
 					<div className="flex space-x-2">
 						<Lightbulb className="text-yellow-500 shrink-0" />

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "./ui/button";
-import { FileDown, Save, Trash, Copy, Check, X } from "lucide-react";
+import { FileDown, Save, Trash, Copy, Check, X, Edit } from "lucide-react";
 import { geistMono } from "~/util/fonts";
 import { transformText } from "~/util/transformText";
 import { KnowledgeBase } from "./knowledge-base";
@@ -15,11 +15,16 @@ export function Notepad() {
 	const [savedNotes, setSavedNotes] = React.useState<
 		Array<{ title: string; content: string }>
 	>([]);
+	const [editingNote, setEditingNote] = React.useState<{
+		title: string;
+		content: string;
+	} | null>(null);
+	const [editedContent, setEditedContent] = React.useState("");
 	const [suggestions, setSuggestions] = React.useState<string[]>([]);
 	const [selectedSuggestion, setSelectedSuggestion] = React.useState(-1);
 	const [wordSet, setWordSet] = React.useState<Set<string>>(new Set());
 	const [interacted, setInteracted] = React.useState(false);
-	const [copiedNote, setCopiedNote] = React.useState(false);
+	const [copiedNoteId, setCopiedNoteId] = React.useState<number | null>(null);
 	const [colCount, setColCount] = React.useState(1);
 	const [rowCount, setRowCount] = React.useState(1);
 	const [charCount, setCharCount] = React.useState(0);
@@ -216,6 +221,39 @@ export function Notepad() {
 		localStorage.setItem("storedNotes", JSON.stringify(updatedNotes));
 	}
 
+	function updateNote(
+		oldNote: { title: string; content: string },
+		newContent: string,
+	) {
+		const updatedNotes = savedNotes.map((n) =>
+			n.title === oldNote.title && n.content === oldNote.content
+				? {
+						...n,
+						content: newContent,
+				  }
+				: n,
+		);
+		setSavedNotes(updatedNotes);
+		localStorage.setItem("storedNotes", JSON.stringify(updatedNotes));
+	}
+
+	function handleEditNote(note: { title: string; content: string }) {
+		setEditingNote(note);
+		setEditedContent(note.content);
+	}
+
+	function handleSaveEdit() {
+		if (editingNote) {
+			updateNote(editingNote, editedContent);
+			setEditingNote(null);
+		}
+	}
+
+	function handleCancelEdit() {
+		setEditingNote(null);
+		setEditedContent("");
+	}
+
 	function clearText() {
 		setText("");
 		localStorage.removeItem("notepadText");
@@ -233,12 +271,12 @@ export function Notepad() {
 		document.body.removeChild(element);
 	}
 
-	function copyNoteToClipboard(note: string) {
+	function copyNoteToClipboard(note: string, noteId: number) {
 		navigator.clipboard.writeText(note).then(() => {
-			setCopiedNote(true);
+			setCopiedNoteId(noteId);
 
 			setTimeout(() => {
-				setCopiedNote(false);
+				setCopiedNoteId(null);
 			}, 2_000);
 		});
 	}
@@ -323,7 +361,7 @@ export function Notepad() {
 									<Trash className="size-4 shrink-0" />
 								</Button>
 								<KnowledgeBase />
-								<ModeToggle className="size-8" align="start" />
+								<ModeToggle className="size-8" align="center" />
 							</div>
 							<textarea
 								aria-label="Notepad"
@@ -338,7 +376,7 @@ export function Notepad() {
 							{suggestions.length > 0 && (
 								<ul
 									ref={suggestionsRef}
-									className="absolute  z-10 w-full mt-4 bottom-0 flex flex-col bg-background border shadow-lg overflow-auto"
+									className="absolute  z-10 w-full mt-4 bottom-0 flex flex-col bg-background border shadow-lg overflow-auto rounded-b-lg"
 								>
 									{suggestions.map((suggestion, i) => (
 										<li
@@ -380,39 +418,95 @@ export function Notepad() {
 									{savedNotes.map((note, i) => (
 										<div
 											key={i}
-											className="block p-3 border bg-muted rounded-lg shadow-md w-full md:w-80"
+											className="block p-4 border bg-background rounded-xl shadow-md w-full md:w-96"
 										>
-											<div className="flex justify-between w-full">
-												<div className="flex flex-col space-y-2">
-													<h2 className="font-semibold">{note.title}</h2>
-													<div
-														className="text-sm whitespace-pre-wrap mr-14"
-														dangerouslySetInnerHTML={{
-															__html: transformText(note.content),
-														}}
-													/>
-												</div>
-												<div className="flex justify-end gap-2">
-													<Button
-														variant="ghost"
-														size="icon"
-														className="size-8 hover:bg-transparent"
-														onClick={() => copyNoteToClipboard(note.content)}
-													>
-														{copiedNote ? (
-															<Check className="size-4 shrink-0" />
+											<div className="flex flex-col space-y-2">
+												<div className="flex items-center justify-between w-full">
+													<div className="flex items-center">
+														<h2 className="font-semibold">{note.title}</h2>
+													</div>
+													<div className="flex items-center justify-end gap-2">
+														{editingNote === note ? (
+															<>
+																<Button
+																	variant="outline"
+																	size="icon"
+																	className="size-8 rounded-xl"
+																	onClick={handleSaveEdit}
+																	title="Save Edit"
+																	aria-label="Save Edit"
+																>
+																	<Check className="size-4 shrink-0" />
+																</Button>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	className="size-8 rounded-xl"
+																	onClick={handleCancelEdit}
+																	title="Cancel Edit"
+																	aria-label="Cancel Edit"
+																>
+																	<X className="size-4 shrink-0" />
+																</Button>
+															</>
 														) : (
-															<Copy className="size-4 shrink-0" />
+															<>
+																<Button
+																	variant="outline"
+																	size="icon"
+																	className="size-8 rounded-xl"
+																	onClick={() =>
+																		copyNoteToClipboard(note.content, i)
+																	}
+																	title="Copy to Clipboard"
+																	aria-label="Copy to Clipboard"
+																>
+																	{copiedNoteId === i ? (
+																		<Check className="size-4 shrink-0" />
+																	) : (
+																		<Copy className="size-4 shrink-0" />
+																	)}
+																</Button>
+																<Button
+																	variant="outline"
+																	size="icon"
+																	className="size-8 rounded-xl"
+																	onClick={() => handleEditNote(note)}
+																	title="Edit Note"
+																	aria-label="Edit Note"
+																>
+																	<Edit className="size-4 shrink-0" />
+																</Button>
+																<Button
+																	variant="outline"
+																	size="icon"
+																	className="size-8 rounded-xl"
+																	onClick={() => deleteNote(note)}
+																	title="Delete Note"
+																	aria-label="Delete Note"
+																>
+																	<Trash className="size-4 shrink-0" />
+																</Button>
+															</>
 														)}
-													</Button>
-													<Button
-														variant="ghost"
-														size="icon"
-														className="size-8 hover:bg-transparent hover:text-red-600"
-														onClick={() => deleteNote(note)}
-													>
-														<X className="size-4 shrink-0" />
-													</Button>
+													</div>
+												</div>
+												<div className="w-full">
+													{editingNote === note ? (
+														<textarea
+															aria-label="Edit Content"
+															value={editedContent}
+															onChange={(e) => setEditedContent(e.target.value)}
+															className={`${geistMono.className} w-full h-56 p-3 resize-none text-sm border rounded-xl outline-none bg-background`}
+														/>
+													) : (
+														<div
+															className="text-sm whitespace-pre-wrap mr-14"
+															dangerouslySetInnerHTML={{
+																__html: transformText(note.content),
+															}}
+														/>
+													)}
 												</div>
 											</div>
 										</div>
