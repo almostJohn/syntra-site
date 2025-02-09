@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Metadata } from "next";
+import Providers from "./providers";
 import { geist } from "~/util/fonts";
 import "../styles/globals.css";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 	icons: {
 		other: [
 			{
-				url: "/remasteredLogo.svg",
+				url: "/logo.svg",
 				sizes: "16x16",
 				type: "image/svg",
 			},
@@ -42,7 +43,7 @@ export default function RootLayout({
 			<body
 				className={`${geist.className} bg-background text-foreground antialiased`}
 			>
-				{children}
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

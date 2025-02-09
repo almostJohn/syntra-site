@@ -2,18 +2,12 @@
 
 import * as React from "react";
 import { Button } from "./ui/button";
-import {
-	NotebookIcon,
-	FileDown,
-	Save,
-	Trash,
-	Copy,
-	Check,
-	X,
-} from "lucide-react";
+import { FileDown, Save, Trash, Copy, Check, X } from "lucide-react";
 import { geistMono } from "~/util/fonts";
 import { transformText } from "~/util/transformText";
 import { KnowledgeBase } from "./knowledge-base";
+import { ModeToggle } from "./mode-toggle";
+import { Icons } from "./icons";
 
 export function Notepad() {
 	const [text, setText] = React.useState("");
@@ -262,10 +256,10 @@ export function Notepad() {
 			<div className="flex flex-col space-y-4 pt-6 pb-12">
 				<div className="grid grid-cols-1 gap-4">
 					<div className="w-full">
-						<div className="relative flex flex-col bg-background border rounded-lg shadow-2xl">
-							<div className="flex items-center w-full bg-muted border-b px-3 py-1">
+						<div className="relative flex flex-col bg-background border rounded-xl shadow-lg">
+							<div className="flex items-center w-full bg-muted border-b px-3 py-1 rounded-t-lg">
 								<div className="flex items-center space-x-2">
-									<NotebookIcon className="size-4 shrink-0 text-blue-500" />
+									<Icons.logo className="size-4 shrink-0" />
 									<input
 										type="text"
 										value={noteTitle}
@@ -274,7 +268,7 @@ export function Notepad() {
 										onFocus={() => setIsTitleFocus(true)}
 										onBlur={() => setIsTitleFocus(false)}
 										className={`text-sm leading-snug bg-transparent border-none outline-none w-full ${
-											isTitleFocus ? "caret-blue-500" : "caret-transparent"
+											isTitleFocus ? "text-foreground" : ""
 										}`}
 									/>
 								</div>
@@ -283,7 +277,7 @@ export function Notepad() {
 								<Button
 									variant="outline"
 									size="icon"
-									className="size-8 rounded-lg"
+									className="size-8 rounded-xl"
 									title="Save"
 									aria-label="Save"
 									onClick={saveNote}
@@ -293,7 +287,7 @@ export function Notepad() {
 								<Button
 									variant="outline"
 									size="icon"
-									className="size-8 rounded-lg"
+									className="size-8 rounded-xl"
 									title="Export"
 									aria-label="Export"
 									onClick={exportToTxt}
@@ -304,7 +298,7 @@ export function Notepad() {
 									variant="outline"
 									onClick={copyToClipboard}
 									size="icon"
-									className="size-8 rounded-lg"
+									className="size-8 rounded-xl"
 									title="Copy to Clipboard"
 									aria-label="Copy to Clipboard"
 								>
@@ -322,13 +316,14 @@ export function Notepad() {
 									variant="outline"
 									onClick={clearText}
 									size="icon"
-									className="size-8 rounded-lg"
+									className="size-8 rounded-xl"
 									title="Clear Text"
 									aria-label="Clear Text"
 								>
 									<Trash className="size-4 shrink-0" />
 								</Button>
 								<KnowledgeBase />
+								<ModeToggle className="size-8" align="start" />
 							</div>
 							<textarea
 								aria-label="Notepad"
@@ -401,7 +396,7 @@ export function Notepad() {
 													<Button
 														variant="ghost"
 														size="icon"
-														className="size-8 hover:bg-transparent hover:text-blue-500"
+														className="size-8 hover:bg-transparent"
 														onClick={() => copyNoteToClipboard(note.content)}
 													>
 														{copiedNote ? (

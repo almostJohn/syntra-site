@@ -11,7 +11,7 @@ export function KnowledgeBase() {
 				<Button
 					variant="outline"
 					size="icon"
-					className="size-8 rounded-lg"
+					className="size-8 rounded-xl"
 					title="Knowledge Base"
 					aria-label="Knowledge Base"
 				>
