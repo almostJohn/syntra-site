@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "./ui/button";
-import { FileDown, Save, Trash, Copy, Check, X, Edit } from "lucide-react";
+import { FileDown, Save, Trash2, Copy, Check, X, Edit } from "lucide-react";
 import { geistMono } from "~/util/fonts";
 import { transformText } from "~/util/transformText";
 import { KnowledgeBase } from "./knowledge-base";
@@ -358,7 +358,7 @@ export function Notepad() {
 									title="Clear Text"
 									aria-label="Clear Text"
 								>
-									<Trash className="size-4 shrink-0" />
+									<Trash2 className="size-4 shrink-0" />
 								</Button>
 								<KnowledgeBase />
 								<ModeToggle className="size-8" align="center" />
@@ -418,16 +418,16 @@ export function Notepad() {
 									{savedNotes.map((note, i) => (
 										<div
 											key={i}
-											className="block p-4 border bg-background rounded-xl shadow-md w-full md:w-96"
+											className="block p-4 border bg-muted/30 rounded-xl shadow-md w-full md:w-96"
 										>
-											<div className="flex flex-col space-y-4">
-												<div className="flex justify-between w-full">
+											<div className="flex flex-col space-y-3">
+												<div className="flex items-center justify-between w-full">
 													<h2 className="font-semibold">{note.title}</h2>
 													<div className="flex items-center justify-end gap-2">
 														{editingNote === note ? (
 															<>
 																<Button
-																	variant="outline"
+																	variant="ghost"
 																	size="icon"
 																	className="size-8 rounded-xl"
 																	onClick={handleSaveEdit}
@@ -437,7 +437,7 @@ export function Notepad() {
 																	<Check className="size-4 shrink-0" />
 																</Button>
 																<Button
-																	variant="outline"
+																	variant="ghost"
 																	size="sm"
 																	className="size-8 rounded-xl"
 																	onClick={handleCancelEdit}
@@ -450,7 +450,7 @@ export function Notepad() {
 														) : (
 															<>
 																<Button
-																	variant="outline"
+																	variant="ghost"
 																	size="icon"
 																	className="size-8 rounded-xl"
 																	onClick={() =>
@@ -466,7 +466,7 @@ export function Notepad() {
 																	)}
 																</Button>
 																<Button
-																	variant="outline"
+																	variant="ghost"
 																	size="icon"
 																	className="size-8 rounded-xl"
 																	onClick={() => handleEditNote(note)}
@@ -476,14 +476,14 @@ export function Notepad() {
 																	<Edit className="size-4 shrink-0" />
 																</Button>
 																<Button
-																	variant="outline"
+																	variant="ghost"
 																	size="icon"
 																	className="size-8 rounded-xl"
 																	onClick={() => deleteNote(note)}
 																	title="Delete Note"
 																	aria-label="Delete Note"
 																>
-																	<Trash className="size-4 shrink-0" />
+																	<Trash2 className="size-4 shrink-0" />
 																</Button>
 															</>
 														)}
@@ -495,7 +495,7 @@ export function Notepad() {
 															aria-label="Edit Content"
 															value={editedContent}
 															onChange={(e) => setEditedContent(e.target.value)}
-															className={`${geistMono.className} w-full h-56 p-3 resize-none text-sm border rounded-xl outline-none bg-background`}
+															className={`${geistMono.className} w-full h-60 p-3 resize-none text-sm border rounded-xl outline-none bg-muted/30`}
 														/>
 													) : (
 														<div
