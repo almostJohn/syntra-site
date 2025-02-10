@@ -420,11 +420,9 @@ export function Notepad() {
 											key={i}
 											className="block p-4 border bg-background rounded-xl shadow-md w-full md:w-96"
 										>
-											<div className="flex flex-col space-y-2">
-												<div className="flex items-center justify-between w-full">
-													<div className="flex items-center">
-														<h2 className="font-semibold">{note.title}</h2>
-													</div>
+											<div className="flex flex-col space-y-4">
+												<div className="flex justify-between w-full">
+													<h2 className="font-semibold">{note.title}</h2>
 													<div className="flex items-center justify-end gap-2">
 														{editingNote === note ? (
 															<>
