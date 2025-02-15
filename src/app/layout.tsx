@@ -1,13 +1,12 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import Providers from "./providers";
-import { geist } from "~/util/fonts";
+import { inter } from "~/util/fonts";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
 	title: {
 		template: "%s | SimplyNote",
-		default: "SimplyNote - Simple tool for everyday tasks.",
+		default: "SimplyNote - Take notes with ease.",
 	},
 	icons: {
 		other: [
@@ -41,9 +40,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${geist.className} bg-background text-foreground antialiased`}
+				className={`${inter.className} bg-neutral-100 text-neutral-900 antialiased`}
 			>
-				<Providers>{children}</Providers>
+				{children}
 			</body>
 		</html>
 	);

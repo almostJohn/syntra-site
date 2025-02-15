@@ -1,13 +1,15 @@
-export function formatDate(dateString: string) {
-	const regex = /^(\d{4})-(\d{2})-(\d{2})$/;
-
-	const match = dateString.match(regex);
-
-	if (match) {
-		const [, year, month, day] = match;
-
-		return `${month}/${day}/${year}`;
+export function formatDate(dateString: string, isClient: boolean) {
+	if (!isClient) {
+		return "";
 	}
 
-	return null;
+	const date = new Date(dateString);
+	const now = new Date();
+	const diff = now.getTime() - date.getTime();
+	const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+	if (days === 0) return "Today";
+	if (days === 1) return "Yesterday";
+	if (days < 30) return `${days} days ago`;
+	return date.toLocaleDateString();
 }

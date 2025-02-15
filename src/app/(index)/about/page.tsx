@@ -27,14 +27,14 @@ export default function AboutPage() {
 						SimplyNote is an open-source project available on{" "}
 						<Link
 							href="https://github.com/almostJohn/simplynote"
-							className="text-muted-foreground hover:underline"
+							className="text-blue-600 hover:underline"
 						>
 							GitHub
 						</Link>
 						, created by{" "}
 						<Link
 							href="https://almostjohn.vercel.app"
-							className="text-muted-foreground hover:underline"
+							className="text-blue-600 hover:underline"
 						>
 							almostJohn
 						</Link>

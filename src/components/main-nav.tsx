@@ -9,12 +9,12 @@ export function MainNav() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="hidden justify-end items-center text-sm gap-4 md:flex xl:gap-6">
+		<nav className="flex justify-end items-center text-sm gap-3 xl:gap-6">
 			<Link
 				href="/"
 				className={cn(
-					"transition-colors hover:text-foreground/80",
-					pathname === "/" ? "text-foreground" : "hover:text-foreground/60",
+					"transition-colors hover:text-blue-600",
+					pathname === "/" ? "text-blue-500" : "hover:text-blue-600",
 				)}
 			>
 				Home
@@ -22,10 +22,8 @@ export function MainNav() {
 			<Link
 				href="/about"
 				className={cn(
-					"transition-colors hover:text-foreground/80",
-					pathname === "/about"
-						? "text-foreground"
-						: "hover:text-foreground/60",
+					"transition-colors hover:text-blue-600",
+					pathname === "/about" ? "text-blue-500" : "hover:text-blue-600",
 				)}
 			>
 				About
@@ -33,10 +31,8 @@ export function MainNav() {
 			<Link
 				href="/notepad"
 				className={cn(
-					"transition-colors hover:text-foreground/80",
-					pathname === "/notepad"
-						? "text-foreground"
-						: "hover:text-foreground/60",
+					"transition-colors hover:text-blue-600",
+					pathname === "/notepad" ? "text-blue-500" : "hover:text-blue-600",
 				)}
 			>
 				Notepad

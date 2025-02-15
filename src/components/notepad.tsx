@@ -1,191 +1,119 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "./ui/button";
-import { FileDown, Save, Trash2, Copy, Check, X, Edit } from "lucide-react";
-import { geistMono } from "~/util/fonts";
-import { transformText } from "~/util/transformText";
-import { KnowledgeBase } from "./knowledge-base";
-import { ModeToggle } from "./mode-toggle";
+import Link from "next/link";
+import { nanoid } from "nanoid";
+import { Check, Copy, X, Trash2, Plus, Loader2, AlignLeft } from "lucide-react";
 import { Icons } from "./icons";
+import { LOCAL_STORAGE_KEY } from "~/util/constants";
+import { formatDate } from "~/util/formatDate";
+import { getWordCount } from "~/util/getWordCount";
+import { Button } from "./ui/button";
+import { geistMono } from "~/util/fonts";
+
+type Note = {
+	id: string;
+	title: string;
+	content: string;
+	createdAt: string;
+	lastModified: string;
+};
 
 export function Notepad() {
-	const [text, setText] = React.useState("");
-	const [noteTitle, setNoteTitle] = React.useState("");
-	const [savedNotes, setSavedNotes] = React.useState<
-		Array<{ title: string; content: string }>
-	>([]);
-	const [editingNote, setEditingNote] = React.useState<{
-		title: string;
-		content: string;
-	} | null>(null);
-	const [editedContent, setEditedContent] = React.useState("");
-	const [suggestions, setSuggestions] = React.useState<string[]>([]);
-	const [selectedSuggestion, setSelectedSuggestion] = React.useState(-1);
-	const [wordSet, setWordSet] = React.useState<Set<string>>(new Set());
+	const [notes, setNotes] = React.useState<Note[]>([]);
+	const [activeNote, setActiveNote] = React.useState<Note | null>(null);
 	const [interacted, setInteracted] = React.useState(false);
-	const [copiedNoteId, setCopiedNoteId] = React.useState<number | null>(null);
-	const [colCount, setColCount] = React.useState(1);
-	const [rowCount, setRowCount] = React.useState(1);
-	const [charCount, setCharCount] = React.useState(0);
+	const [searchQuery, setSearchQuery] = React.useState("");
 	const [error, setError] = React.useState<string | null>(null);
-	const [isTitleFocus, setIsTitleFocus] = React.useState(false);
-	const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-	const suggestionsRef = React.useRef<HTMLUListElement>(null);
+	const [isClient, setIsClient] = React.useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
 	React.useEffect(() => {
-		const loadWords = async () => {
+		setIsClient(true);
+
+		const savedNotes = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+		if (savedNotes) {
 			try {
-				const words = await import("an-array-of-english-words");
-				setWordSet(new Set(words.default));
+				const parsedNotes = JSON.parse(savedNotes);
+				setNotes(parsedNotes);
 			} catch (error_) {
 				const error = error_ as Error;
 				console.error(error, error.message);
-				setWordSet(
-					new Set([
-						"the",
-						"be",
-						"to",
-						"of",
-						"and",
-						"in",
-						"that",
-						"have",
-						"it",
-						"for",
-					]),
-				);
+				setError("Failed to load notes. Please try again.");
 			}
+		}
+	}, []);
+
+	React.useEffect(() => {
+		if (isClient && notes.length > 0) {
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
+		}
+	}, [isClient, notes]);
+
+	function createNote() {
+		const newNote: Note = {
+			id: nanoid(),
+			title: "Untitled",
+			content: "",
+			createdAt: new Date().toISOString(),
+			lastModified: new Date().toISOString(),
 		};
-		loadWords();
-	}, []);
 
-	React.useEffect(() => {
-		const savedText = localStorage.getItem("notepadText");
-		if (savedText) {
-			setText(savedText);
-		}
-	}, []);
-
-	React.useEffect(() => {
-		const storedNotes = localStorage.getItem("storedNotes");
-		if (storedNotes) {
-			setSavedNotes(JSON.parse(storedNotes));
-		}
-	}, []);
-
-	React.useEffect(() => {
-		localStorage.setItem("storedNotes", JSON.stringify(savedNotes));
-	}, [savedNotes]);
-
-	React.useEffect(() => {
-		localStorage.setItem("notepadText", text);
-	}, [text]);
-
-	React.useEffect(() => {
-		if (textareaRef.current) {
-			textareaRef.current.setSelectionRange(text.length, text.length);
-		}
-	}, [text]);
-
-	React.useEffect(() => {
-		setCharCount(text.length);
-		setRowCount(text.split("\n").length);
-		setColCount(text.split(/\s+/).filter((word) => word.length > 0).length);
-	}, [text]);
-
-	function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-		const newText = e.target.value;
-		const cursorPosition = e.target.selectionStart;
-		setText(newText);
-
-		const wordBeforeCursor =
-			newText.slice(0, cursorPosition).split(/\s+/).pop() || "";
-
-		if (wordBeforeCursor.length > 1) {
-			const suggestions = Array.from(wordSet)
-				.filter((word) =>
-					word.toLowerCase().startsWith(wordBeforeCursor.toLowerCase()),
-				)
-				.slice(0, 5);
-			setSuggestions(suggestions);
-			setSelectedSuggestion(-1);
-		} else {
-			setSuggestions([]);
-		}
-
-		setTimeout(() => {
-			if (textareaRef.current) {
-				textareaRef.current.selectionStart = cursorPosition;
-				textareaRef.current.selectionEnd = cursorPosition;
-			}
-		}, 0);
+		setNotes([newNote, ...notes]);
+		setActiveNote(newNote);
 	}
 
-	function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-		if (suggestions.length === 0) return;
+	function updateNoteContent(content: string) {
+		if (!activeNote) {
+			return;
+		}
 
-		if (e.key === "ArrowDown") {
-			e.preventDefault();
-			setSelectedSuggestion((prev) => (prev + 1) % suggestions.length);
-			scrollToSelectedSuggestion();
-		} else if (e.key === "ArrowUp") {
-			e.preventDefault();
-			setSelectedSuggestion(
-				(prev) => (prev - 1 + suggestions.length) % suggestions.length,
+		const updatedContent = {
+			...activeNote,
+			content,
+			lastModified: new Date().toISOString(),
+		};
+
+		setActiveNote(updatedContent);
+		setNotes(
+			notes.map((note) => (note.id === activeNote.id ? updatedContent : note)),
+		);
+	}
+
+	function updateNoteTitle(title: string) {
+		if (!activeNote) {
+			return;
+		}
+
+		const updatedTitle = {
+			...activeNote,
+			title,
+			lastModified: new Date().toISOString(),
+		};
+
+		setActiveNote(updatedTitle);
+		setNotes(
+			notes.map((note) => (note.id === activeNote.id ? updatedTitle : note)),
+		);
+	}
+
+	function deleteNote(id: string) {
+		setNotes(notes.filter((note) => note.id !== id));
+		if (activeNote?.id === id) {
+			setActiveNote(
+				notes.length > 1 ? notes.find((n) => n.id !== id) || null : null,
 			);
-			scrollToSelectedSuggestion();
-		} else if (e.key === "Enter" && selectedSuggestion > -1) {
-			e.preventDefault();
-			applySuggestion(suggestions[selectedSuggestion]);
-		} else if (e.key === "Tab" && suggestions.length > 0) {
-			e.preventDefault();
-			applySuggestion(
-				suggestions[selectedSuggestion === -1 ? 0 : selectedSuggestion],
-			);
-		} else if (e.key === "Escape") {
-			setSuggestions([]);
-			setSelectedSuggestion(-1);
 		}
 	}
 
-	function scrollToSelectedSuggestion() {
-		if (suggestionsRef.current && selectedSuggestion !== -1) {
-			const selectedElement = suggestionsRef.current.children[
-				selectedSuggestion
-			] as HTMLElement;
-			if (selectedElement) {
-				selectedElement.scrollIntoView({ block: "nearest" });
-			}
+	function copyNoteToClipboard(content: string) {
+		if (!content) {
+			setError("You cannot copy an empty string. Please try again.");
+			return;
 		}
-	}
 
-	function applySuggestion(suggestion: string) {
-		if (textareaRef.current) {
-			const cursorPosition = textareaRef.current.selectionStart;
-			const textBeforeCursor = text.slice(0, cursorPosition);
-			const textAfterCursor = text.slice(cursorPosition);
-			const lastWordBeforeCursor = textBeforeCursor.split(/\s+/).pop() || "";
-			const newTextBeforeCursor =
-				textBeforeCursor.slice(0, -lastWordBeforeCursor.length) + suggestion;
-			const newText = newTextBeforeCursor + " " + textAfterCursor.trimStart();
-
-			setText(newText);
-
-			const newCursorPosition = newTextBeforeCursor.length + 1;
-			setTimeout(() => {
-				if (textareaRef.current) {
-					textareaRef.current.selectionStart = newCursorPosition;
-					textareaRef.current.selectionEnd = newCursorPosition;
-					textareaRef.current.focus();
-				}
-			}, 0);
-		}
-		setSuggestions([]);
-	}
-
-	function copyToClipboard() {
-		navigator.clipboard.writeText(text).then(() => {
+		navigator.clipboard.writeText(content).then(() => {
 			setInteracted(true);
 
 			setTimeout(() => {
@@ -194,326 +122,155 @@ export function Notepad() {
 		});
 	}
 
-	function saveNote() {
-		if (!text) {
-			setError("Please provide at least a text!");
-			return;
-		}
-
-		const newNote = { title: noteTitle || "Untitled", content: text };
-		setSavedNotes([...savedNotes, newNote]);
-		setText("");
-		setNoteTitle("");
-		setError(null);
-		localStorage.setItem(
-			"storedNotes",
-			JSON.stringify([...savedNotes, newNote]),
-		);
-	}
-
-	function deleteNote(noteToDelete: { title: string; content: string }) {
-		const updatedNotes = savedNotes.filter(
-			(note) =>
-				note.title !== noteToDelete.title ||
-				note.content !== noteToDelete.content,
-		);
-		setSavedNotes(updatedNotes);
-		localStorage.setItem("storedNotes", JSON.stringify(updatedNotes));
-	}
-
-	function updateNote(
-		oldNote: { title: string; content: string },
-		newContent: string,
-	) {
-		const updatedNotes = savedNotes.map((n) =>
-			n.title === oldNote.title && n.content === oldNote.content
-				? {
-						...n,
-						content: newContent,
-				  }
-				: n,
-		);
-		setSavedNotes(updatedNotes);
-		localStorage.setItem("storedNotes", JSON.stringify(updatedNotes));
-	}
-
-	function handleEditNote(note: { title: string; content: string }) {
-		setEditingNote(note);
-		setEditedContent(note.content);
-	}
-
-	function handleSaveEdit() {
-		if (editingNote) {
-			updateNote(editingNote, editedContent);
-			setEditingNote(null);
-		}
-	}
-
-	function handleCancelEdit() {
-		setEditingNote(null);
-		setEditedContent("");
-	}
-
-	function clearText() {
-		setText("");
-		localStorage.removeItem("notepadText");
-	}
-
-	function exportToTxt() {
-		const element = document.createElement("a");
-		const file = new Blob([text], { type: "text/plain" });
-		element.href = URL.createObjectURL(file);
-		element.download = `${
-			noteTitle || "Untitled"
-		}-${new Date().toISOString()}.txt`;
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
-	}
-
-	function copyNoteToClipboard(note: string, noteId: number) {
-		navigator.clipboard.writeText(note).then(() => {
-			setCopiedNoteId(noteId);
-
-			setTimeout(() => {
-				setCopiedNoteId(null);
-			}, 2_000);
-		});
-	}
-
-	function handleSuggestionClick(suggestion: string) {
-		applySuggestion(suggestion);
-	}
-
-	function handleSuggestionMouseEnter(index: number) {
-		setSelectedSuggestion(index);
-	}
+	const filteredNotes = notes.filter(
+		(n) =>
+			n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			n.content.toLowerCase().includes(searchQuery.toLowerCase()),
+	);
 
 	return (
-		<div className="container max-w-screen-2xl">
-			<div className="flex flex-col space-y-4 pt-6 pb-12">
-				<div className="grid grid-cols-1 gap-4">
-					<div className="w-full">
-						<div className="relative flex flex-col bg-background border rounded-xl shadow-lg">
-							<div className="flex items-center w-full bg-muted border-b px-3 py-1 rounded-t-lg">
-								<div className="flex items-center space-x-2">
-									<Icons.logo className="size-4 shrink-0" />
-									<input
-										type="text"
-										value={noteTitle}
-										onChange={(e) => setNoteTitle(e.target.value)}
-										placeholder="Untitled"
-										onFocus={() => setIsTitleFocus(true)}
-										onBlur={() => setIsTitleFocus(false)}
-										className={`text-sm leading-snug bg-transparent border-none outline-none w-full ${
-											isTitleFocus ? "text-foreground" : ""
-										}`}
-									/>
-								</div>
-							</div>
-							<div className="flex items-center gap-2 w-full bg-muted/20 border-b p-2">
-								<Button
-									variant="outline"
-									size="icon"
-									className="size-8 rounded-xl"
-									title="Save"
-									aria-label="Save"
-									onClick={saveNote}
-								>
-									<Save className="size-4 shrink-0" />
-								</Button>
-								<Button
-									variant="outline"
-									size="icon"
-									className="size-8 rounded-xl"
-									title="Export"
-									aria-label="Export"
-									onClick={exportToTxt}
-								>
-									<FileDown className="size-4 shrink-0" />
-								</Button>
-								<Button
-									variant="outline"
-									onClick={copyToClipboard}
-									size="icon"
-									className="size-8 rounded-xl"
-									title="Copy to Clipboard"
-									aria-label="Copy to Clipboard"
-								>
-									{interacted ? (
-										<>
-											<Check className="size-4 shrink-0" />
-										</>
-									) : (
-										<>
-											<Copy className="size-4 shrink-0" />
-										</>
-									)}
-								</Button>
-								<Button
-									variant="outline"
-									onClick={clearText}
-									size="icon"
-									className="size-8 rounded-xl"
-									title="Clear Text"
-									aria-label="Clear Text"
-								>
-									<Trash2 className="size-4 shrink-0" />
-								</Button>
-								<KnowledgeBase />
-								<ModeToggle className="size-8" align="center" />
-							</div>
-							<textarea
-								aria-label="Notepad"
-								ref={textareaRef}
-								value={text}
-								onChange={handleChange}
-								onKeyDown={handleKeyDown}
-								className={`${geistMono.className} resize-none h-96 rounded-none bg-background text-sm p-3 w-full focus:outline-none focus:ring-0`}
-								spellCheck={true}
-								rows={5}
-							/>
-							{suggestions.length > 0 && (
-								<ul
-									ref={suggestionsRef}
-									className="absolute  z-10 w-full mt-4 bottom-0 flex flex-col bg-background border shadow-lg overflow-auto rounded-b-lg"
-								>
-									{suggestions.map((suggestion, i) => (
-										<li
-											key={suggestion}
-											className="inline-flex items-center px-2 py-0.5 cursor-pointer w-full text-sm font-medium transition hover:bg-muted"
-											onClick={() => handleSuggestionClick(suggestion)}
-											onMouseEnter={() => handleSuggestionMouseEnter(i)}
-										>
-											{suggestion}
-										</li>
-									))}
-								</ul>
-							)}
-							<div className="flex items-center justify-between px-3 py-1 bg-muted border shadow rounded-b-lg">
-								<div className="flex items-center gap-3">
-									<span className="text-sm">col {colCount}</span>
-									<span className="text-sm">row {rowCount}</span>
-								</div>
-								<div className="flex items-center gap-3 justify-end">
-									<span className="text-sm">{charCount} characters</span>
-									<span className="text-sm">EN-US</span>
-									<span className="text-sm">UTF-8</span>
-								</div>
-							</div>
+		<div className="h-screen flex flex-col">
+			<div className="bg-neutral-900 text-neutral-100 flex items-center gap-2 px-4 py-3">
+				<Button
+					variant="ghost"
+					size="icon"
+					className="hover:bg-transparent hover:text-white"
+					onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+				>
+					<AlignLeft className="size-5" />
+				</Button>
+				<Link href="/" className="flex items-center space-x-2">
+					<Icons.logo />
+					<h1 className="font-bold">SimplyNote</h1>
+				</Link>
+			</div>
+
+			{error && (
+				<div className="bg-red-600 text-white block px-3 py-1" role="alert">
+					<div className="flex items-center justify-between w-full">
+						<div className="flex items-center">
+							<p className="text-sm">{error}</p>
+						</div>
+						<div className="flex items-center">
+							<Button
+								size="icon"
+								variant="ghost"
+								className="hover:bg-transparent hover:text-white"
+								onClick={() => setError(null)}
+							>
+								<X />
+							</Button>
 						</div>
 					</div>
-					<div className="w-full">
-						{error && (
-							<div className="mt-3">
-								<p className="text-sm text-red-600">{error}</p>
-							</div>
-						)}
-						{savedNotes.length > 0 && (
-							<div className="mt-5 flex flex-col space-y-4">
-								<h1 className="text-lg font-medium leading-snug">
-									Saved Notes
-								</h1>
-								<div className="flex flex-row flex-wrap gap-4">
-									{savedNotes.map((note, i) => (
-										<div
-											key={i}
-											className="block p-4 border bg-muted/30 rounded-xl shadow-md w-full md:w-96"
+				</div>
+			)}
+
+			<div className="flex flex-1 overflow-hidden">
+				<aside
+					className={`border-r border-neutral-300 flex flex-col transition-all duration-300 ${
+						isSidebarOpen ? "w-80" : "w-0 overflow-hidden"
+					}`}
+				>
+					<div className="p-4">
+						<div className="flex flex-col space-y-2">
+							<Button
+								className="bg-blue-600 text-white rounded-none transition hover:bg-blue-700 w-full"
+								onClick={createNote}
+							>
+								<Plus className="h-5 w-5" /> Create
+							</Button>
+							<input
+								value={searchQuery}
+								placeholder="Search note..."
+								className="p-2 rounded-none h-10 text-sm border border-neutral-300 bg-transparent transition hover:border-blue-600 focus:border-blue-600 ring-0 outline-none"
+								onChange={(e) => setSearchQuery(e.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="flex-1 overflow-y-auto">
+						{isClient &&
+							filteredNotes.map((note) => (
+								<div
+									key={note.id}
+									className={`cursor-pointer block p-4 transition hover:bg-neutral-200 ${
+										activeNote?.id === note.id ? "bg-neutral-200" : ""
+									}`}
+									onClick={() => setActiveNote(note)}
+								>
+									<div className="flex flex-col space-y-0.5">
+										<h3 className="font-medium">{note.title}</h3>
+										<p className="text-sm text-neutral-500 truncate">
+											{note.content || "Blank"}
+										</p>
+										<p className="text-sm text-neutral-500">
+											{formatDate(note.lastModified, isClient)}
+										</p>
+									</div>
+								</div>
+							))}
+					</div>
+				</aside>
+
+				<main className="flex-1 overflow-hidden flex flex-col">
+					{isClient && activeNote ? (
+						<>
+							<div className="relative h-[calc(100%-2.5rem)]">
+								<div className="flex items-center justify-between w-full border-b border-neutral-300 px-4 py-2">
+									<input
+										type="text"
+										value={activeNote.title}
+										onChange={(e) => updateNoteTitle(e.target.value)}
+										className="text-lg font-semibold bg-transparent border-none outline-none ring-0"
+									/>
+									<div className="flex gap-2">
+										<Button
+											title="Copy to Clipboard"
+											size="icon"
+											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
+											onClick={() => copyNoteToClipboard(activeNote.content)}
 										>
-											<div className="flex flex-col space-y-3">
-												<div className="flex items-center justify-between w-full">
-													<h2 className="font-semibold">{note.title}</h2>
-													<div className="flex items-center justify-end gap-2">
-														{editingNote === note ? (
-															<>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="size-8 rounded-xl"
-																	onClick={handleSaveEdit}
-																	title="Save Edit"
-																	aria-label="Save Edit"
-																>
-																	<Check className="size-4 shrink-0" />
-																</Button>
-																<Button
-																	variant="ghost"
-																	size="sm"
-																	className="size-8 rounded-xl"
-																	onClick={handleCancelEdit}
-																	title="Cancel Edit"
-																	aria-label="Cancel Edit"
-																>
-																	<X className="size-4 shrink-0" />
-																</Button>
-															</>
-														) : (
-															<>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="size-8 rounded-xl"
-																	onClick={() =>
-																		copyNoteToClipboard(note.content, i)
-																	}
-																	title="Copy to Clipboard"
-																	aria-label="Copy to Clipboard"
-																>
-																	{copiedNoteId === i ? (
-																		<Check className="size-4 shrink-0" />
-																	) : (
-																		<Copy className="size-4 shrink-0" />
-																	)}
-																</Button>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="size-8 rounded-xl"
-																	onClick={() => handleEditNote(note)}
-																	title="Edit Note"
-																	aria-label="Edit Note"
-																>
-																	<Edit className="size-4 shrink-0" />
-																</Button>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="size-8 rounded-xl"
-																	onClick={() => deleteNote(note)}
-																	title="Delete Note"
-																	aria-label="Delete Note"
-																>
-																	<Trash2 className="size-4 shrink-0" />
-																</Button>
-															</>
-														)}
-													</div>
-												</div>
-												<div className="w-full">
-													{editingNote === note ? (
-														<textarea
-															aria-label="Edit Content"
-															value={editedContent}
-															onChange={(e) => setEditedContent(e.target.value)}
-															className={`${geistMono.className} w-full h-60 p-3 resize-none text-sm border rounded-xl outline-none bg-muted/30`}
-														/>
-													) : (
-														<div
-															className="text-sm whitespace-pre-wrap mr-14"
-															dangerouslySetInnerHTML={{
-																__html: transformText(note.content),
-															}}
-														/>
-													)}
-												</div>
-											</div>
-										</div>
-									))}
+											{interacted ? (
+												<Check className="size-4" />
+											) : (
+												<Copy className="size-4" />
+											)}
+										</Button>
+										<Button
+											title="Delete Note"
+											size="icon"
+											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
+											onClick={() => deleteNote(activeNote.id)}
+										>
+											<Trash2 className="size-4" />
+										</Button>
+									</div>
+								</div>
+								<textarea
+									title="Notepad"
+									aria-label="Notepad"
+									className={`${geistMono.className} h-[calc(100%-2rem)] bg-transparent w-full resize-none border-none outline-none p-4 rounded-none`}
+									spellCheck={true}
+									value={activeNote.content}
+									onChange={(e) => updateNoteContent(e.target.value)}
+								/>
+								<div className="absolute bottom-0 right-4 p-2 text-sm text-neutral-500">
+									Words: {getWordCount(activeNote.content)}
 								</div>
 							</div>
-						)}
-					</div>
-				</div>
+						</>
+					) : (
+						<div className="flex h-full items-center justify-center text-neutral-500">
+							{isClient ? (
+								"Select a note or create a new one to get started"
+							) : (
+								<>
+									<Loader2 className="size-10 animate-spin text-muted-foreground mr-2" />{" "}
+									Loading...
+								</>
+							)}
+						</div>
+					)}
+				</main>
 			</div>
 		</div>
 	);
