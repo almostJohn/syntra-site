@@ -263,7 +263,7 @@ export function Notepad() {
 												{formatDate(note.lastModified, isClient)}
 											</p>
 										</div>
-										<div className="flex justify-end">
+										<div className="flex justify-end gap-2">
 											<Button
 												title="Export"
 												size="icon"
@@ -271,6 +271,14 @@ export function Notepad() {
 												onClick={() => exportNote(note)}
 											>
 												<Download className="size-4" />
+											</Button>
+											<Button
+												title="Delete"
+												size="icon"
+												className="rounded-none bg-red-600 text-white transition hover:bg-red-700"
+												onClick={() => deleteNote(activeNote!.id)}
+											>
+												<Trash2 className="size-4" />
 											</Button>
 										</div>
 									</div>
@@ -310,14 +318,6 @@ export function Notepad() {
 											onClick={clearNoteContent}
 										>
 											<X className="size-4" />
-										</Button>
-										<Button
-											title="Delete Note"
-											size="icon"
-											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
-											onClick={() => deleteNote(activeNote.id)}
-										>
-											<Trash2 className="size-4" />
 										</Button>
 									</div>
 								</div>
