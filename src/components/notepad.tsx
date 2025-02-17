@@ -3,13 +3,23 @@
 import * as React from "react";
 import Link from "next/link";
 import { nanoid } from "nanoid";
-import { Check, Copy, X, Trash2, Plus, Loader2, AlignLeft } from "lucide-react";
+import {
+	Check,
+	Copy,
+	X,
+	Trash2,
+	Plus,
+	Loader2,
+	AlignLeft,
+	Download,
+} from "lucide-react";
 import { Icons } from "./icons";
 import { LOCAL_STORAGE_KEY } from "~/util/constants";
 import { formatDate } from "~/util/formatDate";
 import { getWordCount } from "~/util/getWordCount";
 import { Button } from "./ui/button";
 import { geistMono } from "~/util/fonts";
+import { useMediaQuery } from "~/hooks/use-media-query";
 
 type Note = {
 	id: string;
@@ -27,6 +37,7 @@ export function Notepad() {
 	const [error, setError] = React.useState<string | null>(null);
 	const [isClient, setIsClient] = React.useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+	const isMobile = useMediaQuery("(max-width: 767px)");
 
 	React.useEffect(() => {
 		setIsClient(true);
@@ -98,12 +109,52 @@ export function Notepad() {
 		);
 	}
 
+	function clearNoteContent() {
+		if (!activeNote) {
+			return;
+		}
+
+		if (!activeNote.content) {
+			setError("You cannot clear an empty string. Please try again.");
+			return;
+		}
+
+		const clearedNote = {
+			...activeNote,
+			content: "",
+			lastModified: new Date().toISOString(),
+		};
+
+		setActiveNote(clearedNote);
+		setNotes(
+			notes.map((note) => (note.id === activeNote.id ? clearedNote : note)),
+		);
+		setError(null);
+	}
+
 	function deleteNote(id: string) {
 		setNotes(notes.filter((note) => note.id !== id));
 		if (activeNote?.id === id) {
 			setActiveNote(
 				notes.length > 1 ? notes.find((n) => n.id !== id) || null : null,
 			);
+		}
+	}
+
+	function exportNote(note: Note) {
+		const element = document.createElement("a");
+		const file = new Blob([note.content], { type: "text/plain" });
+		element.href = URL.createObjectURL(file);
+		element.download = `${note.title}-${new Date().toISOString()}.txt`;
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
+
+	function setActiveNoteAndCloseSidebar(note: Note) {
+		setActiveNote(note);
+		if (isMobile) {
+			setIsSidebarOpen(false);
 		}
 	}
 
@@ -115,6 +166,7 @@ export function Notepad() {
 
 		navigator.clipboard.writeText(content).then(() => {
 			setInteracted(true);
+			setError(null);
 
 			setTimeout(() => {
 				setInteracted(false);
@@ -130,7 +182,7 @@ export function Notepad() {
 
 	return (
 		<div className="h-screen flex flex-col">
-			<div className="bg-neutral-900 text-neutral-100 flex items-center gap-2 px-4 py-3">
+			<div className="bg-neutral-900 text-neutral-100 flex items-center gap-2 h-14 px-4">
 				<Button
 					variant="ghost"
 					size="icon"
@@ -146,10 +198,10 @@ export function Notepad() {
 			</div>
 
 			{error && (
-				<div className="bg-red-600 text-white block px-3 py-1" role="alert">
+				<div className="bg-red-600 text-white block px-3 py-0.5" role="alert">
 					<div className="flex items-center justify-between w-full">
 						<div className="flex items-center">
-							<p className="text-sm">{error}</p>
+							<p className="text-xs font-medium">{error}</p>
 						</div>
 						<div className="flex items-center">
 							<Button
@@ -168,7 +220,11 @@ export function Notepad() {
 			<div className="flex flex-1 overflow-hidden">
 				<aside
 					className={`border-r border-neutral-300 flex flex-col transition-all duration-300 ${
-						isSidebarOpen ? "w-80" : "w-0 overflow-hidden"
+						isSidebarOpen
+							? isMobile
+								? "w-full"
+								: "w-80"
+							: "w-0 overflow-hidden"
 					}`}
 				>
 					<div className="p-4">
@@ -177,7 +233,7 @@ export function Notepad() {
 								className="bg-blue-600 text-white rounded-none transition hover:bg-blue-700 w-full"
 								onClick={createNote}
 							>
-								<Plus className="h-5 w-5" /> Create
+								<Plus className="h-5 w-5" /> Create Note
 							</Button>
 							<input
 								value={searchQuery}
@@ -195,16 +251,28 @@ export function Notepad() {
 									className={`cursor-pointer block p-4 transition hover:bg-neutral-200 ${
 										activeNote?.id === note.id ? "bg-neutral-200" : ""
 									}`}
-									onClick={() => setActiveNote(note)}
+									onClick={() => setActiveNoteAndCloseSidebar(note)}
 								>
-									<div className="flex flex-col space-y-0.5">
-										<h3 className="font-medium">{note.title}</h3>
-										<p className="text-sm text-neutral-500 truncate">
-											{note.content || "Blank"}
-										</p>
-										<p className="text-sm text-neutral-500">
-											{formatDate(note.lastModified, isClient)}
-										</p>
+									<div className="flex justify-between w-full">
+										<div className="flex flex-col space-y-0.5">
+											<h3 className="font-medium">{note.title}</h3>
+											<p className="text-sm text-neutral-500 whitespace-pre-wrap truncate">
+												{note.content || "Blank"}
+											</p>
+											<p className="text-sm text-neutral-500">
+												{formatDate(note.lastModified, isClient)}
+											</p>
+										</div>
+										<div className="flex justify-end">
+											<Button
+												title="Export"
+												size="icon"
+												className="rounded-none bg-blue-600 text-white transition hover:bg-blue-700"
+												onClick={() => exportNote(note)}
+											>
+												<Download className="size-4" />
+											</Button>
+										</div>
 									</div>
 								</div>
 							))}
@@ -236,6 +304,14 @@ export function Notepad() {
 											)}
 										</Button>
 										<Button
+											title="Clear Text"
+											size="icon"
+											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
+											onClick={clearNoteContent}
+										>
+											<X className="size-4" />
+										</Button>
+										<Button
 											title="Delete Note"
 											size="icon"
 											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
@@ -259,7 +335,7 @@ export function Notepad() {
 							</div>
 						</>
 					) : (
-						<div className="flex h-full items-center justify-center text-neutral-500">
+						<div className="flex h-full items-center justify-center text-neutral-500 ml-4 md:ml-0">
 							{isClient ? (
 								"Select a note or create a new one to get started"
 							) : (

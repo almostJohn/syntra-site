@@ -35,7 +35,7 @@ export default function IndexPage() {
 					src="/hero-image.png"
 					width={800}
 					height={400}
-					alt=""
+					alt="hero-image"
 					priority
 					className="rounded-lg shadow-2xl"
 				/>
