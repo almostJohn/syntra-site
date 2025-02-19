@@ -12,6 +12,7 @@ import {
 	Loader2,
 	AlignLeft,
 	Download,
+	Search,
 } from "lucide-react";
 import { Icons } from "./icons";
 import { LOCAL_STORAGE_KEY } from "~/util/constants";
@@ -223,67 +224,74 @@ export function Notepad() {
 						isSidebarOpen
 							? isMobile
 								? "w-full"
-								: "w-80"
+								: "w-96"
 							: "w-0 overflow-hidden"
 					}`}
 				>
 					<div className="p-4">
 						<div className="flex flex-col space-y-2">
 							<Button
-								className="bg-blue-600 text-white rounded-none transition hover:bg-blue-700 w-full"
+								className="bg-blue-600 text-white rounded-md transition hover:bg-blue-700 w-full"
 								onClick={createNote}
 							>
 								<Plus className="h-5 w-5" /> Create Note
 							</Button>
-							<input
-								value={searchQuery}
-								placeholder="Search note..."
-								className="p-2 rounded-none h-10 text-sm border border-neutral-300 bg-transparent transition hover:border-blue-600 focus:border-blue-600 ring-0 outline-none"
-								onChange={(e) => setSearchQuery(e.target.value)}
-							/>
+							<div className="relative">
+								<input
+									value={searchQuery}
+									placeholder="Search note..."
+									className="peer pl-10 p-2 rounded-md h-10 text-sm border border-neutral-300 bg-transparent transition hover:border-blue-600 focus:border-blue-600 ring-0 outline-none w-full"
+									onChange={(e) => setSearchQuery(e.target.value)}
+								/>
+								<Search className="size-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500 peer-hover:text-blue-600 peer-focus:text-blue-600" />
+							</div>
 						</div>
 					</div>
-					<div className="flex-1 overflow-y-auto">
-						{isClient &&
-							filteredNotes.map((note) => (
-								<div
-									key={note.id}
-									className={`cursor-pointer block p-4 transition hover:bg-neutral-200 ${
-										activeNote?.id === note.id ? "bg-neutral-200" : ""
-									}`}
-									onClick={() => setActiveNoteAndCloseSidebar(note)}
-								>
-									<div className="flex justify-between w-full">
-										<div className="flex flex-col space-y-0.5">
-											<h3 className="font-medium">{note.title}</h3>
-											<p className="text-sm text-neutral-500 whitespace-pre-wrap truncate">
-												{note.content || "Blank"}
-											</p>
-											<p className="text-sm text-neutral-500">
-												{formatDate(note.lastModified, isClient)}
-											</p>
-										</div>
-										<div className="flex justify-end gap-2">
-											<Button
-												title="Export"
-												size="icon"
-												className="rounded-none bg-blue-600 text-white transition hover:bg-blue-700"
-												onClick={() => exportNote(note)}
-											>
-												<Download className="size-4" />
-											</Button>
-											<Button
-												title="Delete"
-												size="icon"
-												className="rounded-none bg-red-600 text-white transition hover:bg-red-700"
-												onClick={() => deleteNote(activeNote!.id)}
-											>
-												<Trash2 className="size-4" />
-											</Button>
+					<div className="flex-1 overflow-y-auto p-4">
+						<div className="flex flex-col space-y-4">
+							{isClient &&
+								filteredNotes.map((note) => (
+									<div
+										key={note.id}
+										className={`cursor-pointer block p-4 transition rounded-md hover:bg-neutral-200 ${
+											activeNote?.id === note.id ? "bg-neutral-200" : ""
+										}`}
+										onClick={() => setActiveNoteAndCloseSidebar(note)}
+									>
+										<div className="flex w-full justify-between">
+											<div className="flex flex-col space-y-1.5 mr-5">
+												<h3 className="font-medium">{note.title}</h3>
+												<p className="text-sm text-neutral-500 whitespace-pre-wrap truncate">
+													{note.content || "Blank"}
+												</p>
+												<p className="text-sm text-neutral-500">
+													{formatDate(note.lastModified, isClient)}
+												</p>
+											</div>
+											<div className="flex justify-end">
+												<Button
+													title="Export"
+													size="icon"
+													variant="ghost"
+													className="hover:bg-transparent hover:text-blue-600"
+													onClick={() => exportNote(activeNote!)}
+												>
+													<Download />
+												</Button>
+												<Button
+													title="Delete"
+													variant="ghost"
+													size="icon"
+													className="hover:bg-transparent hover:text-red-600"
+													onClick={() => deleteNote(activeNote!.id)}
+												>
+													<Trash2 className="size-4" />
+												</Button>
+											</div>
 										</div>
 									</div>
-								</div>
-							))}
+								))}
+						</div>
 					</div>
 				</aside>
 
@@ -302,22 +310,24 @@ export function Notepad() {
 										<Button
 											title="Copy to Clipboard"
 											size="icon"
-											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
+											variant="outline"
+											className="bg-transparent text-neutral-900 rounded-md transition hover:bg-neutral-200"
 											onClick={() => copyNoteToClipboard(activeNote.content)}
 										>
 											{interacted ? (
-												<Check className="size-4" />
+												<Check className="size-3.5" />
 											) : (
-												<Copy className="size-4" />
+												<Copy className="size-3.5" />
 											)}
 										</Button>
 										<Button
 											title="Clear Text"
 											size="icon"
-											className="bg-transparent text-neutral-900 rounded-none transition hover:bg-neutral-200"
+											variant="outline"
+											className="bg-transparent text-neutral-900 rounded-md transition hover:bg-neutral-200"
 											onClick={clearNoteContent}
 										>
-											<X className="size-4" />
+											<X className="size-3.5" />
 										</Button>
 									</div>
 								</div>
