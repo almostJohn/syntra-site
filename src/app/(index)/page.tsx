@@ -23,7 +23,7 @@ export default function IndexPage() {
 				<PageHeaderActions>
 					<Button
 						size="lg"
-						className="rounded-none bg-blue-600 text-white transition hover:bg-blue-700"
+						className="rounded-md bg-blue-600 text-white transition hover:bg-blue-700"
 						asChild
 					>
 						<Link href="/notepad">Start Using Notepad</Link>
