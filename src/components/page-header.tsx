@@ -53,7 +53,7 @@ export function PageHeaderDescription({
 	return (
 		<p
 			className={cn(
-				"text-xl text-neutral-500 mb-6 max-w-2xl mx-auto",
+				"text-xl text-muted-foreground mb-6 max-w-2xl mx-auto",
 				className,
 			)}
 			{...props}

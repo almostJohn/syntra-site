@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { inter } from "~/util/fonts";
+import { Providers } from "./providers";
+import { Toaster } from "~/components/ui/toaster";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -30,9 +32,6 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		creator: "@almostJohn",
 	},
-	other: {
-		"google-adsense-account": "ca-pub-1884698517257860",
-	},
 };
 
 export default function RootLayout({
@@ -43,9 +42,12 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} bg-neutral-100 text-neutral-900 antialiased`}
+				className={`${inter.className} bg-background text-foreground antialiased selection:bg-teal-500/30 selection:text-teal-500`}
 			>
-				{children}
+				<Providers>
+					{children}
+					<Toaster />
+				</Providers>
 			</body>
 		</html>
 	);

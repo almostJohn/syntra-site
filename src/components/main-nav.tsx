@@ -9,12 +9,12 @@ export function MainNav() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="flex justify-end items-center text-sm gap-3 xl:gap-6">
+		<nav className="hidden justify-end items-center gap-2 md:flex">
 			<Link
 				href="/"
 				className={cn(
-					"transition-colors hover:text-blue-600",
-					pathname === "/" ? "text-blue-500" : "hover:text-blue-600",
+					"inline-flex items-center justify-center px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground rounded-lg",
+					pathname === "/" ? "bg-accent text-accent-foreground" : "",
 				)}
 			>
 				Home
@@ -22,8 +22,8 @@ export function MainNav() {
 			<Link
 				href="/about"
 				className={cn(
-					"transition-colors hover:text-blue-600",
-					pathname === "/about" ? "text-blue-500" : "hover:text-blue-600",
+					"inline-flex items-center justify-center px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground rounded-lg",
+					pathname === "/about" ? "bg-accent text-accent-foreground" : "",
 				)}
 			>
 				About
@@ -31,8 +31,8 @@ export function MainNav() {
 			<Link
 				href="/notepad"
 				className={cn(
-					"transition-colors hover:text-blue-600",
-					pathname === "/notepad" ? "text-blue-500" : "hover:text-blue-600",
+					"inline-flex items-center justify-center px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground rounded-lg",
+					pathname === "/notepad" ? "bg-accent text-accent-foreground" : "",
 				)}
 			>
 				Notepad

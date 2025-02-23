@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Icons } from "~/components/icons";
+import { NotepadText } from "lucide-react";
 
 export const metadata: Metadata = {
 	title: "About",
@@ -27,14 +27,14 @@ export default function AboutPage() {
 						SimplyNote is an open-source project available on{" "}
 						<Link
 							href="https://github.com/almostJohn/simplynote"
-							className="text-blue-600 hover:underline"
+							className="text-teal-500 hover:underline"
 						>
 							GitHub
 						</Link>
 						, created by{" "}
 						<Link
 							href="https://almostjohn.vercel.app"
-							className="text-blue-600 hover:underline"
+							className="text-teal-500 hover:underline"
 						>
 							almostJohn
 						</Link>
@@ -43,7 +43,7 @@ export default function AboutPage() {
 					</p>
 				</div>
 				<div className="flex">
-					<Icons.logo className="size-40 shrink-0" />
+					<NotepadText className="size-40 shrink-0" />
 				</div>
 			</div>
 		</div>

@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-code {
-	@apply inline-flex items-center px-0.5 rounded bg-neutral-400/60 text-neutral-950;
-}
-
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -147,5 +143,16 @@ code {
 	}
 	body {
 		@apply bg-background text-foreground;
+	}
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+	}
+  body {
+    @apply bg-background text-foreground;
 	}
 }
