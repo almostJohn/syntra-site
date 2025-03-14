@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 
-export default function GlowingDiv() {
+export function GlowingDiv() {
 	return (
 		<motion.div
 			className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-teal-500 text-white text-xs font-bold transition relative overflow-hidden"

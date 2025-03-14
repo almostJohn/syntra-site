@@ -1,1 +1,1 @@
-export const LOCAL_STORAGE_KEY = "notepad_items";
+export const LOCAL_STORAGE_KEY = "user_notes";

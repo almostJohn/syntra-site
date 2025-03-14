@@ -8,12 +8,21 @@ export function PageHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<section
-			className={cn(
-				"container mx-auto px-4 pt-12 pb-24 flex flex-col items-center",
-				className,
-			)}
+			className={cn("w-full py-12 md:py-24 lg:py-32 xl:py-48", className)}
 			{...props}
 		>
+			{children}
+		</section>
+	);
+}
+
+export function PageHeaderContainer({
+	className,
+	children,
+	...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+	return (
+		<section className={cn("container", className)} {...props}>
 			{children}
 		</section>
 	);
@@ -25,7 +34,13 @@ export function PageHeaderBody({
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className={cn("text-center mb-12", className)} {...props}>
+		<div
+			className={cn(
+				"grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2",
+				className,
+			)}
+			{...props}
+		>
 			{children}
 		</div>
 	);
@@ -38,7 +53,7 @@ export function PageHeaderHeading({
 	return (
 		<h1
 			className={cn(
-				"text-4xl font-bold tracking-tight sm:text-5xl mb-4",
+				"text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none",
 				className,
 			)}
 			{...props}
@@ -53,7 +68,7 @@ export function PageHeaderDescription({
 	return (
 		<p
 			className={cn(
-				"text-xl text-muted-foreground mb-6 max-w-2xl mx-auto",
+				"max-w-[600px] text-muted-foreground md:text-xl",
 				className,
 			)}
 			{...props}
@@ -68,7 +83,7 @@ export function PageHeaderActions({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex items-center justify-center", className)}
+			className={cn("flex flex-col gap-2 min-[400px]:flex-row", className)}
 			{...props}
 		>
 			{children}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NotepadText } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export const metadata: Metadata = {
 	title: "About",
@@ -43,7 +43,7 @@ export default function AboutPage() {
 					</p>
 				</div>
 				<div className="flex">
-					<NotepadText className="size-40 shrink-0" />
+					<FileText className="size-40 shrink-0" />
 				</div>
 			</div>
 		</div>

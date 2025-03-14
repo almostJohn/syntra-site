@@ -2,79 +2,168 @@ import * as React from "react";
 import Link from "next/link";
 import {
 	PageHeader,
+	PageHeaderContainer,
 	PageHeaderBody,
 	PageHeaderHeading,
 	PageHeaderDescription,
 	PageHeaderActions,
 } from "~/components/page-header";
-import { Button } from "~/components/ui/button";
-import { Copy, Download, Eraser, Trash2, X } from "lucide-react";
-import { geistMono } from "~/util/fonts";
-import { getWordCount } from "~/util/getWordCount";
-import GlowingDiv from "~/components/glowing-div";
+import { buttonVariants } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
+import { GlowingDiv } from "~/components/glowing-div";
+import { Announcement } from "~/components/announcement";
+import { Edit, Save, Lock } from "lucide-react";
 
-const value = `
-	SimplyNote is a fast, stand-alone, and free browser-based text editor
-	for quick note-taking and editing. No installs or sign-ups—just a
-	simple, distraction-free experience with autosave and privacy.
-`;
+const featureItems = [
+	{
+		title: "Rich Text Editing",
+		icon: Edit,
+		description:
+			"Format your notes with bold, italics, lists, and more for better organization.",
+	},
+	{
+		title: "Auto-Save",
+		icon: Save,
+		description: "Never lose your work with automatic saving as you type.",
+	},
+	{
+		title: "Secure Storage",
+		icon: Lock,
+		description: "Your notes are securely stored using the Web Storage API.",
+	},
+];
 
 export default function IndexPage() {
 	return (
-		<PageHeader>
-			<PageHeaderBody>
-				<PageHeaderHeading>Browser-Based Text Editor</PageHeaderHeading>
-				<PageHeaderDescription>
-					SimplyNote is a fast, stand-alone, and free browser-based text editor
-					for quick note-taking and editing. No installs or sign-ups—just a
-					simple, distraction-free experience with autosave and privacy.
-				</PageHeaderDescription>
-				<PageHeaderActions>
-					<Link
-						href="/notepad"
-						className="px-6 py-2 flex items-center gap-2 text-lg font-bold rounded-lg transition-all border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-					>
-						Get Started
-					</Link>
-				</PageHeaderActions>
-			</PageHeaderBody>
-			<div className="w-full md:max-w-3xl">
-				<div className="block border border-border/40 bg-background rounded-lg h-[calc(100%-2rem)] cursor-pointer transition duration-300 hover:border-teal-500 hover:shadow-lg hover:shadow-teal-500">
-					<div className="flex flex-col">
-						<div className="flex items-center justify-between w-full h-14 border-b border-border/40 px-4 py-2">
-							<h1 className="text-lg font-semibold">Untitled</h1>
-							<GlowingDiv />
+		<>
+			<PageHeader>
+				<PageHeaderContainer>
+					<PageHeaderBody>
+						<div className="flex flex-col justify-center space-y-4">
+							<div className="space-y-2">
+								<Announcement />
+								<PageHeaderHeading>
+									{"Simple note-taking for complex thoughts"}
+								</PageHeaderHeading>
+								<PageHeaderDescription>
+									{
+										"Capture ideas, organize your life, and never forget anything with our intuitive notepad application."
+									}
+								</PageHeaderDescription>
+							</div>
+							<PageHeaderActions>
+								<Link
+									href="/notes"
+									className={cn(
+										buttonVariants({ size: "lg", className: "px-8" }),
+									)}
+								>
+									Get Started
+								</Link>
+								<Link
+									href="/about"
+									className={cn(
+										buttonVariants({
+											variant: "outline",
+											size: "lg",
+											className: "px-8",
+										}),
+									)}
+								>
+									Learn more
+								</Link>
+							</PageHeaderActions>
 						</div>
-						<div className="flex items-center gap-2 p-2 border-b border-border/40">
-							<Button variant="ghost" disabled className="px-2 py-1 rounded-lg">
-								<Copy />
-							</Button>
-							<Button variant="ghost" disabled className="px-2 py-1 rounded-lg">
-								<Download />
-							</Button>
-							<Button variant="ghost" disabled className="px-2 py-1 rounded-lg">
-								<Eraser />
-							</Button>
-							<Button variant="ghost" disabled className="px-2 py-1 rounded-lg">
-								<X />
-							</Button>
-							<Button variant="ghost" disabled className="px-2 py-1 rounded-lg">
-								<Trash2 />
-							</Button>
+						<div className="flex items-center justify-center">
+							<div className="block p-0 w-full rounded-md border shadow-xl">
+								<div className="flex flex-col">
+									<div className="border-b border-border p-4">
+										<div className="flex items-center justify-between">
+											<span className="font-medium truncate">
+												Untitled Note
+											</span>
+											<GlowingDiv />
+										</div>
+									</div>
+									<div className="p-4 flex-1 overflow-hidden">
+										<p className="text-sm text-muted-foreground line-clamp-4">
+											{
+												"SimplyNote is a fast, stand-alone, and free browser-based text editor for quick note-taking and editing. No installs or sign-ups—just a simple, distraction-free experience with autosave and privacy."
+											}
+										</p>
+									</div>
+									<div className="p-3 bg-muted/50 text-xs text-muted-foreground mt-auto">
+										Jan 1, 2025 • 12:00 AM
+									</div>
+								</div>
+							</div>
 						</div>
-						<div className="flex flex-col flex-1">
+					</PageHeaderBody>
+				</PageHeaderContainer>
+			</PageHeader>
+
+			<section
+				id="features"
+				className="w-full py-12 md:py-24 lg:py-32 bg-muted"
+			>
+				<div className="container">
+					<div className="flex flex-col items-center justify-center space-y-4 text-center">
+						<div className="space-y-2">
+							<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
+								Powerful features for your notes
+							</h2>
+							<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-base/relaxed">
+								Everything you need to capture, organize, and access your notes
+								from anywhere.
+							</p>
+						</div>
+					</div>
+					<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
+						{featureItems.map((item, i) => (
 							<div
-								className={`${geistMono.className} bg-transparent w-full p-4 border-none outline-none rounded-none`}
+								key={i}
+								className="block p-5 bg-background border rounded-md shadow-sm"
 							>
-								{value}
+								<div className="flex flex-col space-y-4">
+									<item.icon className="size-10 mb-2 text-primary" />
+									<h3 className="text-xl font-medium leading-snug">
+										{item.title}
+									</h3>
+									<p className="text-muted-foreground text-sm">
+										{item.description}
+									</p>
+								</div>
 							</div>
-							<div className="flex items-center justify-end p-2 text-sm text-muted-foreground">
-								Words: {getWordCount(value)}
-							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section className="w-full py-12 md:py-24 lg:py-32">
+				<div className="container">
+					<div className="flex flex-col items-center justify-center space-y-4 text-center">
+						<div className="space-y-2">
+							<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
+								Ready to start taking better notes?
+							</h2>
+							<p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+								Join users who trust SimplyNote for their daily note-taking
+								needs.
+							</p>
+						</div>
+						<div className="flex flex-col gap-2 min-[400px]:flex-row">
+							<Link
+								href="/notes"
+								className={cn(
+									buttonVariants({ size: "lg", className: "px-8" }),
+								)}
+							>
+								Get Started
+							</Link>
 						</div>
 					</div>
 				</div>
-			</div>
-		</PageHeader>
+			</section>
+		</>
 	);
 }

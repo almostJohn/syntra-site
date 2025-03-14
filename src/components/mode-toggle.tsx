@@ -21,7 +21,7 @@ export function ModeToggle() {
 		<Button
 			variant="ghost"
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-			className="px-2 py-1 h-8 rounded-lg"
+			className="px-2 py-1 h-8"
 			aria-label="Toggle theme"
 		>
 			{theme === "dark" ? (
