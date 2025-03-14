@@ -86,7 +86,7 @@ export default function IndexPage() {
 										</div>
 									</div>
 									<div className="p-4 flex-1 overflow-hidden">
-										<p className="text-sm text-muted-foreground line-clamp-4">
+										<p className="text-muted-foreground line-clamp-4">
 											{
 												"SimplyNote is a fast, stand-alone, and free browser-based text editor for quick note-taking and editing. No installs or sign-ups—just a simple, distraction-free experience with autosave and privacy."
 											}

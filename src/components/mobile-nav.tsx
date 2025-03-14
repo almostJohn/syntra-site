@@ -1,37 +1,85 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+	Drawer,
+	DrawerContent,
+	DrawerTrigger,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerDescription,
+} from "./ui/drawer";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
+import { AlignLeft } from "lucide-react";
+import { buttonVariants } from "./ui/button";
+import { cn } from "~/lib/utils";
+
+const navItems = [
+	{
+		label: "Home",
+		href: "/",
+	},
+	{
+		label: "Features",
+		href: "/#features",
+	},
+	{
+		label: "About",
+		href: "/about",
+	},
+	{
+		label: "Notes",
+		href: "/notes",
+	},
+];
 
 export function MobileNav() {
+	const [open, setOpen] = React.useState(false);
+
+	function handleLinkClick() {
+		setOpen(false);
+	}
+
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
+		<Drawer open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>
 				<Button
 					variant="ghost"
 					size="icon"
-					className="size-8 outline-none rounded-lg md:hidden"
+					className="hover:bg-transparent md:hidden"
 				>
-					<Menu className="size-5" />
+					<AlignLeft />
 				</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent className="rounded-lg" align="end">
-				<DropdownMenuItem className="rounded-lg">
-					<Link href="/">Home</Link>
-				</DropdownMenuItem>
-				<DropdownMenuItem className="rounded-lg">
-					<Link href="/about">About</Link>
-				</DropdownMenuItem>
-				<DropdownMenuItem className="rounded-lg">
-					<Link href="/notepad">Notepad</Link>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+			</DrawerTrigger>
+			<DrawerContent>
+				<VisuallyHidden>
+					<DrawerHeader>
+						<DrawerTitle>MobileNav</DrawerTitle>
+						<DrawerDescription>MobileNavDescription</DrawerDescription>
+					</DrawerHeader>
+				</VisuallyHidden>
+				<div className="p-8">
+					<div className="flex flex-col gap-2">
+						{navItems.map((item) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								className={cn(
+									buttonVariants({
+										variant: "link",
+										className: "text-lg font-semibold w-full",
+									}),
+								)}
+								onClick={handleLinkClick}
+							>
+								{item.label}
+							</Link>
+						))}
+					</div>
+				</div>
+			</DrawerContent>
+		</Drawer>
 	);
 }

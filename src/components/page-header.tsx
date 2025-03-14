@@ -83,7 +83,7 @@ export function PageHeaderActions({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex flex-col gap-2 min-[400px]:flex-row", className)}
+			className={cn("flex flex-col gap-2 md:flex-row", className)}
 			{...props}
 		>
 			{children}
