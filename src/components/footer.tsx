@@ -5,7 +5,7 @@ export function Footer() {
 				<p className="text-sm">
 					Made with 💖 by{" "}
 					<a
-						href="https://github.com/almostJohn"
+						href="https://almostjohn.vercel.app"
 						rel="noreferrer"
 						target="_blank"
 						className="underline-offset-4 underline text-blue-700"
