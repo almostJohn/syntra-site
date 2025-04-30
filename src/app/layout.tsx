@@ -1,15 +1,10 @@
-import * as React from "react";
-import type { Metadata } from "next";
-import { inter } from "~/util/fonts";
-import { Providers } from "./providers";
-import { Toaster } from "~/components/ui/toaster";
 import "../styles/globals.css";
+import type { Metadata } from "next";
+import { jetBrainsMono } from "~/lib/fonts";
+import { siteConfig } from "~/lib/config";
 
 export const metadata: Metadata = {
-	title: {
-		template: "%s | SimplyNote",
-		default: "SimplyNote - Take notes with ease.",
-	},
+	title: siteConfig.title,
 	icons: {
 		other: [
 			{
@@ -20,17 +15,17 @@ export const metadata: Metadata = {
 		],
 	},
 	appleWebApp: {
-		title: "SimplyNote",
+		title: siteConfig.name,
 	},
-	applicationName: "SimplyNote",
+	applicationName: siteConfig.name,
 	openGraph: {
-		siteName: "SimplyNote",
+		siteName: siteConfig.name,
 		type: "website",
-		title: "SimplyNote",
+		title: siteConfig.title,
 	},
 	twitter: {
 		card: "summary_large_image",
-		creator: "@almostJohn",
+		creator: siteConfig.creator,
 	},
 };
 
@@ -42,12 +37,11 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${inter.className} bg-background text-foreground antialiased selection:bg-teal-500/30 selection:text-teal-500`}
+				className={`${jetBrainsMono.className} bg-white text-black antialiased selection:bg-blue-700 selection:text-white`}
 			>
-				<Providers>
-					{children}
-					<Toaster />
-				</Providers>
+				<main className="min-h-screen">
+					<div className="p-4 md:p-0">{children}</div>
+				</main>
 			</body>
 		</html>
 	);

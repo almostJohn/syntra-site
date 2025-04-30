@@ -1,29 +1,23 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Search, Trash2, Plus } from "lucide-react";
-import { nanoid } from "nanoid";
-import { useToast } from "~/hooks/use-toast";
-import { LOCAL_STORAGE_KEY } from "~/util/constants";
+import { Trash } from "lucide-react";
+import words from "an-array-of-english-words";
 
 type Note = {
-	id: string;
-	title: string;
 	content: string;
-	createdAt: string;
-	time: string;
+	createdDate: string;
 };
 
 export function Notes() {
-	const [notes, setNotes] = React.useState<Note[]>([]);
-	const [searchTerm, setSearchTerm] = React.useState("");
-	const { toast } = useToast();
-	const router = useRouter();
+	const [notes, setNotes] = useState<Note[]>([]);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [newNote, setNewNote] = useState("");
+	const [suggestions, setSuggestions] = useState<string[]>([]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const savedNotes = localStorage.getItem(LOCAL_STORAGE_KEY);
 
 		if (savedNotes) {
@@ -32,132 +26,149 @@ export function Notes() {
 				setNotes(parsedNotes);
 			} catch (error_) {
 				const error = error_ as Error;
-				console.error(error, error.message);
-				toast({
-					description: "Failed to load notes. Please try again.",
-					variant: "destructive",
-					className: "text-sm",
-				});
+				console.log("There was an error fetching notes: ", error);
 			}
 		}
-	}, [toast]);
+	}, []);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (notes.length > 0) {
 			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
 		}
 	}, [notes]);
 
-	const filteredNotes = notes.filter(
-		(note) =>
-			note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			note.content.toLowerCase().includes(searchTerm.toLowerCase()),
+	const filteredNotes = notes.filter((note) =>
+		note.content.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
-	function handleNoteSelect(note: Note) {
-		router.push(`/notes/${note.id}`);
-	}
+	function addNewNote() {
+		if (newNote.trim() === "") return;
 
-	function handleNewNote() {
-		const newNote: Note = {
-			id: nanoid(),
-			title: "Untitled Note",
-			content: "",
-			createdAt: new Date().toLocaleDateString("en-US", {
-				month: "short",
-				day: "numeric",
-				year: "numeric",
-			}),
-			time: new Date().toLocaleTimeString("en-US", {
-				hour: "numeric",
-				minute: "2-digit",
-			}),
+		const newEntry: Note = {
+			content: newNote.trim(),
+			createdDate: new Date().toISOString(),
 		};
 
-		const updatedNotes = [newNote, ...notes];
-		setNotes(updatedNotes);
-		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedNotes));
-
-		router.push(`/notes/${newNote.id}`);
+		setNotes([newEntry, ...notes]);
+		setNewNote("");
 	}
 
-	function handleDeleteNote(id: string) {
-		const updatedNotes = notes.filter((note) => note.id !== id);
-		setNotes(updatedNotes);
-		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedNotes));
+	function deleteNote(indexToDelete: number) {
+		const confirmed = window.confirm(
+			"Are you sure you want to delete this note?",
+		);
+		if (!confirmed) return;
+
+		setNotes(notes.filter((_, index) => index !== indexToDelete));
+		window.alert("Note deleted.");
 	}
 
 	return (
-		<>
-			<div className="flex items-center mb-6 text-sm">
-				<span className="text-primary font-medium">Notes</span>
-			</div>
-
-			<div className="flex flex-col gap-4 mb-6 md:flex-row md:justify-between">
-				<h1 className="text-2xl font-bold text-left">My Notes</h1>
-				<div className="relative">
-					<Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-					<Input
-						placeholder="Search notes..."
+		<div className="block p-4 bg-neutral-200/50">
+			<div className="flex flex-col-reverse md:flex-row md:space-x-4">
+				<div className="flex flex-col w-full md:w-96 space-y-4 pt-4 md:pt-0">
+					<input
+						type="text"
 						value={searchTerm}
-						className="w-full pl-8"
 						onChange={(e) => setSearchTerm(e.target.value)}
+						className="p-2 h-9 w-full bg-transparent border border-neutral-300 text-sm font-medium placeholder:text-neutral-500 focus-visible:ring-0 focus-visible:outline-none focus-visible:border-blue-700 hover:border-blue-700 transition-colors"
+						placeholder="search something..."
 					/>
-				</div>
-			</div>
-
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-				<div
-					className="border border-dashed rounded-md p-6 flex flex-col items-center justify-center h-60 cursor-pointer hover:bg-accent/60 transition duration-300"
-					onClick={handleNewNote}
-				>
-					<div className="size-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-						<Plus className="size-6 text-primary" />
-					</div>
-					<p className="text-muted-foreground font-medium text-sm">
-						Create New Note
-					</p>
-				</div>
-
-				{filteredNotes.map((note) => (
-					<div
-						key={note.id}
-						className="block rounded-md overflow-hidden bg-background border border-border transition duration-300 cursor-pointer group hover:border-foreground"
-					>
-						<div
-							className="flex flex-col h-full p-0"
-							onClick={() => handleNoteSelect(note)}
-						>
-							<div className="p-4 border-b border-dashed border-border transition duration-300 group-hover:border-foreground">
-								<div className="flex items-start justify-between">
-									<h3 className="font-medium truncate leading-snug">
-										{note.title}
-									</h3>
-									<Button
-										size="icon"
-										variant="ghost"
-										className="size-6 opacity-0 group-hover:opacity-100"
-										onClick={(e) => {
-											e.stopPropagation();
-											handleDeleteNote(note.id);
-										}}
+					{filteredNotes.length === 0 ? (
+						<p className="text-sm text-center text-neutral-500">
+							no notes found...
+						</p>
+					) : (
+						<div className="h-72 overflow-y-auto">
+							<div className="flex flex-col gap-2">
+								{filteredNotes.map((item, index) => (
+									<div
+										key={index}
+										className="h-full w-full flex flex-col cursor-pointer p-2 border border-neutral-300 bg-transparent transition-colors hover:bg-blue-700 hover:text-white selection:bg-white selection:text-blue-700 group"
 									>
-										<Trash2 className="size-4" />
-									</Button>
-								</div>
-							</div>
-							<div className="p-4 flex-1 overflow-hidden">
-								<p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-4">
-									{note.content}
-								</p>
-							</div>
-							<div className="p-3 bg-muted/60 text-xs text-muted-foreground mt-auto transition duration-300 group-hover:bg-foreground group-hover:text-background">
-								{note.createdAt} • {note.time}
+										<p className="whitespace-pre-wrap text-sm">
+											{item.content}
+										</p>
+										<div className="mt-auto pt-4 flex items-center justify-between">
+											<p className="text-left text-xs">
+												{new Date(item.createdDate).toLocaleString()}
+											</p>
+											<Button
+												size="icon"
+												className="h-7 p-0 bg-transparent hover:bg-transparent text-black group-hover:text-white"
+												onClick={() => deleteNote(index)}
+											>
+												<Trash className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+								))}
 							</div>
 						</div>
-					</div>
-				))}
+					)}
+				</div>
+				<div className="flex w-full flex-col space-y-2">
+					<textarea
+						name="note"
+						placeholder="write your note..."
+						value={newNote}
+						onChange={(e) => {
+							const value = e.target.value;
+							setNewNote(value);
+
+							const lastWord = value.split(/\s+/).pop() || "";
+							if (lastWord.length >= 2) {
+								const matches = words
+									.filter((word) => word.startsWith(lastWord.toLowerCase()))
+									.slice(0, 2);
+
+								setSuggestions(matches);
+							} else {
+								setSuggestions([]);
+							}
+						}}
+						onKeyDown={(e) => {
+							if (e.key === "Enter" && !e.shiftKey) {
+								e.preventDefault();
+								addNewNote();
+							}
+						}}
+						className="p-2 bg-transparent h-72 w-full text-sm font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-0 border border-neutral-300 transition-colors hover:border-blue-700 focus-visible:border-blue-700"
+					/>
+					{suggestions && suggestions.length > 0 && (
+						<div className="border border-neutral-300 text-xs p-1 mt-1 max-h-40 overflow-y-auto">
+							{suggestions.map((word) => (
+								<Button
+									key={word}
+									size="xs"
+									className="w-full px-1 py-0.5 rounded-none text-xs text-black bg-transparent hover:bg-neutral-300"
+									onClick={() => {
+										const wordsArray = newNote.trim().split(/\s+/);
+										wordsArray.pop();
+										const newText = [...wordsArray, word].join(" ") + " ";
+										setNewNote(newText);
+										setSuggestions([]);
+									}}
+								>
+									{word}
+								</Button>
+							))}
+						</div>
+					)}
+					<p className="text-xs text-neutral-500 mt-1">
+						press{" "}
+						<kbd className="px-1 border border-neutral-300 text-xs">enter</kbd>{" "}
+						to add note,{" "}
+						<kbd className="px-1 border border-neutral-300 text-xs">shift</kbd>{" "}
+						+{" "}
+						<kbd className="px-1 border border-neutral-300 text-xs">enter</kbd>{" "}
+						for new line.
+					</p>
+					<Button className="rounded-none w-full" onClick={addNewNote}>
+						add note
+					</Button>
+				</div>
 			</div>
-		</>
+		</div>
 	);
 }
