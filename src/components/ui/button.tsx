@@ -8,8 +8,7 @@ export const buttonVariants = cva(
 		variants: {
 			variant: {
 				default: "bg-blue-600 text-white hover:bg-blue-700",
-				outline:
-					"border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white",
+				outline: "border border-neutral-300 hover:bg-neutral-300/60",
 			},
 			size: {
 				default: "h-9 px-4 py-2",
