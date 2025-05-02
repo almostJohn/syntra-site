@@ -37,7 +37,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${jetBrainsMono.className} bg-white text-black antialiased selection:bg-blue-700 selection:text-white`}
+				className={`${jetBrainsMono.className} bg-white text-black antialiased selection:bg-blue-500/30 selection:text-blue-600`}
 			>
 				<main className="min-h-screen">
 					<div className="p-4 md:p-0">{children}</div>

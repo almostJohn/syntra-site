@@ -5,6 +5,7 @@ import { LOCAL_STORAGE_KEY } from "~/lib/constants";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
 import words from "an-array-of-english-words";
+import { cn } from "~/lib/utils";
 
 type Note = {
 	content: string;
@@ -16,6 +17,7 @@ export function Notes() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [newNote, setNewNote] = useState("");
 	const [suggestions, setSuggestions] = useState<string[]>([]);
+	const [activeNoteIndex, setActiveNoteIndex] = useState<number | null>(null);
 
 	useEffect(() => {
 		const savedNotes = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -51,6 +53,7 @@ export function Notes() {
 
 		setNotes([newEntry, ...notes]);
 		setNewNote("");
+		setSuggestions([]);
 	}
 
 	function deleteNote(indexToDelete: number) {
@@ -84,7 +87,20 @@ export function Notes() {
 								{filteredNotes.map((item, index) => (
 									<div
 										key={index}
-										className="h-full w-full flex flex-col cursor-pointer p-2 border border-neutral-300 bg-transparent transition-colors hover:bg-blue-700 hover:text-white selection:bg-white selection:text-blue-700 group"
+										className={cn(
+											"h-full w-full flex flex-col cursor-pointer p-2 transition-colors",
+											index === activeNoteIndex
+												? "bg-neutral-300/60 hover:bg-neutral-300/80"
+												: "bg-transparent hover:bg-neutral-300/60",
+										)}
+										onClick={() => {
+											setNewNote(item.content);
+											setActiveNoteIndex(
+												notes.findIndex(
+													(n) => n.createdDate === item.createdDate,
+												),
+											);
+										}}
 									>
 										<p className="whitespace-pre-wrap text-sm">
 											{item.content}
@@ -130,7 +146,22 @@ export function Notes() {
 						onKeyDown={(e) => {
 							if (e.key === "Enter" && !e.shiftKey) {
 								e.preventDefault();
-								addNewNote();
+
+								if (activeNoteIndex !== null) {
+									if (newNote.trim() === "") return;
+
+									const updatedNotes = [...notes];
+									updatedNotes[activeNoteIndex] = {
+										...updatedNotes[activeNoteIndex],
+										content: newNote.trim(),
+									};
+									setNotes(updatedNotes);
+									setNewNote("");
+									setActiveNoteIndex(null);
+									setSuggestions([]);
+								} else {
+									addNewNote();
+								}
 							}
 						}}
 						className="p-2 bg-transparent h-72 w-full text-sm font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-0 border border-neutral-300 transition-colors hover:border-blue-700 focus-visible:border-blue-700"
@@ -164,9 +195,43 @@ export function Notes() {
 						<kbd className="px-1 border border-neutral-300 text-xs">enter</kbd>{" "}
 						for new line.
 					</p>
-					<Button className="rounded-none w-full" onClick={addNewNote}>
-						add note
-					</Button>
+					{activeNoteIndex !== null ? (
+						<div className="flex flex-col gap-2">
+							<Button
+								className="rounded-none w-full"
+								onClick={() => {
+									if (newNote.trim() === "") return;
+
+									const updatedNotes = [...notes];
+									updatedNotes[activeNoteIndex] = {
+										...updatedNotes[activeNoteIndex],
+										content: newNote.trim(),
+									};
+									setNotes(updatedNotes);
+									setNewNote("");
+									setActiveNoteIndex(null);
+									setSuggestions([]);
+								}}
+							>
+								save changes
+							</Button>
+							<Button
+								variant="outline"
+								className="rounded-none w-full"
+								onClick={() => {
+									setActiveNoteIndex(null);
+									setNewNote("");
+									setSuggestions([]);
+								}}
+							>
+								cancel
+							</Button>
+						</div>
+					) : (
+						<Button className="rounded-none w-full" onClick={addNewNote}>
+							add note
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>
