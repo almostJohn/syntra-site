@@ -1,19 +1,19 @@
-import "../styles/globals.css";
+import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { jetBrainsMono } from "~/lib/fonts";
-import { siteConfig } from "~/lib/config";
+import type { PropsWithChildren } from "react";
+import { Manrope } from "next/font/google";
+import { unstable_ViewTransition as ViewTransition } from "react";
+import { Toaster } from "sonner";
+import { siteConfig } from "@/lib/site";
+
+const manrope = Manrope({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-manrope",
+});
 
 export const metadata: Metadata = {
 	title: siteConfig.title,
-	icons: {
-		other: [
-			{
-				url: "/favicon.svg",
-				sizes: "16x16",
-				type: "image/svg",
-			},
-		],
-	},
 	appleWebApp: {
 		title: siteConfig.name,
 	},
@@ -27,21 +27,19 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		creator: siteConfig.creator,
 	},
+	creator: siteConfig.creator,
 };
 
-export default function RootLayout({
-	children,
-}: {
-	readonly children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${jetBrainsMono.className} bg-white text-black antialiased selection:bg-blue-500/30 selection:text-blue-600`}
+				className={`${manrope.className} bg-background text-foreground antialiased selection:bg-blue-100 selection:text-blue-600`}
 			>
-				<main className="min-h-screen">
-					<div className="p-4 md:p-0">{children}</div>
-				</main>
+				<div className="min-h-screen relative">
+					<ViewTransition>{children}</ViewTransition>
+					<Toaster position="top-center" />
+				</div>
 			</body>
 		</html>
 	);

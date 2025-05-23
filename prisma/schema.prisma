@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  username      String         @unique
+  display_name  String
+  password      String
+  email         String?        @unique
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  notes         Note[]
+  folders       Folder[]
+  boards        Board[]
+  activities    Activity[]
+  notifications Notification[]
+}
+
+model Folder {
+  id         String   @id @default(cuid())
+  name       String
+  owner_id   String
+  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  notes      Note[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Tag {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  notes      Note[]   @relation("note_tags")
+  created_at DateTime @default(now())
+}
+
+model Note {
+  id         String   @id @default(cuid())
+  title      String?
+  subtitle   String?
+  content    String
+  owner_id   String
+  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  folder_id  String?
+  folder     Folder?  @relation(fields: [folder_id], references: [id], onDelete: SetNull)
+  tags       Tag[]    @relation("note_tags")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Board {
+  id         String   @id @default(cuid())
+  title      String
+  owner_id   String
+  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  statuses   Status[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Status {
+  id         String   @id @default(cuid())
+  name       String
+  order      Int
+  board_id   String
+  board      Board    @relation(fields: [board_id], references: [id], onDelete: Cascade)
+  tasks      Task[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Task {
+  id         String   @id @default(cuid())
+  title      String
+  content    String
+  status_id  String
+  status     Status   @relation(fields: [status_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Activity {
+  id         String       @id @default(cuid())
+  type       ActivityType
+  user_id    String
+  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime     @default(now())
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  user_id    String
+  user       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  title      String
+  message    String
+  read       Boolean          @default(false)
+  type       NotificationType
+  created_at DateTime         @default(now())
+}
+
+enum NotificationType {
+  NOTE_CREATED
+  BOARD_CREATED
+  TASK_COMPLETED
+  OTHER
+}
+
+enum ActivityType {
+  CREATE_NOTE
+  CREATE_BOARD
+}
