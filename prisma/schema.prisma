@@ -15,28 +15,27 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  username      String         @unique
-  display_name  String
-  password      String
-  email         String?        @unique
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  notes         Note[]
-  folders       Folder[]
-  boards        Board[]
-  activities    Activity[]
-  notifications Notification[]
+  id             String         @id @default(cuid())
+  email          String         @unique
+  display_name   String
+  password       String
+  email_verified Boolean        @default(false)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  notes          Note[]
+  boards         Board[]
+  activities     Activity[]
+  notifications  Notification[]
+  user_sessions  UserSession[]
 }
 
-model Folder {
+model UserSession {
   id         String   @id @default(cuid())
-  name       String
-  owner_id   String
-  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  notes      Note[]
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  token      String   @unique
+  expires_at DateTime
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
 }
 
 model Tag {
@@ -53,8 +52,6 @@ model Note {
   content    String
   owner_id   String
   owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  folder_id  String?
-  folder     Folder?  @relation(fields: [folder_id], references: [id], onDelete: SetNull)
   tags       Tag[]    @relation("note_tags")
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
