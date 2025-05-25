@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useTransition } from "react";
 import { toast } from "sonner";
-import { logoutUser } from "@/actions/logout-user.action";
+import { logout } from "@/actions/logout.auth";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 import { Loader, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
@@ -22,7 +22,7 @@ export function LogoutButton({
 
 	const [isPending, startTransition] = useTransition();
 
-	const [state, formAction] = useActionState(logoutUser, initialState);
+	const [state, formAction] = useActionState(logout, initialState);
 
 	useEffect(() => {
 		if (state.success) {

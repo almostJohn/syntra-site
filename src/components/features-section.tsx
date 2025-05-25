@@ -16,7 +16,7 @@ const features = [
 	{
 		title: "Smart Organization",
 		description:
-			"Organize notes with folders, tags, and categories to find what you need instantly.",
+			"Quickly organize your notes using tags — the simple way to categorize and find what you need instantly.",
 		icon: FolderTree,
 	},
 	{

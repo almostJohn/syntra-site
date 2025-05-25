@@ -5,10 +5,10 @@ import { UserMenu } from "@/components/user-menu";
 import { ArrowRight } from "lucide-react";
 
 export function DefaultNav({
-	username,
+	email,
 	displayName,
 }: {
-	username: string;
+	email: string;
 	displayName: string;
 }) {
 	return (
@@ -20,9 +20,7 @@ export function DefaultNav({
 				Dashboard{" "}
 				<ArrowRight className="transition-transform group-hover:translate-x-1" />
 			</NextLink>
-			{username && displayName && (
-				<UserMenu username={username} displayName={displayName} />
-			)}
+			<UserMenu email={email} displayName={displayName} />
 		</div>
 	);
 }
