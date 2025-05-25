@@ -1,5 +1,5 @@
 import { Branding } from "./branding";
-import { getCurrentUser } from "@/auth/get-current-user";
+import { getCurrentUser } from "@/lib/auth";
 import { DefaultNav as SignedOutDefaultNav } from "./drawer/signed-out/default-nav";
 import { DrawerMenu as SignedOutMobileDrawerMenu } from "./drawer/signed-out/drawer-menu";
 import { DefaultNav as SignedInDefaultNav } from "./drawer/signed-in/default-nav";
@@ -18,11 +18,11 @@ export async function Navbar() {
 					{currentUser && (
 						<>
 							<SignedInDefaultNav
-								username={currentUser.username}
+								email={currentUser.email}
 								displayName={currentUser.display_name}
 							/>
 							<SignedInMobileDrawerMenu
-								username={currentUser.username}
+								email={currentUser.email}
 								displayName={currentUser.display_name}
 							/>
 						</>

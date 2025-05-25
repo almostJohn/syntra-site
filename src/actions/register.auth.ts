@@ -9,8 +9,18 @@ import { PASSWORD_MIN_LENGTH, DISPLAY_NAME_MIN_LENGTH } from "@/lib/constants";
 import { sendVerificationEmail } from "@/lib/mailer";
 
 type ActionResponse = {
-	success: boolean;
-	message: string;
+	successMessage?: string;
+	errorMessage?: string;
+	errors?: {
+		email?: string;
+		displayName?: string;
+		password?: string;
+		fields?: string;
+	};
+	values?: {
+		email?: string;
+		display_name?: string;
+	};
 };
 
 export async function register(
@@ -28,8 +38,10 @@ export async function register(
 
 		if (!email || !displayName || !password || !confirmPassword) {
 			return {
-				success: false,
-				message: "All fields are required.",
+				errorMessage: "All fields are required.",
+				errors: {
+					fields: "This field is required.",
+				},
 			};
 		}
 
@@ -37,29 +49,40 @@ export async function register(
 
 		if (!emailRegex.test(email)) {
 			return {
-				success: false,
-				message: "Invalid email format.",
+				errorMessage: "Invalid email format.",
+				errors: {
+					email: "Invalid email format.",
+				},
 			};
 		}
 
 		if (displayName.length < DISPLAY_NAME_MIN_LENGTH) {
 			return {
-				success: false,
-				message: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				errorMessage: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				errors: {
+					displayName: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				},
+				values: { email: email! },
 			};
 		}
 
 		if (password.length < PASSWORD_MIN_LENGTH) {
 			return {
-				success: false,
-				message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				errors: {
+					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				},
+				values: { email: email!, display_name: displayName! },
 			};
 		}
 
 		if (password !== confirmPassword) {
 			return {
-				success: false,
-				message: "Passwords do not match.",
+				errorMessage: "Passwords do not match.",
+				errors: {
+					password: "Passwords do not match.",
+				},
+				values: { email: email!, display_name: displayName! },
 			};
 		}
 
@@ -73,8 +96,11 @@ export async function register(
 
 		if (existingVerifiedUser?.email_verified) {
 			return {
-				success: false,
-				message: "Email is already in use.",
+				errorMessage: "Email is already in use.",
+				errors: {
+					email: "Email is already in use.",
+				},
+				values: { email: email!, display_name: displayName! },
 			};
 		}
 
@@ -92,9 +118,9 @@ export async function register(
 			if (existingSession) {
 				if (isBefore(new Date(), existingSession.expires_at)) {
 					return {
-						success: false,
-						message:
+						errorMessage:
 							"A verification email has already been sent. Please check your inbox.",
+						values: { email: email!, display_name: displayName! },
 					};
 				}
 
@@ -144,16 +170,14 @@ export async function register(
 		});
 
 		return {
-			success: true,
-			message:
+			successMessage:
 				"Account created. Please check your email to verify your account.",
 		};
 	} catch (error_) {
 		const error = error_ as Error;
 		console.error(error.message, error);
 		return {
-			success: false,
-			message: "Something went wrong. Please try again.",
+			errorMessage: "Something went wrong. Please try again.",
 		};
 	}
 }

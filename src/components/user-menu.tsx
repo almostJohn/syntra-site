@@ -10,11 +10,11 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { LogoutButton } from "./logout-button";
 
 type UserMenuProps = {
-	username: string;
+	email: string;
 	displayName: string;
 };
 
-export function UserMenu({ username, displayName }: UserMenuProps) {
+export function UserMenu({ email, displayName }: UserMenuProps) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -25,7 +25,7 @@ export function UserMenu({ username, displayName }: UserMenuProps) {
 				>
 					<Avatar>
 						<AvatarFallback className="bg-blue-600/10 text-blue-600">
-							{displayName && displayName.charAt(0).toUpperCase()}
+							{displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				</Button>
@@ -34,12 +34,12 @@ export function UserMenu({ username, displayName }: UserMenuProps) {
 				<DropdownMenuLabel className="flex items-center gap-3">
 					<Avatar className="rounded-md">
 						<AvatarFallback className="rounded-md bg-blue-600/10 text-blue-600">
-							{displayName && displayName.charAt(0).toUpperCase()}
+							{displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 					<div className="flex flex-col space-y-0.5">
 						<span className="font-semibold">{displayName}</span>
-						<span className="text-xs text-muted-foreground">@{username}</span>
+						<span className="text-xs text-muted-foreground">{email}</span>
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />

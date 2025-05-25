@@ -22,9 +22,9 @@ export const metadata: Metadata = {
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
 	return (
-		<div className="container flex flex-col">
+		<>
 			<Navbar />
 			{children}
-		</div>
+		</>
 	);
 }

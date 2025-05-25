@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils";
 import { LogoutButton } from "@/components/logout-button";
 
 export function DrawerMenu({
-	username,
+	email,
 	displayName,
 }: {
-	username: string;
+	email: string;
 	displayName: string;
 }) {
 	const [interacted, setInteracted] = useState(false);
@@ -56,7 +56,7 @@ export function DrawerMenu({
 						</Avatar>
 						<div className="flex flex-col space-y-0.5">
 							<span className="font-semibold">{displayName}</span>
-							<span className="text-sm text-muted-foreground">@{username}</span>
+							<span className="text-sm text-muted-foreground">{email}</span>
 						</div>
 					</div>
 					<div className="flex flex-col gap-3">

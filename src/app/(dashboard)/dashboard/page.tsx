@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
-import type { AuthPayload } from "@/auth/types";
-import { getSessionUser } from "@/auth/get-session-user";
+import { type AuthPayload, getSession } from "@/lib/auth";
 
 export default async function DashboardPage() {
-	const session = await getSessionUser<AuthPayload>();
+	const session = await getSession<AuthPayload>();
 
 	if (!session) {
 		redirect("/login");
