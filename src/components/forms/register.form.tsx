@@ -173,7 +173,7 @@ export function RegisterForm() {
 						</Button>
 						<NextLink
 							href="/login"
-							className="text-blue-600 text-sm font-semibold underline-offset-2 hover:underline"
+							className="text-blue-600 text-sm text-center font-semibold underline-offset-2 hover:underline"
 						>
 							Already have an account?
 						</NextLink>
