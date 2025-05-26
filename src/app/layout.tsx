@@ -1,8 +1,10 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import type { PropsWithChildren } from "react";
+import {
+	type PropsWithChildren,
+	unstable_ViewTransition as ViewTransition,
+} from "react";
 import { Manrope } from "next/font/google";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import { Toaster } from "sonner";
 import { siteConfig } from "@/lib/site";
 

@@ -7,6 +7,7 @@ const PROTECTED_ROUTES = [
 	"/dashboard/settings",
 ];
 const AUTH_ROUTES = ["/login", "/register"];
+const VERIFY_RESULT_ROUTE = "/verify-result";
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
@@ -25,6 +26,14 @@ export async function middleware(request: NextRequest) {
 		}
 	}
 
+	if (pathname.startsWith(VERIFY_RESULT_ROUTE)) {
+		const verifyStatus = request.cookies.get("verify-status")?.value;
+
+		if (!verifyStatus) {
+			return NextResponse.redirect(new URL("/login", request.url));
+		}
+	}
+
 	return NextResponse.next();
 }
 
@@ -35,5 +44,6 @@ export const config = {
 		"/dashboard/settings/:path*",
 		"/login",
 		"/register",
+		"/verify-result",
 	],
 };
