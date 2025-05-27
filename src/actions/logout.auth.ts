@@ -3,8 +3,8 @@
 import { deleteCookie } from "@/lib/auth";
 
 type ActionResponse = {
-	success: boolean;
-	message: string;
+	successMessage?: string;
+	errorMessage?: string;
 };
 
 export async function logout(): Promise<ActionResponse> {
@@ -12,15 +12,13 @@ export async function logout(): Promise<ActionResponse> {
 		await deleteCookie();
 
 		return {
-			success: true,
-			message: "Logout successful.",
+			successMessage: "Logout successful.",
 		};
 	} catch (error_) {
 		const error = error_ as Error;
 		console.error(error.message, error);
 		return {
-			success: false,
-			message: "Something went wrong. Please try again.",
+			errorMessage: "Something went wrong. Please try again.",
 		};
 	}
 }
