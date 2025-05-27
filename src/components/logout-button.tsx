@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useTransition } from "react";
+import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { logout } from "@/actions/logout.auth";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
@@ -9,8 +9,8 @@ import { Loader, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 
 const initialState = {
-	success: false,
-	message: "",
+	successMessage: "",
+	errorMessage: "",
 };
 
 export function LogoutButton({
@@ -20,28 +20,20 @@ export function LogoutButton({
 }) {
 	const router = useRouter();
 
-	const [isPending, startTransition] = useTransition();
-
-	const [state, formAction] = useActionState(logout, initialState);
+	const [state, formAction, isPending] = useActionState(logout, initialState);
 
 	useEffect(() => {
-		if (state.success) {
-			toast.success("Logout successful.");
+		if (state.successMessage) {
+			toast.success(state.successMessage);
 			router.push("/login");
 			router.refresh();
-		} else if (state.message) {
-			toast.error(state.message);
+		} else if (state.errorMessage) {
+			toast.error(state.errorMessage);
 		}
 	}, [state, router]);
 
 	return (
-		<form
-			action={() => {
-				startTransition(() => {
-					formAction();
-				});
-			}}
-		>
+		<form action={formAction}>
 			{isDropdownMenu && (
 				<DropdownMenuItem
 					className="group focus:bg-red-600/10 focus:text-red-600"

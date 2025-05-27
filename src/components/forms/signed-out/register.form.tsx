@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { NextLink } from "../ui/next-link";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import { NextLink } from "../../ui/next-link";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Button } from "../../ui/button";
 import { register } from "@/actions/register.auth";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -46,7 +46,7 @@ export function RegisterForm() {
 			className="block w-full p-6 rounded-xl shadow-lg border bg-background/95 md:w-96"
 		>
 			<div className="flex flex-col gap-6">
-				<div className="mx-auto flex items-center justify-center text-center">
+				<div className="flex items-center justify-center text-center">
 					<h1 className="text-xl font-bold">Create an account</h1>
 				</div>
 				<div className="flex flex-col space-y-3.5">
@@ -156,7 +156,7 @@ export function RegisterForm() {
 							</span>
 						)}
 					</div>
-					<div className="flex flex-col space-y-2">
+					<div className="flex flex-col space-y-4">
 						<Button
 							type="submit"
 							variant="primary"
@@ -171,12 +171,16 @@ export function RegisterForm() {
 								<>Create account</>
 							)}
 						</Button>
-						<NextLink
-							href="/login"
-							className="text-blue-600 text-sm text-center font-semibold underline-offset-2 hover:underline"
-						>
-							Already have an account?
-						</NextLink>
+						<p className="text-sm text-center text-muted-foreground">
+							Already have an account?{" "}
+							<NextLink
+								href="/login"
+								className="text-blue-600 font-semibold underline-offset-2 hover:underline"
+							>
+								Login now
+							</NextLink>
+							.
+						</p>
 					</div>
 				</div>
 			</div>

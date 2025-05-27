@@ -6,9 +6,13 @@ import {
 	useEffect,
 } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
-import { Check, X, CircleAlert, type LucideProps } from "lucide-react";
+import {
+	CheckCircle,
+	CircleAlert,
+	CircleX,
+	type LucideProps,
+} from "lucide-react";
 
 const config: Record<
 	string,
@@ -22,10 +26,10 @@ const config: Record<
 	}
 > = {
 	success: {
-		title: "verified",
+		title: "success",
 		message: "Your email has been verified!",
 		color: "green",
-		icon: Check,
+		icon: CheckCircle,
 	},
 	expired: {
 		title: "expired",
@@ -37,13 +41,13 @@ const config: Record<
 		title: "invalid",
 		message: "This verification link is invalid or already used.",
 		color: "red",
-		icon: X,
+		icon: CircleX,
 	},
 	error: {
 		title: "error",
 		message: "Something went wrong on our end.",
 		color: "red",
-		icon: X,
+		icon: CircleX,
 	},
 	missing: {
 		title: "missing",
@@ -76,46 +80,56 @@ export function VerifyResult() {
 		<>
 			<div
 				className={cn(
-					"block border-l-4 pl-3 py-4 pr-8 rounded-l rounded-r",
-					color === "green" && "bg-green-500/10 border-green-500",
-					color === "yellow" && "bg-yellow-500/10 border-yellow-500",
-					color === "red" && "bg-red-500/10 border-red-500",
-					color === "orange" && "bg-orange-500/10 border-orange-500",
+					"block p-6 rounded-md border shadow-lg",
+					color === "green" && "bg-green-50 border-green-200",
+					color === "yellow" && "bg-yellow-50 border-yellow-200",
+					color === "red" && "bg-red-50 border-red-200",
+					color === "orange" && "bg-orange-50 border-orange-200",
 				)}
 			>
-				<div className="flex flex-col space-y-4">
-					<h1 className="text-xl font-bold">Email Verification Status</h1>
-					<div className="flex flex-col space-y-1">
-						<div className="flex items-center gap-2">
-							<Icon
-								className={cn(
-									"h-6 w-6",
-									color === "green" && "text-green-500",
-									color === "yellow" && "text-yellow-500",
-									color === "red" && "text-red-500",
-									color === "orange" && "text-orange-500",
-								)}
-							/>
-							<h3
-								className={cn(
-									"text-lg font-semibold capitalize",
-									color === "green" && "text-green-500",
-									color === "yellow" && "text-yellow-500",
-									color === "red" && "text-red-500",
-									color === "orange" && "text-orange-500",
-								)}
-							>
-								{title}
-							</h3>
-						</div>
-						<p className="text-sm">{message}</p>
+				<div className="flex flex-col gap-6">
+					<div className="flex justify-center">
+						<Icon
+							className={cn(
+								"size-16",
+								color === "green" && "text-green-500",
+								color === "yellow" && "text-yellow-500",
+								color === "red" && "text-red-500",
+								color === "orange" && "text-orange-500",
+							)}
+						/>
 					</div>
-					<NextLink
-						href="/login"
-						className="font-semibold underline-offset-2 hover:underline text-blue-600"
-					>
-						Back to login page
-					</NextLink>
+					<div className="flex flex-col space-y-2">
+						<h1
+							className={cn(
+								"text-2xl capitalize font-bold text-center",
+								color === "green" && "text-green-800",
+								color === "yellow" && "text-yellow-800",
+								color === "red" && "text-red-800",
+								color === "orange" && "text-orange-800",
+							)}
+						>
+							{title}
+						</h1>
+						<p
+							className={cn(
+								"text-base text-center",
+								color === "green" && "text-green-700",
+								color === "yellow" && "text-yellow-700",
+								color === "red" && "text-red-700",
+								color === "orange" && "text-orange-700",
+							)}
+						>
+							{message}
+						</p>
+					</div>
+					<div className="flex flex-col gap-2 rounded border-l-4 border-blue-600 bg-background px-4 py-2">
+						<span className="text-lg font-medium">Notice</span>
+						<span className="text-sm text-muted-foreground">
+							This page will become inaccessible in the next 5 seconds and will
+							redirect you to our login page.
+						</span>
+					</div>
 				</div>
 			</div>
 		</>

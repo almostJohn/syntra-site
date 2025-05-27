@@ -18,6 +18,7 @@
 		"@radix-ui/react-slot": "^1.2.3",
 		"@radix-ui/react-visually-hidden": "^1.2.2",
 		"@react-email/components": "^0.0.41",
+		"@react-email/tailwind": "^1.0.5",
 		"an-array-of-english-words": "^2.0.0",
 		"bcrypt": "^5.1.1",
 		"class-variance-authority": "^0.7.1",
