@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { icons } from "./icons";
-import { DropdownMenuItem } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { logout } from "@/app/action";
+import { icons } from "@/components/icons";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { logout } from "@/actions/auth.action";
 import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "node:crypto";
 import { isBefore, addMinutes } from "date-fns";
 import { prisma } from "@/data/db/prisma";
-import { signToken, setCookie } from "@/lib/auth";
+import { signToken, setCookie, deleteCookie } from "@/lib/auth";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { PASSWORD_MIN_LENGTH, DISPLAY_NAME_MIN_LENGTH } from "@/lib/constants";
 import { getFormValue } from "@/lib/get-form-value";
@@ -249,6 +249,15 @@ export async function register(
 		return {
 			successMessage:
 				"Account created. Please check your email to verify your account.",
+		};
+	});
+}
+
+export async function logout(): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		await deleteCookie();
+		return {
+			successMessage: "Logout successful.",
 		};
 	});
 }

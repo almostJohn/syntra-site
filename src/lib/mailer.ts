@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { VerifyEmail } from "@/components/emails/verify-email";
+import { VerifyEmail } from "@/components/emails/verify.email";
 
 const resend = new Resend(process.env.NEXT_RESEND_API_KEY);
 
