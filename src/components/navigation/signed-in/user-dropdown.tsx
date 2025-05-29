@@ -1,22 +1,22 @@
-import { User, Settings } from "lucide-react";
 import {
 	DropdownMenu,
-	DropdownMenuItem,
 	DropdownMenuTrigger,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
+	DropdownMenuItem,
 	DropdownMenuContent,
+	DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { NextLink } from "./ui/next-link";
+import { NextLink } from "@/components/ui/next-link";
+import { Settings, User } from "lucide-react";
 import { LogoutButton } from "./logout-button";
 
-type UserMenuProps = {
+type UserDropdownProps = {
 	email: string;
 	displayName: string;
 };
 
-export function UserMenu({ email, displayName }: UserMenuProps) {
+export function UserDropdown({ email, displayName }: UserDropdownProps) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="rounded-full cursor-pointer">
@@ -26,7 +26,7 @@ export function UserMenu({ email, displayName }: UserMenuProps) {
 					</AvatarFallback>
 				</Avatar>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-58" align="end">
+			<DropdownMenuContent className="w-60" align="end">
 				<DropdownMenuLabel className="flex items-center gap-2">
 					<Avatar className="rounded-sm">
 						<AvatarFallback className="rounded-sm bg-blue-100 text-blue-600">

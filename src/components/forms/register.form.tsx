@@ -7,7 +7,7 @@ import { NextLink } from "@/components/ui/next-link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { register } from "../action";
+import { register } from "@/actions/auth.action";
 import { icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 

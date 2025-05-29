@@ -2,47 +2,52 @@
 
 import { useState } from "react";
 import {
-	DrawerTrigger,
 	Drawer,
+	DrawerTrigger,
 	DrawerContent,
 	DrawerTitle,
 	DrawerDescription,
-} from "./ui/drawer";
+} from "@/components/ui/drawer";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { icons } from "@/components/icons";
+import { NextLink } from "@/components/ui/next-link";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Button } from "./ui/button";
-import { icons } from "./icons";
-import { NextLink } from "./ui/next-link";
 import { LogoutButton } from "./logout-button";
 
-type UserDrawerMenuProps = {
+type UserDrawerProps = {
 	email: string;
 	displayName: string;
+	isDashboard?: boolean;
 };
 
-export function UserDrawerMenu({ email, displayName }: UserDrawerMenuProps) {
+export function UserDrawer({
+	email,
+	displayName,
+	isDashboard,
+}: UserDrawerProps) {
 	const [interacted, setInteracted] = useState(false);
 
-	function toggleDrawer() {
+	function handleToggle() {
 		setInteracted(!interacted);
 	}
 
 	return (
-		<Drawer open={interacted} onOpenChange={setInteracted}>
+		<Drawer>
 			<DrawerTrigger asChild>
 				<Button
+					variant="ghost"
 					size="icon"
 					className="cursor-pointer hover:bg-transparent md:hidden"
-					variant="ghost"
-					onClick={toggleDrawer}
+					onClick={handleToggle}
 				>
 					<icons.Menu className="size-5" />
 				</Button>
 			</DrawerTrigger>
 			<DrawerContent className="w-full">
 				<VisuallyHidden>
-					<DrawerTitle>User Drawer Menu Title</DrawerTitle>
-					<DrawerDescription>User Drawer Menu Description</DrawerDescription>
+					<DrawerTitle>User Drawer Title</DrawerTitle>
+					<DrawerDescription>User Drawer Description</DrawerDescription>
 				</VisuallyHidden>
 				<div className="p-6 flex flex-col gap-6">
 					<div className="flex items-center gap-3.5">
@@ -57,14 +62,16 @@ export function UserDrawerMenu({ email, displayName }: UserDrawerMenuProps) {
 						</div>
 					</div>
 					<div className="w-full border-t border-border" />
-					<div className="py-3 flex flex-col gap-4 items-center justify-center text-center">
-						<NextLink
-							href="/dashboard"
-							className="text-lg font-semibold underline-offset-2 hover:underline"
-							onClick={() => setInteracted(false)}
-						>
-							Dashboard
-						</NextLink>
+					<div className="py-1 flex flex-col gap-4">
+						{!isDashboard && (
+							<NextLink
+								href="/dashboard"
+								className="text-lg font-semibold underline-offset-2 hover:underline"
+								onClick={() => setInteracted(false)}
+							>
+								Dashboard
+							</NextLink>
+						)}
 						<NextLink
 							href="/dashboard/profile"
 							className="text-lg font-semibold underline-offset-2 hover:underline"
