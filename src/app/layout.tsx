@@ -6,7 +6,7 @@ import {
 } from "react";
 import { Manrope } from "next/font/google";
 import { Toaster } from "sonner";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 
 const manrope = Manrope({
 	subsets: ["latin"],

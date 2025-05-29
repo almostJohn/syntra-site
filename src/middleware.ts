@@ -1,32 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuthForMiddleware } from "./lib/check-auth-for-middleware";
-
-const PROTECTED_ROUTES = [
-	"/dashboard",
-	"/dashboard/profile",
-	"/dashboard/settings",
-];
-const AUTH_ROUTES = ["/login", "/register"];
-const VERIFY_RESULT_ROUTE = "/verify-result";
+import { checkAuthForMiddleware } from "./lib/check-auth";
+import {
+	DISABLED_ROUTES_AFTER_SIGN_IN,
+	DISABLED_ROUTE_AFTER_VERIFICATION,
+	SIGNED_OUT_DISABLED_ROUTES,
+} from "./lib/constants";
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
 	const isAuthenticated = checkAuthForMiddleware(request);
 
-	if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
+	if (SIGNED_OUT_DISABLED_ROUTES.some((route) => pathname.startsWith(route))) {
 		if (!isAuthenticated) {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
 	}
 
-	if (AUTH_ROUTES.includes(pathname)) {
+	if (DISABLED_ROUTES_AFTER_SIGN_IN.includes(pathname)) {
 		if (isAuthenticated) {
 			return NextResponse.redirect(new URL("/dashboard", request.url));
 		}
 	}
 
-	if (pathname.startsWith(VERIFY_RESULT_ROUTE)) {
+	if (pathname.startsWith(DISABLED_ROUTE_AFTER_VERIFICATION)) {
 		const verifyStatus = request.cookies.get("verify-status")?.value;
 
 		if (!verifyStatus) {
@@ -42,6 +39,8 @@ export const config = {
 		"/dashboard/:path*",
 		"/dashboard/profile/:path*",
 		"/dashboard/settings/:path*",
+		"/dashboard/boards/:path*",
+		"/dashboard/notes/:path*",
 		"/login",
 		"/register",
 		"/verify-result",

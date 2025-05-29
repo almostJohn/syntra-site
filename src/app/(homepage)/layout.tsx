@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { siteConfig } from "@/lib/site";
 import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
 	title: "Home",
-	description: siteConfig.description,
 	appleWebApp: {
-		title: siteConfig.name,
+		title: "Syntra",
 	},
-	applicationName: siteConfig.name,
+	applicationName: "Syntra",
 	openGraph: {
-		siteName: siteConfig.name,
+		siteName: "Syntra",
 		type: "website",
-		title: siteConfig.title,
+		title: "Syntra",
 	},
 	twitter: {
 		card: "summary_large_image",
-		creator: siteConfig.creator,
+		creator: "@almostJohn",
 	},
-	creator: siteConfig.creator,
+	creator: "@almostJohn",
 };
 
 export default function HomePageLayout({ children }: PropsWithChildren) {

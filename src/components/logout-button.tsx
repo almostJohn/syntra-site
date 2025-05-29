@@ -3,21 +3,24 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { logout } from "@/actions/logout.auth";
+import { icons } from "./icons";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
-import { Loader, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
+import { logout } from "@/app/action";
+import { LogOut } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const initialState = {
 	successMessage: "",
 	errorMessage: "",
 };
 
-export function LogoutButton({
-	isDropdownMenu = false,
-}: {
+type LogoutButtonProps = {
 	isDropdownMenu: boolean;
-}) {
+	className?: string;
+};
+
+export function LogoutButton({ isDropdownMenu, className }: LogoutButtonProps) {
 	const router = useRouter();
 
 	const [state, formAction, isPending] = useActionState(logout, initialState);
@@ -36,19 +39,18 @@ export function LogoutButton({
 		<form action={formAction}>
 			{isDropdownMenu && (
 				<DropdownMenuItem
-					className="group focus:bg-red-600/10 focus:text-red-600"
+					className="group focus:bg-red-100 focus:text-red-600"
 					disabled={isPending}
 					asChild
 				>
 					<button type="submit" className="flex items-center gap-2 w-full">
 						{isPending ? (
 							<>
-								<Loader className="size-4 text-muted-foreground animate-spin" />{" "}
-								Logging out...
+								<icons.Loading className="size-4 animate-spin" /> Logging out...
 							</>
 						) : (
 							<>
-								<LogOut className="size-4 text-muted-foreground group-hover:text-red-600" />{" "}
+								<LogOut className="size-4 text-muted-foreground group-focus:text-red-600" />{" "}
 								Logout
 							</>
 						)}
@@ -58,15 +60,16 @@ export function LogoutButton({
 			{!isDropdownMenu && (
 				<Button
 					type="submit"
-					variant="destructive"
-					className="w-full cursor-pointer"
+					variant="danger"
+					className={cn("w-full cursor-pointer", className)}
+					disabled={isPending}
 				>
 					{isPending ? (
 						<>
-							<Loader className="size-4 animate-spin" /> Logging out...
+							<icons.Loading className="size-4 animate-spin" /> Logging out...
 						</>
 					) : (
-						<>Log Out</>
+						<>Logout</>
 					)}
 				</Button>
 			)}

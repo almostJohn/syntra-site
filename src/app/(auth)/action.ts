@@ -1,33 +1,107 @@
 "use server";
 
-import { isBefore, addMinutes } from "date-fns";
-import crypto from "node:crypto";
 import bcrypt from "bcrypt";
-import { prisma } from "@/db/prisma";
-import { getFormValue } from "@/lib/get-form-value";
+import crypto from "node:crypto";
+import { isBefore, addMinutes } from "date-fns";
+import { prisma } from "@/data/db/prisma";
+import { signToken, setCookie } from "@/lib/auth";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { PASSWORD_MIN_LENGTH, DISPLAY_NAME_MIN_LENGTH } from "@/lib/constants";
+import { getFormValue } from "@/lib/get-form-value";
 import { sendVerificationEmail } from "@/lib/mailer";
 
-type ActionResponse = {
-	successMessage?: string;
-	errorMessage?: string;
-	errors?: {
-		email?: string;
-		displayName?: string;
-		password?: string;
-		fields?: string;
-	};
-	values?: {
-		email?: string;
-		display_name?: string;
-	};
-};
+export async function login(
+	_prevState: ActionResponse,
+	formData: FormData,
+): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		const email = getFormValue(formData, "email");
+
+		const password = getFormValue(formData, "password");
+
+		if (!email || !password) {
+			return {
+				errorMessage: "Email and password are required.",
+				errors: {
+					fields: "Email and password are required.",
+				},
+			};
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+		if (!emailRegex.test(email)) {
+			return {
+				errorMessage: "Incorrect email format.",
+				errors: {
+					email: "Incorrect email format.",
+				},
+			};
+		}
+
+		if (password.length < PASSWORD_MIN_LENGTH) {
+			return {
+				errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				errors: {
+					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				},
+			};
+		}
+
+		const user = await prisma.user.findUnique({
+			where: {
+				email,
+			},
+		});
+
+		if (!user || !user.password) {
+			return {
+				errorMessage: "Incorrect email or password.",
+				errors: {
+					fields: "Incorrect email or password.",
+				},
+				values: { email },
+			};
+		}
+
+		if (!user.email_verified) {
+			return {
+				errorMessage: "Please verify your email first before logging in.",
+				values: { email },
+			};
+		}
+
+		const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+		if (!isPasswordMatch) {
+			return {
+				errorMessage: "Incorrect email or password.",
+				errors: {
+					fields: "Incorrect email or password.",
+				},
+				values: { email },
+			};
+		}
+
+		const sessionToken = await signToken({
+			userId: user.id,
+			email: user.email,
+			displayName: user.display_name,
+		});
+
+		await setCookie(sessionToken);
+
+		return {
+			successMessage: "Login successful.",
+		};
+	});
+}
 
 export async function register(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
-	try {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
 		const email = getFormValue(formData, "email");
 
 		const displayName = getFormValue(formData, "display_name");
@@ -40,18 +114,18 @@ export async function register(
 			return {
 				errorMessage: "All fields are required.",
 				errors: {
-					fields: "This field is required.",
+					fields: "All fields are required.",
 				},
 			};
 		}
 
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 		if (!emailRegex.test(email)) {
 			return {
-				errorMessage: "Invalid email format.",
+				errorMessage: "Incorrect email format.",
 				errors: {
-					email: "Invalid email format.",
+					email: "Incorrect email format.",
 				},
 			};
 		}
@@ -62,7 +136,7 @@ export async function register(
 				errors: {
 					displayName: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
 				},
-				values: { email: email! },
+				values: { email },
 			};
 		}
 
@@ -72,7 +146,10 @@ export async function register(
 				errors: {
 					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
 				},
-				values: { email: email!, display_name: displayName! },
+				values: {
+					email,
+					display_name: displayName,
+				},
 			};
 		}
 
@@ -82,15 +159,18 @@ export async function register(
 				errors: {
 					password: "Passwords do not match.",
 				},
-				values: { email: email!, display_name: displayName! },
+				values: {
+					email,
+					display_name: displayName,
+				},
 			};
 		}
 
 		const existingVerifiedUser = await prisma.user.findUnique({
 			where: { email },
 			select: {
-				email_verified: true,
 				id: true,
+				email_verified: true,
 			},
 		});
 
@@ -100,7 +180,10 @@ export async function register(
 				errors: {
 					email: "Email is already in use.",
 				},
-				values: { email: email!, display_name: displayName! },
+				values: {
+					email,
+					display_name: displayName,
+				},
 			};
 		}
 
@@ -110,30 +193,23 @@ export async function register(
 
 		if (existingUnverifiedUser) {
 			const existingSession = await prisma.userSession.findFirst({
-				where: {
-					user_id: existingUnverifiedUser.id,
-				},
+				where: { user_id: existingUnverifiedUser.id },
 			});
 
 			if (existingSession) {
 				if (isBefore(new Date(), existingSession.expires_at)) {
 					return {
 						errorMessage:
-							"A verification email has already been sent. Please check your inbox.",
-						values: { email: email!, display_name: displayName! },
+							"A verification email has already been sent. Please check you inbox.",
 					};
 				}
 
 				await prisma.userSession.deleteMany({
-					where: {
-						user_id: existingUnverifiedUser.id,
-					},
+					where: { user_id: existingUnverifiedUser.id },
 				});
 
 				await prisma.user.delete({
-					where: {
-						id: existingUnverifiedUser.id,
-					},
+					where: { id: existingUnverifiedUser.id },
 				});
 			}
 		}
@@ -143,8 +219,8 @@ export async function register(
 		const newUser = await prisma.user.create({
 			data: {
 				email,
-				display_name: displayName,
 				password: hashedPassword,
+				display_name: displayName,
 			},
 		});
 
@@ -161,23 +237,18 @@ export async function register(
 		});
 
 		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 		const verificationUrl = `${baseUrl}/api/verify?token=${token}`;
 
 		await sendVerificationEmail({
 			email,
-			displayName,
 			verificationUrl,
+			displayName,
 		});
 
 		return {
 			successMessage:
 				"Account created. Please check your email to verify your account.",
 		};
-	} catch (error_) {
-		const error = error_ as Error;
-		console.error(error.message, error);
-		return {
-			errorMessage: "Something went wrong. Please try again.",
-		};
-	}
+	});
 }
