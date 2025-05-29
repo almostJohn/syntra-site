@@ -3,7 +3,7 @@ import { checkAuthForMiddleware } from "./lib/check-auth";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
 	DISABLED_ROUTE_AFTER_VERIFICATION,
-	SIGNED_OUT_DISABLED_ROUTES,
+	DISABLED_ROUTES_AFTER_SIGN_OUT,
 } from "./lib/constants";
 
 export async function middleware(request: NextRequest) {
@@ -11,7 +11,9 @@ export async function middleware(request: NextRequest) {
 
 	const isAuthenticated = checkAuthForMiddleware(request);
 
-	if (SIGNED_OUT_DISABLED_ROUTES.some((route) => pathname.startsWith(route))) {
+	if (
+		DISABLED_ROUTES_AFTER_SIGN_OUT.some((route) => pathname.startsWith(route))
+	) {
 		if (!isAuthenticated) {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
