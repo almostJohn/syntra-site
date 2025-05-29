@@ -8,8 +8,7 @@ import {
 	DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { NextLink } from "./ui/next-link";
-import { LogoutButton } from "./logout-button";
+import { NextLink } from "@/components/ui/next-link";
 
 type UserMenuProps = {
 	email: string;
@@ -41,16 +40,16 @@ export function UserMenu({ email, displayName }: UserMenuProps) {
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
 					<NextLink href="/dashboard/profile">
-						<User className="size-4" /> Profile
+						<User className="size-4" />
+						Profile
 					</NextLink>
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild>
 					<NextLink href="/dashboard/settings">
-						<Settings className="size-4" /> Settings
+						<Settings className="size-4" />
+						Settings
 					</NextLink>
 				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<LogoutButton isDropdownMenu={true} />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

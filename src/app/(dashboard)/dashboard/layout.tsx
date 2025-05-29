@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import type { Metadata } from "next";
-import { Navbar } from "../_components/navbar";
+import { Navbar } from "../_components/navbar.dashboard";
 
 export const metadata: Metadata = {
 	title: "Dashboard",

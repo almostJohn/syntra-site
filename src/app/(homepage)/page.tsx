@@ -1,6 +1,6 @@
 import { HeroSection } from "@/components/hero-section";
 import { FeaturesSection } from "@/components/features-section";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "@/config/site";
 
 export default function HomePage() {
 	return (

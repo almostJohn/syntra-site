@@ -1,5 +1,5 @@
 import { NextLink } from "@/components/ui/next-link";
-import { LoginForm } from "@/components/forms/signed-out/login.form";
+import { LoginForm } from "../_components/login-form";
 
 export const metadata = {
 	title: "Login",
