@@ -27,6 +27,31 @@ model User {
   activities     Activity[]
   notifications  Notification[]
   user_sessions  UserSession[]
+  owned_teams    Team[]         @relation("owned_teams")
+  team_members   TeamMember[]
+}
+
+model Team {
+  id         String       @id @default(cuid())
+  name       String
+  owner_id   String
+  owner      User         @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
+  members    TeamMember[]
+  boards     Board[]
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  user_id   String
+  team_id   String
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [team_id], references: [id], onDelete: Cascade)
+  role      TeamRole @default(MEMBER)
+  joined_at DateTime @default(now())
+
+  @@unique([user_id, team_id])
 }
 
 model UserSession {
@@ -62,6 +87,8 @@ model Board {
   title      String
   owner_id   String
   owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  team_id    String?
+  team       Team?    @relation(fields: [team_id], references: [id], onDelete: Cascade)
   statuses   Status[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -117,4 +144,9 @@ enum NotificationType {
 enum ActivityType {
   CREATE_NOTE
   CREATE_BOARD
+}
+
+enum TeamRole {
+  OWNER
+  MEMBER
 }

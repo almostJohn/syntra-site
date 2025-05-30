@@ -10,7 +10,9 @@ export default async function DashboardPage() {
 
 	return (
 		<>
-			<h1 className="p-6">Dashboard Page</h1>
+			<div className="p-8">
+				<p className="font-bold">Dashboard Page</p>
+			</div>
 		</>
 	);
 }
