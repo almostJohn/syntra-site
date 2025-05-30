@@ -1,53 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { NextLink } from "@/components/ui/next-link";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import {
-	LayoutGrid,
-	Scroll,
-	FolderKanban,
-	UsersRound,
-	User2,
-	Settings,
-	PanelLeft,
-} from "lucide-react";
-
-const navItems = [
-	{
-		title: "Main",
-		href: "/dashboard",
-		icon: LayoutGrid,
-	},
-	{
-		title: "Notes",
-		href: "/dashboard/notes",
-		icon: Scroll,
-	},
-	{
-		title: "Boards",
-		href: "/dashboard/boards",
-		icon: FolderKanban,
-	},
-	{
-		title: "Profile",
-		href: "/dashboard/profile",
-		icon: User2,
-	},
-	{
-		title: "Teams",
-		href: "/dashboard/teams",
-		icon: UsersRound,
-	},
-	{
-		title: "Settings",
-		href: "/dashboard/settings",
-		icon: Settings,
-	},
-];
+import { PanelLeft } from "lucide-react";
+import { Nav } from "./nav";
+import { UserDropdown } from "./user-dropdown";
 
 type SidebarProps = {
 	email: string;
@@ -56,8 +15,6 @@ type SidebarProps = {
 };
 
 export function Sidebar({ email, displayName, children }: SidebarProps) {
-	const pathname = usePathname();
-
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
 	return (
@@ -88,47 +45,13 @@ export function Sidebar({ email, displayName, children }: SidebarProps) {
 						</Button>
 					</div>
 				</div>
-				<div className="flex-1 flex flex-col p-4 space-y-2">
-					{navItems.map(({ title, href, icon: Icon }) => (
-						<NextLink
-							key={href}
-							href={href}
-							className={cn(
-								"inline-flex items-center px-3 h-10 rounded-md text-base font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground",
-								isCollapsed && "px-0 justify-center",
-								pathname === href
-									? "bg-blue-600 text-background hover:bg-blue-700 hover:text-background"
-									: "",
-							)}
-						>
-							<Icon
-								className={cn("size-5 flex-shrink-0", !isCollapsed && "mr-3")}
-							/>
-							{!isCollapsed && <span>{title}</span>}
-						</NextLink>
-					))}
-				</div>
+				<Nav isCollapsed={isCollapsed} />
 				<div className="p-4 border-t border-border">
-					<div
-						className={cn(
-							"flex items-center transition-all duration-300",
-							isCollapsed ? "justify-center" : "space-x-3",
-						)}
-					>
-						<Avatar className="rounded-sm size-9 border border-blue-200">
-							<AvatarFallback className="rounded-sm bg-blue-50 text-blue-600">
-								{displayName.charAt(0).toUpperCase()}
-							</AvatarFallback>
-						</Avatar>
-						{!isCollapsed && (
-							<div className="flex-1 flex flex-col space-y-0.5">
-								<span className="font-semibold leading-snug">
-									{displayName}
-								</span>
-								<span className="text-xs text-muted-foreground">{email}</span>
-							</div>
-						)}
-					</div>
+					<UserDropdown
+						email={email}
+						displayName={displayName}
+						isCollapsed={isCollapsed}
+					/>
 				</div>
 			</aside>
 			<div

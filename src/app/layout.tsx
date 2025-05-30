@@ -36,7 +36,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${manrope.className} bg-background text-foreground antialiased selection:bg-blue-100 selection:text-blue-600`}
+				className={`${manrope.className} bg-background text-foreground antialiased selection:bg-blue-50 selection:text-blue-600`}
 			>
 				<div className="min-h-screen relative">
 					<ViewTransition>{children}</ViewTransition>
