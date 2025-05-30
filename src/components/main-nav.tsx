@@ -61,7 +61,7 @@ function UserDropdownMenu({
 			</NextLink>
 			<DropdownMenu>
 				<DropdownMenuTrigger className="rounded-full cursor-pointer">
-					<Avatar className="size-8">
+					<Avatar className="size-9 border border-blue-200">
 						<AvatarFallback className="bg-blue-50 text-blue-600">
 							{displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
@@ -69,14 +69,16 @@ function UserDropdownMenu({
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="w-60" align="end">
 					<DropdownMenuLabel className="flex items-center gap-2">
-						<Avatar className="size-8 rounded-sm">
+						<Avatar className="size-9 rounded-sm border border-blue-200">
 							<AvatarFallback className="rounded-sm bg-blue-50 text-blue-600">
 								{displayName.charAt(0).toUpperCase()}
 							</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col space-y-0.5">
 							<span className="font-semibold leading-snug">{displayName}</span>
-							<span className="text-xs text-muted-foreground">{email}</span>
+							<span className="text-xs text-muted-foreground truncate">
+								{email}
+							</span>
 						</div>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />

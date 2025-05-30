@@ -109,7 +109,7 @@ function UserDrawerMenu({
 				</VisuallyHidden>
 				<div className="p-7 flex flex-col gap-y-4">
 					<div className="flex items-center gap-3">
-						<Avatar className="rounded-sm size-11">
+						<Avatar className="rounded-sm size-11 border border-blue-200">
 							<AvatarFallback className="bg-blue-50 text-blue-600 rounded-sm">
 								{displayName.charAt(0).toUpperCase()}
 							</AvatarFallback>
@@ -118,7 +118,9 @@ function UserDrawerMenu({
 							<span className="font-semibold leading-snug capitalize">
 								{displayName}
 							</span>
-							<span className="text-sm text-muted-foreground">{email}</span>
+							<span className="text-sm text-muted-foreground truncate">
+								{email}
+							</span>
 						</div>
 					</div>
 					<div className="border-t border-border w-full" />
