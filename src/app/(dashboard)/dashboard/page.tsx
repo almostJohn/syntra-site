@@ -1,7 +1,24 @@
-export default function DashboardPage() {
+import { getCurrentUser } from "@/lib/auth";
+import { MainHeader } from "../_components/main/main-header";
+import { MainStats } from "../_components/main/main-stats";
+import { QuickActions } from "../_components/quick-actions";
+import { RecentActivity } from "../_components/recent-activity";
+import { ActivityHeatmapMain } from "../_components/activity-heatmap-main";
+
+export default async function DashboardPage() {
+	const currentUser = await getCurrentUser();
+
 	return (
-		<div className="p-6">
-			<h1>Dashboard</h1>
+		<div className="p-6 h-full space-y-6">
+			{currentUser && (
+				<>
+					<MainHeader displayName={currentUser.display_name} />
+					<ActivityHeatmapMain userId={currentUser.id} />
+					<MainStats userId={currentUser.id} />
+					<QuickActions />
+					<RecentActivity userId={currentUser.id} />
+				</>
+			)}
 		</div>
 	);
 }

@@ -35,12 +35,10 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<main className="flex h-screen bg-muted">
-			{session && (
-				<Sidebar email={session.email} displayName={session.displayName}>
-					{children}
-				</Sidebar>
-			)}
+		<main className="flex min-h-screen bg-muted">
+			<Sidebar email={session.email} displayName={session.displayName}>
+				{children}
+			</Sidebar>
 		</main>
 	);
 }
