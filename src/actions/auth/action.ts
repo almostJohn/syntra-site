@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "node:crypto";
 import { isBefore, addMinutes } from "date-fns";
 import { prisma } from "@/data/db/prisma";
+import { findUserByEmail, findVerifiedUserByEmail } from "@/data/queries";
 import { signToken, setCookie, deleteCookie } from "@/lib/auth";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { PASSWORD_MIN_LENGTH, DISPLAY_NAME_MIN_LENGTH } from "@/lib/constants";
@@ -48,11 +49,7 @@ export async function login(
 			};
 		}
 
-		const user = await prisma.user.findUnique({
-			where: {
-				email,
-			},
-		});
+		const user = await findUserByEmail(email);
 
 		if (!user || !user.password) {
 			return {
@@ -166,13 +163,7 @@ export async function register(
 			};
 		}
 
-		const existingVerifiedUser = await prisma.user.findUnique({
-			where: { email },
-			select: {
-				id: true,
-				email_verified: true,
-			},
-		});
+		const existingVerifiedUser = await findVerifiedUserByEmail(email);
 
 		if (existingVerifiedUser?.email_verified) {
 			return {
@@ -187,9 +178,7 @@ export async function register(
 			};
 		}
 
-		const existingUnverifiedUser = await prisma.user.findUnique({
-			where: { email },
-		});
+		const existingUnverifiedUser = await findUserByEmail(email);
 
 		if (existingUnverifiedUser) {
 			const existingSession = await prisma.userSession.findFirst({
