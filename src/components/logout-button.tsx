@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { icons } from "@/components/icons";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { logout } from "@/actions/auth.action";
+import { logout } from "@/actions/auth/action";
 import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
