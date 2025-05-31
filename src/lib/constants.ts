@@ -12,3 +12,12 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
 
 export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verify-result";
+
+export const HERO_SECTION_TITLE = "Capture Your Ideas Effortlessly" as const;
+export const HERO_SECTION_DESCRIPTION =
+	"Syntra is a fast, minimalist note-taking app designed for clarity and productivity. Capture thoughts, organize ideas, and stay focused with a sleek, user-friendly interface — all in one place." as const;
+
+export const FEATURE_SECTION_TITLE =
+	"Everything You Need for Better Notes" as const;
+export const FEATURE_SECTION_DESCRIPTION =
+	"Our platform combines powerful features with intuitive design to make note-taking a breeze." as const;
