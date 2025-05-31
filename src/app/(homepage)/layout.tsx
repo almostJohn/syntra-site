@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { Navbar } from "@/components/navbar";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
 	title: "Home",
+	description: siteConfig.description,
 	appleWebApp: {
-		title: "Syntra",
+		title: siteConfig.name,
 	},
-	applicationName: "Syntra",
+	applicationName: siteConfig.name,
 	openGraph: {
-		siteName: "Syntra",
+		siteName: siteConfig.name,
 		type: "website",
-		title: "Syntra",
+		title: siteConfig.title,
+		description: siteConfig.description,
 	},
 	twitter: {
 		card: "summary_large_image",
 		creator: "@almostJohn",
+		title: siteConfig.title,
+		description: siteConfig.description,
 	},
 	creator: "@almostJohn",
 };
