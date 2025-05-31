@@ -52,7 +52,7 @@ function SignedOutButtons() {
 						className={cn(
 							buttonVariants({
 								variant: "outline",
-								className: "text-lg h-10",
+								className: "text-lg h-10 active:scale-95",
 							}),
 						)}
 						onClick={() => setInteracted(false)}

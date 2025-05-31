@@ -24,7 +24,9 @@ function SignedOutButtons() {
 		<div className="hidden gap-2 items-center justify-end md:flex">
 			<NextLink
 				href="/login"
-				className={cn(buttonVariants({ variant: "ghost" }))}
+				className={cn(
+					buttonVariants({ variant: "ghost:with-active:scale-95" }),
+				)}
 			>
 				Login
 			</NextLink>
@@ -51,7 +53,7 @@ function UserDropdownMenu({
 				href="/dashboard"
 				className={cn(
 					buttonVariants({
-						variant: "ghost",
+						variant: "ghost:with-active:scale-95",
 						className: "group px-6",
 					}),
 				)}
