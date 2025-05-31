@@ -7,34 +7,32 @@ import { NextLink } from "@/components/ui/next-link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { register } from "@/actions/auth.action";
-import { icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { login } from "@/actions/auth/action";
+import { icons } from "@/components/icons";
 
 const initialState = {
-	errorMessage: "",
 	successMessage: "",
+	errorMessage: "",
 	errors: {
 		email: "",
-		diplayName: "",
 		password: "",
 		fields: "",
 	},
 	values: {
 		email: "",
-		display_name: "",
 	},
 };
 
-export function RegisterForm() {
+export function LoginForm() {
 	const router = useRouter();
 
-	const [state, formAction, isPending] = useActionState(register, initialState);
+	const [state, formAction, isPending] = useActionState(login, initialState);
 
 	useEffect(() => {
 		if (state.successMessage) {
 			toast.success(state.successMessage);
-			router.push("/login");
+			router.push("/dashboard");
 		} else if (state.errorMessage) {
 			toast.error(state.errorMessage);
 		}
@@ -43,11 +41,14 @@ export function RegisterForm() {
 	return (
 		<form
 			action={formAction}
-			className="block w-full p-6 rounded-xl shadow-lg border bg-background/95 md:w-96"
+			className="block p-6 rounded-xl w-full bg-background/95 border shadow-lg md:w-96"
 		>
 			<div className="flex flex-col gap-6">
-				<div className="flex items-center justify-center text-center">
-					<h1 className="text-xl font-bold">Create an account</h1>
+				<div className="flex flex-col space-y-1 justify-center text-center">
+					<h1 className="text-xl font-bold">Welcome back!</h1>
+					<p className="text-muted-foreground">
+						We&apos;re so excited to see you again.
+					</p>
 				</div>
 				<div className="flex flex-col space-y-3.5">
 					<div className="flex flex-col space-y-1.5">
@@ -77,33 +78,6 @@ export function RegisterForm() {
 							</span>
 						)}
 					</div>
-					<div className="flex flex-col gap-y-1.5">
-						<Label htmlFor="display_name">
-							Display Name <span className="text-red-600">*</span>
-						</Label>
-						<Input
-							type="text"
-							id="display_name"
-							name="display_name"
-							defaultValue={state.values?.display_name}
-							className={cn(
-								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
-								state.errors?.displayName && "border-red-600",
-							)}
-							required
-						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
-						{state.errors?.displayName && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.displayName}
-							</span>
-						)}
-					</div>
 					<div className="flex flex-col space-y-1.5">
 						<Label htmlFor="password">
 							Password <span className="text-red-600">*</span>
@@ -112,32 +86,6 @@ export function RegisterForm() {
 							type="password"
 							id="password"
 							name="password"
-							className={cn(
-								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
-								state.errors?.password && "border-red-600",
-							)}
-							required
-						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
-						{state.errors?.password && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.password}
-							</span>
-						)}
-					</div>
-					<div className="flex flex-col space-y-1.5">
-						<Label htmlFor="confirm_password">
-							Confirm Password <span className="text-red-600">*</span>
-						</Label>
-						<Input
-							type="password"
-							id="confirm_password"
-							name="confirm_password"
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
 								state.errors?.fields && "border-red-600",
@@ -165,19 +113,20 @@ export function RegisterForm() {
 						>
 							{isPending ? (
 								<>
-									<icons.Loading className="size-4 animate-spin" /> Creating...
+									<icons.Loading className="size-4 animate-spin" /> Logging
+									in...
 								</>
 							) : (
-								<>Create account</>
+								<>Login</>
 							)}
 						</Button>
 						<p className="text-sm text-center text-muted-foreground">
-							Already have an account?{" "}
+							Don&apos;t have an account?{" "}
 							<NextLink
-								href="/login"
+								href="/register"
 								className="text-blue-600 font-semibold underline-offset-2 hover:underline"
 							>
-								Login now
+								Register now
 							</NextLink>
 							.
 						</p>
