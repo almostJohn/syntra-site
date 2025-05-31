@@ -57,7 +57,7 @@ export function Sidebar({ email, displayName, children }: SidebarProps) {
 			<div
 				className={cn(
 					"flex-1 transition-all duration-300",
-					isCollapsed ? "ml-16" : "ml-64",
+					isCollapsed ? "ml-18" : "ml-64",
 				)}
 			>
 				{children}

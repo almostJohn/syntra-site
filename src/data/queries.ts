@@ -1,5 +1,6 @@
 import { prisma } from "./db/prisma";
 import { Prisma } from "@/generated/prisma";
+import { startOfDay, subMonths } from "date-fns";
 
 export async function findUserByEmail(email: string) {
 	return prisma.user.findUnique({
@@ -223,4 +224,90 @@ export async function findUserSessionByToken(token: string) {
 		where: { token },
 		include: { user: true },
 	});
+}
+
+export async function getUserStats(userId: string) {
+	const now = new Date();
+	const oneWeekAgo = new Date(now);
+	oneWeekAgo.setDate(now.getDate() - 7);
+
+	const oneMonthAgo = new Date(now);
+	oneMonthAgo.setMonth(now.getMonth() - 1);
+
+	const [
+		totalProjects,
+		activeBoards,
+		activeBoardsLastMonth,
+		notesCreated,
+		notesLastWeek,
+		notesLastMonth,
+		teamMembers,
+		teamMembersLastMonth,
+	] = await Promise.all([
+		prisma.board.count({
+			where: {
+				OR: [
+					{ owner_id: userId },
+					{ team: { members: { some: { user_id: userId } } } },
+				],
+			},
+		}),
+		prisma.board.count({ where: { owner_id: userId } }),
+		prisma.board.count({
+			where: { owner_id: userId, created_at: { gt: oneMonthAgo } },
+		}),
+		prisma.note.count({ where: { owner_id: userId } }),
+		prisma.note.count({
+			where: {
+				owner_id: userId,
+				created_at: { gte: oneWeekAgo },
+			},
+		}),
+		prisma.note.count({
+			where: {
+				owner_id: userId,
+				created_at: oneMonthAgo,
+			},
+		}),
+		prisma.teamMember.count({ where: { user_id: userId } }),
+		prisma.teamMember.count({
+			where: {
+				user_id: userId,
+				joined_at: { gte: oneMonthAgo },
+			},
+		}),
+	]);
+
+	return {
+		totalProjects,
+		activeBoards,
+		activeBoardsLastMonth,
+		notesCreated,
+		notesLastWeek,
+		notesTrend: notesLastMonth,
+		teamMembers,
+		teamMembersLastMonth,
+	};
+}
+
+export async function getUserActivityHeatmapData(userId: string, months = 12) {
+	const fromDate = subMonths(new Date(), months);
+
+	const data = await prisma.activity.groupBy({
+		by: ["created_at"],
+		where: {
+			user_id: userId,
+			created_at: { gte: fromDate },
+		},
+		_count: true,
+	});
+
+	const result: Record<string, number> = {};
+
+	for (const item of data) {
+		const day = startOfDay(item.created_at).toISOString().split("T")[0];
+		result[day] = (result[day] ?? 0) + item._count;
+	}
+
+	return result;
 }
