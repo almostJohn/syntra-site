@@ -35,7 +35,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<main className="flex h-screen">
+		<main className="flex h-screen bg-muted">
 			{session && (
 				<Sidebar email={session.email} displayName={session.displayName}>
 					{children}

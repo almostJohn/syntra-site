@@ -3,45 +3,38 @@
 import { usePathname } from "next/navigation";
 import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
-import {
-	LayoutGrid,
-	Scroll,
-	FolderKanban,
-	UsersRound,
-	User2,
-	Settings,
-} from "lucide-react";
+import { icons } from "@/components/icons";
 
 const navItems = [
 	{
 		title: "Main",
 		href: "/dashboard",
-		icon: LayoutGrid,
+		icon: icons.Dashboard,
 	},
 	{
 		title: "Notes",
 		href: "/dashboard/notes",
-		icon: Scroll,
+		icon: icons.Scroll,
 	},
 	{
 		title: "Boards",
 		href: "/dashboard/boards",
-		icon: FolderKanban,
+		icon: icons.Kanban,
 	},
 	{
 		title: "Profile",
 		href: "/dashboard/profile",
-		icon: User2,
+		icon: icons.User,
 	},
 	{
 		title: "Teams",
 		href: "/dashboard/teams",
-		icon: UsersRound,
+		icon: icons.Users,
 	},
 	{
 		title: "Settings",
 		href: "/dashboard/settings",
-		icon: Settings,
+		icon: icons.Settings,
 	},
 ];
 

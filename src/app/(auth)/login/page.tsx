@@ -17,13 +17,20 @@ export default function LoginPage() {
 						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
 					>
 						Terms of Service
-					</NextLink>{" "}
-					and{" "}
+					</NextLink>
+					,{" "}
 					<NextLink
 						href="/privacy"
 						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
 					>
 						Privacy Policy
+					</NextLink>{" "}
+					and{" "}
+					<NextLink
+						href="/cookies"
+						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
+					>
+						Cookie Policy
 					</NextLink>
 					.
 				</p>

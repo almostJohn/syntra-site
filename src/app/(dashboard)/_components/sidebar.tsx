@@ -4,8 +4,8 @@ import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
-import { PanelLeft } from "lucide-react";
 import { Nav } from "./nav";
+import { icons } from "@/components/icons";
 import { UserDropdown } from "./user-dropdown";
 
 type SidebarProps = {
@@ -41,7 +41,7 @@ export function Sidebar({ email, displayName, children }: SidebarProps) {
 							className="cursor-pointer"
 							onClick={() => setIsCollapsed(!isCollapsed)}
 						>
-							<PanelLeft className="size-4 flex-shrink-0" />
+							<icons.PanelLeft className="size-4 flex-shrink-0" />
 						</Button>
 					</div>
 				</div>

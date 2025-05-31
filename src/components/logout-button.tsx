@@ -7,7 +7,6 @@ import { icons } from "@/components/icons";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/actions/auth/action";
-import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const initialState = {
@@ -50,7 +49,7 @@ export function LogoutButton({ isDropdownMenu, className }: LogoutButtonProps) {
 							</>
 						) : (
 							<>
-								<LogOut className="size-4 text-muted-foreground group-focus:text-red-600" />{" "}
+								<icons.Logout className="size-4 text-muted-foreground group-focus:text-red-600" />{" "}
 								Logout
 							</>
 						)}
