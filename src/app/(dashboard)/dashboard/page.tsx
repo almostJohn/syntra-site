@@ -3,7 +3,7 @@ import { MainHeader } from "../_components/main/main-header";
 import { MainStats } from "../_components/main/main-stats";
 import { QuickActions } from "../_components/quick-actions";
 import { RecentActivity } from "../_components/recent-activity";
-import { ActivityHeatmapMain } from "../_components/activity-heatmap-main";
+import { Activity } from "../_components/activity";
 
 export default async function DashboardPage() {
 	const currentUser = await getCurrentUser();
@@ -13,7 +13,7 @@ export default async function DashboardPage() {
 			{currentUser && (
 				<>
 					<MainHeader displayName={currentUser.display_name} />
-					<ActivityHeatmapMain userId={currentUser.id} />
+					<Activity userId={currentUser.id} />
 					<MainStats userId={currentUser.id} />
 					<QuickActions />
 					<RecentActivity userId={currentUser.id} />
