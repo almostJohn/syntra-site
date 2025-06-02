@@ -17,7 +17,6 @@ const initialState = {
 	errors: {
 		email: "",
 		password: "",
-		fields: "",
 	},
 	values: {
 		email: "",
@@ -62,16 +61,10 @@ export function LoginForm() {
 							defaultValue={state.values?.email}
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.email && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.email && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.email}
@@ -88,16 +81,10 @@ export function LoginForm() {
 							name="password"
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.password && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.password && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.password}

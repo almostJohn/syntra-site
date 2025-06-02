@@ -33,26 +33,28 @@ export async function RecentActivity({ userId }: RecentActivityProps) {
 			{activities.length === 0 && (
 				<p className="text-muted-foreground text-sm">No recent activity.</p>
 			)}
-			{activities.map((activity) => (
-				<div key={activity.id} className="flex items-center space-x-3">
-					<div
-						className={`size-8 rounded-full flex items-center justify-center ${colorMap[activity.type as keyof typeof colorMap]}`}
-					>
-						{iconMap[activity.type as keyof typeof iconMap]}
+			<div className="flex flex-col divide-y">
+				{activities.map((activity) => (
+					<div key={activity.id} className="flex items-center space-x-3 py-2">
+						<div
+							className={`size-8 rounded-full flex items-center justify-center ${colorMap[activity.type as keyof typeof colorMap]}`}
+						>
+							{iconMap[activity.type as keyof typeof iconMap]}
+						</div>
+						<div className="flex flex-col space-y-0.5">
+							<p className="text-sm font-medium">
+								{labelMap[activity.type as keyof typeof labelMap] ??
+									"Activity recorded"}
+							</p>
+							<p className="text-xs text-muted-foreground">
+								{formatDistanceToNow(new Date(activity.created_at), {
+									addSuffix: true,
+								})}
+							</p>
+						</div>
 					</div>
-					<div className="flex-1">
-						<p className="text-sm font-medium">
-							{labelMap[activity.type as keyof typeof labelMap] ??
-								"Activity recorded"}
-						</p>
-						<p className="text-xs text-muted-foreground">
-							{formatDistanceToNow(new Date(activity.created_at), {
-								addSuffix: true,
-							})}
-						</p>
-					</div>
-				</div>
-			))}
+				))}
+			</div>
 		</div>
 	);
 }

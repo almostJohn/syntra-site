@@ -1,6 +1,6 @@
 import { prisma } from "./db/prisma";
 import { Prisma } from "@/generated/prisma";
-import { startOfDay, subMonths } from "date-fns";
+import { startOfDay, subMonths, format } from "date-fns";
 
 export async function findUserByEmail(email: string) {
 	return prisma.user.findUnique({
@@ -305,7 +305,7 @@ export async function getUserActivityHeatmapData(userId: string, months = 12) {
 	const result: Record<string, number> = {};
 
 	for (const item of data) {
-		const day = startOfDay(item.created_at).toISOString().split("T")[0];
+		const day = format(startOfDay(new Date(item.created_at)), "yyyy-MM-dd");
 		result[day] = (result[day] ?? 0) + item._count;
 	}
 

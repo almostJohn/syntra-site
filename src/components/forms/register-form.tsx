@@ -18,7 +18,7 @@ const initialState = {
 		email: "",
 		diplayName: "",
 		password: "",
-		fields: "",
+		confirmPassword: "",
 	},
 	values: {
 		email: "",
@@ -61,16 +61,10 @@ export function RegisterForm() {
 							defaultValue={state.values?.email}
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.email && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.email && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.email}
@@ -88,16 +82,10 @@ export function RegisterForm() {
 							defaultValue={state.values?.display_name}
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.displayName && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.displayName && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.displayName}
@@ -114,16 +102,10 @@ export function RegisterForm() {
 							name="password"
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.password && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.password && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.password}
@@ -140,19 +122,19 @@ export function RegisterForm() {
 							name="confirm_password"
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-								state.errors?.fields && "border-red-600",
 								state.errors?.password && "border-red-600",
+								state.errors?.confirmPassword && "border-red-600",
 							)}
 							required
 						/>
-						{state.errors?.fields && (
-							<span className="font-medium text-red-600 text-xs">
-								{state.errors.fields}
-							</span>
-						)}
 						{state.errors?.password && (
 							<span className="font-medium text-red-600 text-xs">
 								{state.errors.password}
+							</span>
+						)}
+						{state.errors?.confirmPassword && (
+							<span className="font-medium text-red-600 text-xs">
+								{state.errors.confirmPassword}
 							</span>
 						)}
 					</div>
