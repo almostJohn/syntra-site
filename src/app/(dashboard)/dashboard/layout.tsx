@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSession, type AuthPayload } from "@/lib/auth";
-import { Sidebar } from "../_components/sidebar";
+import { Sidebar as SidebarWrapper } from "@/components/dashboard/sidebar/sidebar";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -35,10 +35,10 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<main className="flex min-h-screen bg-muted">
-			<Sidebar email={session.email} displayName={session.displayName}>
+		<main className="flex min-h-screen">
+			<SidebarWrapper email={session.email} displayName={session.displayName}>
 				{children}
-			</Sidebar>
+			</SidebarWrapper>
 		</main>
 	);
 }

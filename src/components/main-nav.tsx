@@ -10,8 +10,8 @@ import {
 	DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { icons } from "./icons";
 import { LogoutButton } from "./logout-button";
+import { Settings, User, ArrowRight } from "lucide-react";
 
 type MainNavProps = {
 	email?: string;
@@ -59,7 +59,7 @@ function UserDropdownMenu({
 				)}
 			>
 				Dashboard{" "}
-				<icons.ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-accent-foreground group-hover:translate-x-1" />
+				<ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-accent-foreground group-hover:translate-x-1" />
 			</NextLink>
 			<DropdownMenu>
 				<DropdownMenuTrigger className="rounded-full cursor-pointer">
@@ -89,7 +89,7 @@ function UserDropdownMenu({
 							href="/dashboard/profile"
 							className="flex items-center gap-2"
 						>
-							<icons.User className="size-4" />
+							<User className="size-4" />
 							<span>Profile</span>
 						</NextLink>
 					</DropdownMenuItem>
@@ -98,7 +98,7 @@ function UserDropdownMenu({
 							href="/dashboard/settings"
 							className="flex items-center gap-2"
 						>
-							<icons.Settings className="size-4" />
+							<Settings className="size-4" />
 							<span>Settings</span>
 						</NextLink>
 					</DropdownMenuItem>

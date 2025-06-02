@@ -1,20 +1,20 @@
 import { getCurrentUser } from "@/lib/auth";
-import { MainHeader } from "../_components/main/main-header";
-import { MainStats } from "../_components/main/main-stats";
-import { QuickActions } from "../_components/quick-actions";
-import { RecentActivity } from "../_components/recent-activity";
-import { Activity } from "../_components/activity";
+import { Header } from "@/components/dashboard/main/header";
+import { Activity } from "@/components/dashboard/main/activities/activity";
+import { Stats } from "@/components/dashboard/main/stats/stats";
+import { QuickActions } from "@/components/dashboard/main/quick-actions";
+import { RecentActivity } from "@/components/dashboard/main/recent-activity";
 
 export default async function DashboardPage() {
 	const currentUser = await getCurrentUser();
 
 	return (
-		<div className="p-6 h-full space-y-6">
+		<div className="p-6 min-h-screen space-y-6 bg-muted">
 			{currentUser && (
 				<>
-					<MainHeader displayName={currentUser.display_name} />
+					<Header displayName={currentUser.display_name} />
 					<Activity userId={currentUser.id} />
-					<MainStats userId={currentUser.id} />
+					<Stats userId={currentUser.id} />
 					<QuickActions />
 					<RecentActivity userId={currentUser.id} />
 				</>

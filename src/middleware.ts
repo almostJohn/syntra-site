@@ -9,7 +9,7 @@ import {
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const isAuthenticated = checkAuthForMiddleware(request);
+	const isAuthenticated = await checkAuthForMiddleware(request);
 
 	if (
 		DISABLED_ROUTES_AFTER_SIGN_OUT.some((route) => pathname.startsWith(route))
@@ -43,6 +43,7 @@ export const config = {
 		"/dashboard/settings/:path*",
 		"/dashboard/boards/:path*",
 		"/dashboard/notes/:path*",
+		"/dashboard/teams/:path",
 		"/login",
 		"/register",
 		"/verify-result",

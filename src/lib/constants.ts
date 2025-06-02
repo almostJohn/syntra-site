@@ -10,6 +10,7 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard/settings",
 	"/dashboard/boards",
 	"/dashboard/notes",
+	"/dashboard/teams",
 ];
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
 

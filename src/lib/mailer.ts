@@ -1,5 +1,6 @@
 import { Resend } from "resend";
-import { VerifyEmail } from "@/components/emails/verify.email";
+import { VerifyEmail } from "@/emails/verify-email";
+import { log, LogType } from "./log";
 
 const resend = new Resend(process.env.NEXT_RESEND_API_KEY);
 
@@ -23,10 +24,11 @@ export async function sendVerificationEmail({
 		});
 	} catch (error_) {
 		const error = error_ as Error;
-		console.error(error.message, error);
-		throw new Error(
-			"Verification email failed to send to the approriate email address due to: ",
-			{ cause: error },
-		);
+		log({
+			logType: LogType.Error,
+			category: "VERIFICATION_EMAIL_ERROR",
+			details: { message: error.message, error },
+			additionalData: { email, verificationUrl, displayName },
+		});
 	}
 }

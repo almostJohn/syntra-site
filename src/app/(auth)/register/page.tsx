@@ -1,5 +1,5 @@
 import { NextLink } from "@/components/ui/next-link";
-import { RegisterForm } from "./register-form";
+import { RegisterForm } from "../../../components/forms/register-form";
 
 export const metadata = {
 	title: "Register",
