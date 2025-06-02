@@ -24,7 +24,8 @@ export async function login(
 			return {
 				errorMessage: "Email and password are required.",
 				errors: {
-					fields: "Email and password are required.",
+					email: "Email is a required field.",
+					password: "Password is required field.",
 				},
 			};
 		}
@@ -55,7 +56,8 @@ export async function login(
 			return {
 				errorMessage: "Incorrect email or password.",
 				errors: {
-					fields: "Incorrect email or password.",
+					email: "Incorrect email.",
+					fields: "Incorrect password.",
 				},
 				values: { email },
 			};
@@ -74,7 +76,8 @@ export async function login(
 			return {
 				errorMessage: "Incorrect email or password.",
 				errors: {
-					fields: "Incorrect email or password.",
+					email: "Incorrect email.",
+					password: "Incorrect password.",
 				},
 				values: { email },
 			};
@@ -113,7 +116,10 @@ export async function register(
 			return {
 				errorMessage: "All fields are required.",
 				errors: {
-					fields: "All fields are required.",
+					email: "Email is a required field.",
+					displayName: "Display name is a required field.",
+					password: "Password is a required field.",
+					confirmPassword: "Confirm password is a required field.",
 				},
 			};
 		}

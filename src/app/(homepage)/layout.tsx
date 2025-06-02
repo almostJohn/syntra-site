@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: "summary_large_image",
-		creator: "@almostJohn",
+		creator: siteConfig.creator,
 		title: siteConfig.title,
 		description: siteConfig.description,
 	},
-	creator: "@almostJohn",
+	creator: siteConfig.creator,
 };
 
 export default function HomePageLayout({ children }: PropsWithChildren) {
