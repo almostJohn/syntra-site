@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { icons } from "@/components/icons";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/actions/auth/action";
+import { LogOutIcon, Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const initialState = {
@@ -45,11 +45,11 @@ export function LogoutButton({ isDropdownMenu, className }: LogoutButtonProps) {
 					<button type="submit" className="flex items-center gap-2 w-full">
 						{isPending ? (
 							<>
-								<icons.Loading className="size-4 animate-spin" /> Logging out...
+								<Loader className="size-4 animate-spin" /> Logging out...
 							</>
 						) : (
 							<>
-								<icons.Logout className="size-4 text-muted-foreground group-focus:text-red-600" />{" "}
+								<LogOutIcon className="size-4 text-muted-foreground group-focus:text-red-600" />{" "}
 								Logout
 							</>
 						)}
@@ -65,7 +65,7 @@ export function LogoutButton({ isDropdownMenu, className }: LogoutButtonProps) {
 				>
 					{isPending ? (
 						<>
-							<icons.Loading className="size-4 animate-spin" /> Logging out...
+							<Loader className="size-4 animate-spin" /> Logging out...
 						</>
 					) : (
 						<>Logout</>

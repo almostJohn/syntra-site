@@ -86,7 +86,9 @@ export async function login(
 			displayName: user.display_name,
 		});
 
-		await setCookie(sessionToken);
+		if (sessionToken) {
+			await setCookie(sessionToken);
+		}
 
 		return {
 			successMessage: "Login successful.",

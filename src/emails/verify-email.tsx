@@ -27,10 +27,6 @@ export function VerifyEmail({
 				<Font
 					fontFamily="Manrope"
 					fallbackFontFamily="Arial"
-					webFont={{
-						url: "https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap",
-						format: "woff2",
-					}}
 					fontWeight={400}
 					fontStyle="normal"
 				/>
