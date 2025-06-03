@@ -2,8 +2,8 @@ import type { HTMLAttributes } from "react";
 
 type IconProps = HTMLAttributes<SVGElement>;
 
-export const icons = {
-	Menu: (props: IconProps) => {
+export const Icons = {
+	menu: (props: IconProps) => {
 		return (
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 import { NextLink } from "@/components/ui/next-link";
-import { RegisterForm } from "../../../components/forms/register-form";
+import { RegisterForm } from "@/components/auth/register-form";
 
 export const metadata = {
 	title: "Register",
@@ -7,33 +7,28 @@ export const metadata = {
 
 export default function RegisterPage() {
 	return (
-		<div className="mx-auto max-w-3xl px-6 md:px-0 flex flex-col space-y-4 items-center justify-center w-screen h-screen">
-			<RegisterForm />
-			<div className="flex justify-center text-center text-sm">
-				<p className="text-muted-foreground">
-					By registering an account, you agree to our{" "}
-					<NextLink
-						href="/terms"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Terms of Service
-					</NextLink>
-					,{" "}
-					<NextLink
-						href="/privacy"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Privacy Policy
-					</NextLink>{" "}
-					and{" "}
-					<NextLink
-						href="/cookies"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Cookie Policy
-					</NextLink>
-					.
-				</p>
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4">
+			<div className="w-full max-w-md">
+				<RegisterForm />
+				<div className="pt-3 flex items-center justify-center text-center">
+					<p className="text-sm text-muted-foreground">
+						By creating an account, you agree to our{" "}
+						<NextLink
+							href="/terms"
+							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+						>
+							Terms of Service
+						</NextLink>{" "}
+						and{" "}
+						<NextLink
+							href="/privacy"
+							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+						>
+							Privacy Policy
+						</NextLink>
+						.
+					</p>
+				</div>
 			</div>
 		</div>
 	);

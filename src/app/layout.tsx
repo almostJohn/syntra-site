@@ -6,7 +6,7 @@ import {
 } from "react";
 import { Toaster } from "sonner";
 import { siteConfig } from "@/config/site";
-import { manrope } from "@/lib/fonts";
+import { geist } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -37,10 +37,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<body
 				className={cn(
 					"bg-background text-foreground antialiased selection:bg-blue-50 selection:text-blue-600",
-					manrope.className,
+					geist.className,
 				)}
 			>
-				<div className="min-h-screen relative">
+				<div>
 					<ViewTransition>{children}</ViewTransition>
 					<Toaster position="top-center" />
 				</div>

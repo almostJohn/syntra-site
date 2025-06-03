@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "UserSession" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;

@@ -15,43 +15,19 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  email          String         @unique
-  display_name   String
-  password       String
-  email_verified Boolean        @default(false)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  notes          Note[]
-  boards         Board[]
-  activities     Activity[]
-  notifications  Notification[]
-  user_sessions  UserSession[]
-  owned_teams    Team[]         @relation("owned_teams")
-  team_members   TeamMember[]
-}
-
-model Team {
-  id         String       @id @default(cuid())
-  name       String
-  owner_id   String
-  owner      User         @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
-  members    TeamMember[]
-  boards     Board[]
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
-}
-
-model TeamMember {
-  id        String   @id @default(cuid())
-  user_id   String
-  team_id   String
-  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  team      Team     @relation(fields: [team_id], references: [id], onDelete: Cascade)
-  role      TeamRole @default(MEMBER)
-  joined_at DateTime @default(now())
-
-  @@unique([user_id, team_id])
+  id                String         @id @default(cuid())
+  email             String         @unique
+  name              String
+  password          String
+  is_email_verified Boolean        @default(false)
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
+  teams             Team[]         @relation("owned_teams")
+  team_members      TeamMember[]
+  sessions          UserSession[]
+  tasks_created     Task[]         @relation("tasks_created_by")
+  tasks_assigned    Task[]         @relation("tasks_assigned_to")
+  notifications     Notification[]
 }
 
 model UserSession {
@@ -63,91 +39,84 @@ model UserSession {
   created_at DateTime @default(now())
 }
 
-model Tag {
-  id         String   @id @default(cuid())
-  name       String   @unique
-  notes      Note[]   @relation("note_tags")
-  created_at DateTime @default(now())
+model Team {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  owner_id    String
+  owner       User         @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
+  members     TeamMember[]
+  tasks       Task[]       @relation("team_tasks")
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
 }
 
-model Note {
-  id         String   @id @default(cuid())
-  title      String?
-  subtitle   String?
-  content    String
-  owner_id   String
-  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  tags       Tag[]    @relation("note_tags")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+model TeamMember {
+  id        String   @id @default(cuid())
+  user_id   String
+  team_id   String
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [team_id], references: [id], onDelete: Cascade)
+  role      Role     @default(MEMBER)
+  joined_at DateTime @default(now())
+
+  @@unique([user_id, team_id])
 }
 
-model Board {
-  id         String   @id @default(cuid())
-  title      String
-  owner_id   String
-  owner      User     @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  team_id    String?
-  team       Team?    @relation(fields: [team_id], references: [id], onDelete: Cascade)
-  statuses   Status[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
-
-model Status {
-  id         String   @id @default(cuid())
-  name       String
-  order      Int
-  board_id   String
-  board      Board    @relation(fields: [board_id], references: [id], onDelete: Cascade)
-  tasks      Task[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+enum Role {
+  OWNER
+  MEMBER
 }
 
 model Task {
-  id         String   @id @default(cuid())
-  title      String
-  content    String
-  status_id  String
-  status     Status   @relation(fields: [status_id], references: [id], onDelete: Cascade)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id                 String         @id @default(cuid())
+  title              String
+  description        String?
+  planned_start_time DateTime
+  planned_end_time   DateTime
+  actual_start_time  DateTime?
+  actual_end_time    DateTime?
+  adherence_notes    String?
+  created_at         DateTime       @default(now())
+  updated_at         DateTime       @updatedAt
+  team_id            String
+  team               Team           @relation("team_tasks", fields: [team_id], references: [id], onDelete: Cascade)
+  assigned_to_id     String
+  assined_to         User           @relation("tasks_assigned_to", fields: [assigned_to_id], references: [id], onDelete: Cascade)
+  created_by_id      String
+  created_by         User           @relation("tasks_created_by", fields: [created_by_id], references: [id], onDelete: Cascade)
+  adherence          Adherence?
+  notifications      Notification[]
 }
 
-model Activity {
-  id         String       @id @default(cuid())
-  type       ActivityType
-  user_id    String
-  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  created_at DateTime     @default(now())
+model Adherence {
+  id                String   @id @default(cuid())
+  task_id           String   @unique
+  task              Task     @relation(fields: [task_id], references: [id], onDelete: Cascade)
+  late_start        Boolean  @default(false)
+  early_finish      Boolean  @default(false)
+  late_finish       Boolean  @default(false)
+  missed_entirely   Boolean  @default(false)
+  deviation_minutes Int?
+  note              String?
+  recorded_at       DateTime @default(now())
 }
 
 model Notification {
   id         String           @id @default(cuid())
   user_id    String
   user       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  title      String
+  task_id    String?
+  task       Task?            @relation(fields: [task_id], references: [id], onDelete: Cascade)
   message    String
-  read       Boolean          @default(false)
-  type       NotificationType
+  is_read    Boolean          @default(false)
   created_at DateTime         @default(now())
+  type       NotificationType
 }
 
 enum NotificationType {
-  NOTE_CREATED
-  BOARD_CREATED
-  TASK_COMPLETED
-  OTHER
-}
-
-enum ActivityType {
-  CREATE_NOTE
-  CREATE_BOARD
-  MEMBER_JOINED
-}
-
-enum TeamRole {
-  OWNER
-  MEMBER
+  REMINDER
+  ALERT
+  INFO
+  TASK_ASSIGNMENT
 }

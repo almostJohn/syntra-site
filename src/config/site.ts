@@ -5,7 +5,7 @@ export const siteConfig = {
 		template: "Syntra — %s",
 	},
 	description:
-		"Syntra is a fast, minimalist note-taking app designed for clarity and productivity. Capture thoughts, organize ideas, and stay focused with a sleek, user-friendly interface — all in one place.",
+		"Syntra is a simple, powerful system management platform built for clarity, control, and productivity. With a clean, user-friendly interface and essential features that just work, Syntra helps teams streamline operations, manage workflows, and stay organized — all at an affordable cost.",
 	creator: "@almostJohn",
 };
 

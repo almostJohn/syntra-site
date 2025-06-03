@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuthForMiddleware } from "./lib/check-auth";
+import { validateAuthentication } from "./lib/auth/validateAuthentication";
+import { getVerifyResultCookie } from "./lib/auth/getVerifyResultCookie";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
 	DISABLED_ROUTE_AFTER_VERIFICATION,
@@ -9,7 +10,7 @@ import {
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const isAuthenticated = await checkAuthForMiddleware(request);
+	const isAuthenticated = await validateAuthentication();
 
 	if (
 		DISABLED_ROUTES_AFTER_SIGN_OUT.some((route) => pathname.startsWith(route))
@@ -26,7 +27,7 @@ export async function middleware(request: NextRequest) {
 	}
 
 	if (pathname.startsWith(DISABLED_ROUTE_AFTER_VERIFICATION)) {
-		const verifyStatus = request.cookies.get("verify-status")?.value;
+		const verifyStatus = await getVerifyResultCookie();
 
 		if (!verifyStatus) {
 			return NextResponse.redirect(new URL("/login", request.url));
@@ -40,10 +41,10 @@ export const config = {
 	matcher: [
 		"/dashboard/:path*",
 		"/dashboard/profile/:path*",
-		"/dashboard/settings/:path*",
-		"/dashboard/boards/:path*",
-		"/dashboard/notes/:path*",
+		"/dashboard/account/:path*",
+		"/dashboard/schedule/:path",
 		"/dashboard/teams/:path",
+		"/dashboard/adherence/:path",
 		"/login",
 		"/register",
 		"/verify-result",

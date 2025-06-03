@@ -1,5 +1,5 @@
 import { NextLink } from "@/components/ui/next-link";
-import { LoginForm } from "../../../components/forms/login-form";
+import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata = {
 	title: "Login",
@@ -7,33 +7,28 @@ export const metadata = {
 
 export default function LoginPage() {
 	return (
-		<div className="mx-auto max-w-3xl px-6 md:px-0 flex flex-col space-y-4 items-center justify-center w-screen h-screen">
-			<LoginForm />
-			<div className="flex justify-center text-center text-sm">
-				<p className="text-muted-foreground">
-					By logging in, you agree to our{" "}
-					<NextLink
-						href="/terms"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Terms of Service
-					</NextLink>
-					,{" "}
-					<NextLink
-						href="/privacy"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Privacy Policy
-					</NextLink>{" "}
-					and{" "}
-					<NextLink
-						href="/cookies"
-						className="font-semibold text-blue-600 underline-offset-2 hover:underline"
-					>
-						Cookie Policy
-					</NextLink>
-					.
-				</p>
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4">
+			<div className="w-full max-w-md">
+				<LoginForm />
+				<div className="pt-3 flex items-center justify-center text-center">
+					<p className="text-sm text-muted-foreground">
+						By signing in, you agree to our{" "}
+						<NextLink
+							href="/terms"
+							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+						>
+							Terms of Service
+						</NextLink>{" "}
+						and{" "}
+						<NextLink
+							href="/privacy"
+							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+						>
+							Privacy Policy
+						</NextLink>
+						.
+					</p>
+				</div>
 			</div>
 		</div>
 	);
