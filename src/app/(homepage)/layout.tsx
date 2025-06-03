@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Navbar } from "@/components/navbar";
 import { siteConfig } from "@/config/site";
+import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
 	title: "Home",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
 
 export default function HomePageLayout({ children }: PropsWithChildren) {
 	return (
-		<>
+		<main className="min-h-screen">
 			<Navbar />
 			{children}
-		</>
+		</main>
 	);
 }

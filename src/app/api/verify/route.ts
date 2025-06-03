@@ -1,11 +1,10 @@
+import crypto from "node:crypto";
 import { prisma } from "@/data/db/prisma";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { setVerifyResultCookie } from "@/lib/auth/setVerifyResultCookie";
 
 export async function GET(request: NextRequest) {
 	try {
-		const cookieStore = await cookies();
-
 		const token = request.nextUrl.searchParams.get("token");
 
 		if (!token) {
@@ -36,13 +35,19 @@ export async function GET(request: NextRequest) {
 		}
 
 		await prisma.user.update({
-			where: { id: session.user_id },
-			data: { email_verified: true },
+			where: {
+				id: session.user_id,
+			},
+			data: {
+				is_email_verified: true,
+			},
 		});
 
 		await prisma.userSession.delete({ where: { id: session.id } });
 
-		cookieStore.set("verify-status", "success", { maxAge: 10, path: "/" });
+		const sessionToken = crypto.randomBytes(32).toString("hex");
+
+		await setVerifyResultCookie(sessionToken);
 
 		return NextResponse.redirect(
 			new URL("/verify-result?status=success", request.url),

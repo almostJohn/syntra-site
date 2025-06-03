@@ -1,4 +1,4 @@
-import { VerifyResult } from "./verify-result";
+import { VerifyResult } from "@/components/verification/verify-result";
 
 export const metadata = {
 	title: "Verification Result",
