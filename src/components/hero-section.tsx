@@ -99,7 +99,7 @@ export function HeroSection({ title, description }: HeroSectionProps) {
 							User-Friendly
 						</Badge>
 					</div>
-					<div className="flex items-center justify-center mt-6 animate-slide opacity-0">
+					<div className="flex items-center justify-center mt-4 animate-slide opacity-0">
 						<NextLink
 							href="/login"
 							className={cn(
