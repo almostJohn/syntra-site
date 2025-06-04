@@ -6,9 +6,8 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
 	"/dashboard/profile",
 	"/dashboard/account",
-	"/dashboard/schedule",
+	"/dashboard/schedule/adherence",
 	"/dashboard/teams",
-	"/dashboard/adherence",
 ];
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
 export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verify-result";
