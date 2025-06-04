@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { SignedOutMainNav } from "./signed-out-main-nav";
 import { SignedOutMobileNav } from "./signed-out-mobile-nav";
 import { SignedInMainNav } from "./signed-in-main-nav";
+import { SignedInMobileNav } from "./signed-in-mobile-nav";
 
 export async function Navbar() {
 	const currentUser = await getCurrentUser();
@@ -27,6 +28,10 @@ export async function Navbar() {
 				{currentUser && (
 					<>
 						<SignedInMainNav
+							email={currentUser.email}
+							name={currentUser.name}
+						/>
+						<SignedInMobileNav
 							email={currentUser.email}
 							name={currentUser.name}
 						/>

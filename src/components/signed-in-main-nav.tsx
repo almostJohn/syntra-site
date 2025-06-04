@@ -11,6 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { ArrowRight, Settings, User } from "lucide-react";
+import { LogoutButton } from "./auth/logout-button";
 
 type SignedInMainNavProps = {
 	email: string;
@@ -60,23 +61,19 @@ export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem asChild>
-						<NextLink
-							href="/dashboard/profile"
-							className="flex items-center space-x-2"
-						>
+						<NextLink href="/dashboard/profile" className="flex items-center">
 							<User className="size-4" />
 							<span>Profile</span>
 						</NextLink>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
-						<NextLink
-							href="/dashboard/account"
-							className="flex items-center space-x-2"
-						>
+						<NextLink href="/dashboard/account" className="flex items-center">
 							<Settings className="size-4" />
 							<span>Account settings</span>
 						</NextLink>
 					</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<LogoutButton isDropdownMenu={true} />
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>
