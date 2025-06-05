@@ -3,10 +3,14 @@ import { log, LogType } from "../log";
 
 export async function setVerifyResultCookie(sessionToken: string) {
 	try {
-		(await cookies()).set(process.env.NEXT_VERIFY_RESULT_KEY!, sessionToken, {
-			maxAge: 10,
-			path: "/",
-		});
+		(await cookies()).set(
+			process.env.NEXT_REQUEST_VERIFIED_NAME!,
+			sessionToken,
+			{
+				maxAge: 10,
+				path: "/",
+			},
+		);
 	} catch (error_) {
 		const error = error_ as Error;
 

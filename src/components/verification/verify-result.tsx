@@ -59,15 +59,12 @@ const config: Record<
 
 export function VerifyResult() {
 	const router = useRouter();
-
 	const params = useSearchParams();
-
 	const status = params.get("status") ?? "error";
-
 	const { title, message, color, icon: Icon } = config[status] ?? config.error;
 
 	useEffect(() => {
-		document.cookie = `${process.env.NEXT_VERIFY_RESULT_KEY}=; Max-Age=0; path=/`;
+		document.cookie = `${process.env.NEXT_REQUEST_VERIFIED_NAME}=; Max-Age=0; path=/`;
 
 		const timeout = setTimeout(() => {
 			router.push("/login");
@@ -81,10 +78,10 @@ export function VerifyResult() {
 			<div
 				className={cn(
 					"block p-6 rounded-md border shadow-lg",
-					color === "green" && "bg-green-50 border-green-200",
-					color === "yellow" && "bg-yellow-50 border-yellow-200",
-					color === "red" && "bg-red-50 border-red-200",
-					color === "orange" && "bg-orange-50 border-orange-200",
+					color === "green" && "bg-green-50 border-green-600",
+					color === "yellow" && "bg-yellow-50 border-yellow-600",
+					color === "red" && "bg-red-50 border-red-600",
+					color === "orange" && "bg-orange-50 border-orange-600",
 				)}
 			>
 				<div className="flex flex-col gap-6">
@@ -92,10 +89,10 @@ export function VerifyResult() {
 						<Icon
 							className={cn(
 								"size-16",
-								color === "green" && "text-green-500",
-								color === "yellow" && "text-yellow-500",
-								color === "red" && "text-red-500",
-								color === "orange" && "text-orange-500",
+								color === "green" && "text-green-600",
+								color === "yellow" && "text-yellow-600",
+								color === "red" && "text-red-600",
+								color === "orange" && "text-orange-600",
 							)}
 						/>
 					</div>

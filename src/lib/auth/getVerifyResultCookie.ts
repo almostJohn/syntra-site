@@ -3,7 +3,9 @@ import { log, LogType } from "../log";
 
 export async function getVerifyResultCookie() {
 	try {
-		const cookie = (await cookies()).get(process.env.NEXT_VERIFY_RESULT_KEY!);
+		const cookie = (await cookies()).get(
+			process.env.NEXT_REQUEST_VERIFIED_NAME!,
+		);
 		return cookie?.value;
 	} catch (error_) {
 		const error = error_ as Error;
