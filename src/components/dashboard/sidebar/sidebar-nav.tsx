@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import {
 	LayoutGrid,
 	Calendar1,
-	Hourglass,
 	User,
 	Users,
 	Settings,
@@ -28,11 +27,6 @@ const navItems = [
 		title: "Schedule",
 		href: "/dashboard/schedule",
 		icon: Calendar1,
-	},
-	{
-		title: "Adherence",
-		href: "/dashboard/schedule/adherence",
-		icon: Hourglass,
 	},
 	{
 		title: "Profile",

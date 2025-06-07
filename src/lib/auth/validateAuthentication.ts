@@ -1,3 +1,4 @@
+import type { Auth } from "./types";
 import { getCookie } from "./getCookie";
 import { verifySession } from "./verifySession";
 import { log, LogType } from "../log";
@@ -10,7 +11,7 @@ export async function validateAuthentication() {
 	}
 
 	try {
-		await verifySession(sessionToken);
+		(await verifySession(sessionToken)) as Auth;
 
 		return true;
 	} catch (error_) {

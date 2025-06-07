@@ -7,7 +7,10 @@ import { getSession } from "@/lib/auth/getSession";
 import { SidebarWrapper } from "@/components/dashboard/sidebar/sidebar-wrapper";
 
 export const metadata: Metadata = {
-	title: "Dashboard",
+	title: {
+		default: "Dashboard",
+		template: "%s — Dashboard",
+	},
 	description: siteConfig.description,
 	appleWebApp: {
 		title: siteConfig.name,
@@ -28,9 +31,7 @@ export const metadata: Metadata = {
 	creator: siteConfig.creator,
 };
 
-export default async function MainDashboardLayout({
-	children,
-}: PropsWithChildren) {
+export default async function DashboardLayout({ children }: PropsWithChildren) {
 	const session = await getSession<Auth>();
 
 	if (!session) {
