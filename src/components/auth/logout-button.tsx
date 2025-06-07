@@ -51,8 +51,8 @@ export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 						className="group focus:bg-red-50 focus:text-red-600"
 					>
 						<button type="submit" className="flex items-center gap-2">
-							<LogOut className="size-4 text-muted-foreground group-focus:text-red-600" />
-							Logout
+							<LogOut className="size-4 text-red-600" />
+							<span className="text-red-600">Logout</span>
 						</button>
 					</DropdownMenuItem>
 				</form>

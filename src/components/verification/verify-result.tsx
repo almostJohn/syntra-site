@@ -120,8 +120,8 @@ export function VerifyResult() {
 							{message}
 						</p>
 					</div>
-					<div className="flex flex-col gap-2 rounded border-l-4 border-blue-600 bg-background px-4 py-2">
-						<span className="text-lg font-medium">Notice</span>
+					<div className="flex flex-col gap-2 rounded-sm border border-border bg-background px-4 py-2">
+						<span className="text-lg font-semibold">Notice</span>
 						<span className="text-sm text-muted-foreground">
 							This page will become inaccessible in the next 5 seconds and will
 							redirect you to our login page.

@@ -10,6 +10,7 @@ import {
 	User,
 	Users,
 	Settings,
+	NotebookPen,
 } from "lucide-react";
 
 const navItems = [
@@ -17,6 +18,11 @@ const navItems = [
 		title: "Main",
 		href: "/dashboard",
 		icon: LayoutGrid,
+	},
+	{
+		title: "Tasks",
+		href: "/dashboard/tasks",
+		icon: NotebookPen,
 	},
 	{
 		title: "Schedule",
@@ -39,7 +45,7 @@ const navItems = [
 		icon: Users,
 	},
 	{
-		title: "Account Settings",
+		title: "Account",
 		href: "/dashboard/account",
 		icon: Settings,
 	},
@@ -63,7 +69,7 @@ export function SidebarNav({ isCollapsed }: SidebarNavProps) {
 						"inline-flex items-center w-full rounded-md h-11 justify-start px-3 transition-all duration-200",
 						isCollapsed && "px-0 justify-center",
 						pathname === href
-							? "bg-blue-600 text-white hover:bg-blue-700 hover:text-white"
+							? "bg-blue-50 border border-blue-200 text-blue-600 hover:text-blue-600"
 							: "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
 					)}
 				>

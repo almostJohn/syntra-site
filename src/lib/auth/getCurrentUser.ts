@@ -28,6 +28,12 @@ export async function getCurrentUser() {
 				name: true,
 				is_email_verified: true,
 				created_at: true,
+				teams: {
+					select: {
+						id: true,
+						owner_id: true,
+					},
+				},
 			},
 		});
 
