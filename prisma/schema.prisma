@@ -15,19 +15,126 @@ datasource db {
 }
 
 model User {
-  id                String         @id @default(cuid())
-  email             String         @unique
-  name              String
-  password          String
-  is_email_verified Boolean        @default(false)
-  created_at        DateTime       @default(now())
-  updated_at        DateTime       @updatedAt
-  teams             Team[]         @relation("owned_teams")
-  team_members      TeamMember[]
-  sessions          UserSession[]
-  tasks_created     Task[]         @relation("tasks_created_by")
-  tasks_assigned    Task[]         @relation("tasks_assigned_to")
-  notifications     Notification[]
+  id                      String         @id @default(cuid())
+  email                   String         @unique
+  name                    String
+  password                String
+  is_email_verified       Boolean        @default(false)
+  created_at              DateTime       @default(now())
+  updated_at              DateTime       @updatedAt
+  tasks                   Task[]
+  schedule_tasks_created  ScheduleTask[] @relation("team_schedule_task_created_by")
+  schedule_tasks_assigned ScheduleTask[] @relation("team_schedule_task_assigned_to")
+  teams                   Team[]         @relation("owned_teams")
+  members                 Member[]
+  notifications           Notification[] @relation("user_notifications")
+  sessions                UserSession[]
+}
+
+model Task {
+  id            String         @id @default(cuid())
+  title         String?
+  subtitle      String?
+  content       String
+  is_completed  Boolean        @default(false)
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  user_id       String
+  user          User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  notifications Notification[] @relation("task_notifications")
+}
+
+model ScheduleTask {
+  id                  String         @id @default(cuid())
+  name                String
+  color               String?
+  planned_start_time  DateTime
+  planned_end_time    DateTime
+  actual_start_time   DateTime
+  actual_end_time     DateTime
+  adherence_note      String?
+  created_at          DateTime       @default(now())
+  updated_at          DateTime       @updatedAt
+  team_id             String
+  team                Team           @relation("team_schedule_tasks", fields: [team_id], references: [id], onDelete: Cascade)
+  assigned_to_user_id String
+  assigned_to         User           @relation("team_schedule_task_assigned_to", fields: [assigned_to_user_id], references: [id], onDelete: Cascade)
+  created_by_user_id  String
+  created_by          User           @relation("team_schedule_task_created_by", fields: [created_by_user_id], references: [id], onDelete: Cascade)
+  adherence           Adherence?
+  notifications       Notification[] @relation("schedule_task_notifications")
+}
+
+model Adherence {
+  id                String       @id @default(cuid())
+  schedule_task_id  String       @unique
+  schedule_task     ScheduleTask @relation(fields: [schedule_task_id], references: [id], onDelete: Cascade)
+  late_start        Boolean      @default(false)
+  early_finish      Boolean      @default(false)
+  late_finish       Boolean      @default(false)
+  missed_entirely   Boolean      @default(false)
+  deviation_minutes Int?
+  note              String?
+  recorded_at       DateTime     @default(now())
+}
+
+model Team {
+  id             String         @id @default(cuid())
+  name           String
+  description    String
+  owner_id       String
+  owner          User           @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
+  members        Member[]       @relation("team_members")
+  schedule_tasks ScheduleTask[] @relation("team_schedule_tasks")
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  notifications  Notification[] @relation("team_notifications")
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  user_id   String
+  team_id   String
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  team      Team     @relation("team_members", fields: [team_id], references: [id], onDelete: Cascade)
+  role      Role     @default(MEMBER)
+  joined_at DateTime @default(now())
+
+  @@unique([user_id, team_id])
+}
+
+enum Role {
+  OWNER
+  WORKFORCE_MANAGER
+  LEADER
+  MEMBER
+}
+
+model Notification {
+  id               String           @id @default(cuid())
+  user_id          String
+  user             User             @relation("user_notifications", fields: [user_id], references: [id], onDelete: Cascade)
+  task_id          String
+  task             Task             @relation("task_notifications", fields: [task_id], references: [id], onDelete: Cascade)
+  schedule_task_id String
+  schedule_task    ScheduleTask     @relation("schedule_task_notifications", fields: [schedule_task_id], references: [id], onDelete: Cascade)
+  team_id          String
+  team             Team             @relation("team_notifications", fields: [team_id], references: [id], onDelete: Cascade)
+  message          String
+  is_read          Boolean          @default(false)
+  created_at       DateTime         @default(now())
+  type             NotificationType
+}
+
+enum NotificationType {
+  SCHEDULE_TASK_ASSIGNMENT
+  CREATE_TASK
+  DELETE_TASK
+  UPDATE_USER
+  UPDATE_TEAM
+  REMINDER
+  ALERT
+  INFO
 }
 
 model UserSession {
@@ -37,86 +144,4 @@ model UserSession {
   token      String   @unique
   expires_at DateTime
   created_at DateTime @default(now())
-}
-
-model Team {
-  id          String       @id @default(cuid())
-  name        String
-  description String?
-  owner_id    String
-  owner       User         @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
-  members     TeamMember[]
-  tasks       Task[]       @relation("team_tasks")
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-}
-
-model TeamMember {
-  id        String   @id @default(cuid())
-  user_id   String
-  team_id   String
-  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  team      Team     @relation(fields: [team_id], references: [id], onDelete: Cascade)
-  role      Role     @default(MEMBER)
-  joined_at DateTime @default(now())
-
-  @@unique([user_id, team_id])
-}
-
-enum Role {
-  OWNER
-  MEMBER
-}
-
-model Task {
-  id                 String         @id @default(cuid())
-  title              String
-  description        String?
-  planned_start_time DateTime
-  planned_end_time   DateTime
-  actual_start_time  DateTime?
-  actual_end_time    DateTime?
-  adherence_notes    String?
-  created_at         DateTime       @default(now())
-  updated_at         DateTime       @updatedAt
-  team_id            String
-  team               Team           @relation("team_tasks", fields: [team_id], references: [id], onDelete: Cascade)
-  assigned_to_id     String
-  assined_to         User           @relation("tasks_assigned_to", fields: [assigned_to_id], references: [id], onDelete: Cascade)
-  created_by_id      String
-  created_by         User           @relation("tasks_created_by", fields: [created_by_id], references: [id], onDelete: Cascade)
-  adherence          Adherence?
-  notifications      Notification[]
-}
-
-model Adherence {
-  id                String   @id @default(cuid())
-  task_id           String   @unique
-  task              Task     @relation(fields: [task_id], references: [id], onDelete: Cascade)
-  late_start        Boolean  @default(false)
-  early_finish      Boolean  @default(false)
-  late_finish       Boolean  @default(false)
-  missed_entirely   Boolean  @default(false)
-  deviation_minutes Int?
-  note              String?
-  recorded_at       DateTime @default(now())
-}
-
-model Notification {
-  id         String           @id @default(cuid())
-  user_id    String
-  user       User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  task_id    String?
-  task       Task?            @relation(fields: [task_id], references: [id], onDelete: Cascade)
-  message    String
-  is_read    Boolean          @default(false)
-  created_at DateTime         @default(now())
-  type       NotificationType
-}
-
-enum NotificationType {
-  REMINDER
-  ALERT
-  INFO
-  TASK_ASSIGNMENT
 }
