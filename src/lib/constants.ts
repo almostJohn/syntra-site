@@ -6,6 +6,10 @@ export const TOTAL_DAYS = 91;
 export const WEEKS = 52;
 export const WEEK_DAYS = 7;
 
+export const TITLE_MAX_LENGTH = 50;
+export const SUBTITLE_MAX_LENGTH = 150;
+export const CONTENT_MAX_LENGTH = 300;
+
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
 	"/dashboard/profile",
