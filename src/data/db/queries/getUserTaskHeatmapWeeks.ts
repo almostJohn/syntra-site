@@ -1,4 +1,5 @@
 import { prisma } from "@/data/db/prisma";
+import { format } from "date-fns";
 
 export async function getUserTaskHeatmapWeeks(userId: string) {
 	const startDate = new Date();
@@ -20,7 +21,7 @@ export async function getUserTaskHeatmapWeeks(userId: string) {
 
 	const taskMap = new Map<string, number>();
 	for (const task of tasks) {
-		const date = task.created_at.toISOString().split("T")[0];
+		const date = format(task.created_at, "yyyy-MM-dd");
 		taskMap.set(date, (taskMap.get(date) ?? 0) + 1);
 	}
 
@@ -28,7 +29,7 @@ export async function getUserTaskHeatmapWeeks(userId: string) {
 	for (let i = 0; i < 365; i++) {
 		const date = new Date(startDate);
 		date.setDate(date.getDate() + i);
-		const dateString = date.toISOString().split("T")[0];
+		const dateString = format(date, "yyyy-MM-dd");
 		heatmapData.push({
 			date: dateString,
 			count: taskMap.get(dateString) ?? 0,

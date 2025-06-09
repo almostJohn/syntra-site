@@ -114,12 +114,12 @@ model Notification {
   id               String           @id @default(cuid())
   user_id          String
   user             User             @relation("user_notifications", fields: [user_id], references: [id], onDelete: Cascade)
-  task_id          String
-  task             Task             @relation("task_notifications", fields: [task_id], references: [id], onDelete: Cascade)
-  schedule_task_id String
-  schedule_task    ScheduleTask     @relation("schedule_task_notifications", fields: [schedule_task_id], references: [id], onDelete: Cascade)
-  team_id          String
-  team             Team             @relation("team_notifications", fields: [team_id], references: [id], onDelete: Cascade)
+  task_id          String?
+  task             Task?            @relation("task_notifications", fields: [task_id], references: [id], onDelete: Cascade)
+  schedule_task_id String?
+  schedule_task    ScheduleTask?    @relation("schedule_task_notifications", fields: [schedule_task_id], references: [id], onDelete: Cascade)
+  team_id          String?
+  team             Team?            @relation("team_notifications", fields: [team_id], references: [id], onDelete: Cascade)
   message          String
   is_read          Boolean          @default(false)
   created_at       DateTime         @default(now())

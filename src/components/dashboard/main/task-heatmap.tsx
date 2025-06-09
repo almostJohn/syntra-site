@@ -14,11 +14,11 @@ export function TaskHeatmap({ data }: TaskHeatmapProps) {
 
 	function getIntensity(count: number) {
 		if (count === 0) return "bg-neutral-200";
-		if (count <= 2) return "bg-emerald-200";
-		if (count <= 4) return "bg-emerald-400";
-		if (count <= 6) return "bg-emerald-600";
-		if (count <= 8) return "bg-emerald-800";
-		return "bg-emerald-950";
+		if (count <= 2) return "bg-blue-200";
+		if (count <= 4) return "bg-blue-400";
+		if (count <= 6) return "bg-blue-600";
+		if (count <= 8) return "bg-blue-800";
+		return "bg-blue-950";
 	}
 
 	const dayLabels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
