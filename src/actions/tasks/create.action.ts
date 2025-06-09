@@ -80,13 +80,23 @@ export async function create(
 			};
 		}
 
-		await prisma.task.create({
+		const newTask = await prisma.task.create({
 			data: {
 				title: title ?? "",
 				subtitle: subtitle ?? "",
 				content,
 				is_completed: false,
 				user_id: currentUser.id,
+			},
+		});
+
+		await prisma.notification.create({
+			data: {
+				user_id: currentUser.id,
+				task_id: newTask.id,
+				message: `New task "${newTask.title}" created`,
+				type: "CREATE_TASK",
+				is_read: false,
 			},
 		});
 
