@@ -94,7 +94,7 @@ export async function create(
 			data: {
 				user_id: currentUser.id,
 				task_id: newTask.id,
-				message: `New task "${newTask.title}" created`,
+				message: `New task "${newTask.title || "Untitled"}" created.`,
 				type: "CREATE_TASK",
 				is_read: false,
 			},

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogTrigger,
@@ -11,8 +10,9 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { CreateTaskForm } from "../forms/create-task-form";
-import { NotebookPen } from "lucide-react";
 import { NextLink } from "@/components/ui/next-link";
+import { Button } from "@/components/ui/button";
+import { NotebookPen } from "lucide-react";
 
 export function CreateTaskDialog() {
 	const [interacted, setInteracted] = useState(false);
@@ -26,10 +26,10 @@ export function CreateTaskDialog() {
 			<DialogTrigger asChild>
 				<Button
 					variant="outline"
-					className="h-20 cursor-pointer flex flex-col items-center justify-center space-y-2"
+					className="h-20 flex flex-col items-center justify-center cursor-pointer space-y-2"
 				>
-					<NotebookPen className="size-6 shrink-0 text-blue-600" />
-					<span className="font-semibold">Create Task</span>
+					<NotebookPen className="size-6 text-blue-600 shrink-0" />
+					<span>Create Task</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="w-full max-w-5xl">
