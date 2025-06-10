@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Bell, Loader } from "lucide-react";
-import { markAsRead } from "@/actions/notifications/mark-as-read.action";
+import { markAsRead } from "@/actions/notifications/mark-as-read";
 
 type Notification = {
 	type: string;
@@ -73,7 +73,7 @@ export function UserNotifications({ notifications }: UserNotificationsProps) {
 				>
 					<Bell className="size-5 shrink-0" />
 					{unreadNotifications.length > 0 && (
-						<span className="absolute -top-1 -right-1 size-4 bg-red-500 rounded-full text-white text-xs text-center inline-flex items-center justify-center">
+						<span className="absolute -top-1 -right-1 size-5 bg-red-600 rounded-full text-white text-xs text-center inline-flex items-center justify-center">
 							{unreadNotifications.length}
 						</span>
 					)}

@@ -5,7 +5,7 @@ import { prisma } from "@/data/db/prisma";
 import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
 
-export async function markTaskAsComplete(
+export async function markTask(
 	taskId: string,
 	complete: boolean,
 ): Promise<ActionResponse> {

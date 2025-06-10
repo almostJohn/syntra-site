@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { login } from "@/actions/auth/login.action";
+import { loginUser } from "@/actions/auth/login-user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -26,7 +26,10 @@ const initialState = {
 export function LoginForm() {
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
-	const [state, formAction, isPending] = useActionState(login, initialState);
+	const [state, formAction, isPending] = useActionState(
+		loginUser,
+		initialState,
+	);
 
 	useEffect(() => {
 		if (state.successMessage) {

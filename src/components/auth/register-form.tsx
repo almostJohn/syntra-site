@@ -7,7 +7,7 @@ import { NextLink } from "../ui/next-link";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { register } from "@/actions/auth/register.action";
+import { registerUser } from "@/actions/auth/register-user";
 import { cn } from "@/lib/utils";
 import { Loader, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
@@ -33,7 +33,10 @@ const initialState = {
 export function RegisterForm() {
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
-	const [state, formAction, isPending] = useActionState(register, initialState);
+	const [state, formAction, isPending] = useActionState(
+		registerUser,
+		initialState,
+	);
 
 	useEffect(() => {
 		if (state.successMessage) {
