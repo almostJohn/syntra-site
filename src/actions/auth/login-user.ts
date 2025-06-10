@@ -8,7 +8,7 @@ import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
 import { getFormValue } from "@/lib/getFormValue";
 import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 
-export async function login(
+export async function loginUser(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {

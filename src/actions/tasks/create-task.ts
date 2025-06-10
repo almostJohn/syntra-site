@@ -11,7 +11,7 @@ import {
 	CONTENT_MAX_LENGTH,
 } from "@/lib/constants";
 
-export async function create(
+export async function createTask(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {

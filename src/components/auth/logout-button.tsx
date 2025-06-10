@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Loader, LogOut } from "lucide-react";
-import { logout } from "@/actions/auth/logout.action";
+import { logoutUser } from "@/actions/auth/logout-user";
 
 const initialState = {
 	successMessage: "",
@@ -19,7 +19,10 @@ type LogoutButtonProps = {
 
 export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 	const router = useRouter();
-	const [state, formAction, isPending] = useActionState(logout, initialState);
+	const [state, formAction, isPending] = useActionState(
+		logoutUser,
+		initialState,
+	);
 
 	useEffect(() => {
 		if (state.successMessage) {
