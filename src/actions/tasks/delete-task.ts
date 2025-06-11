@@ -2,13 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/data/db/prisma";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
+import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 
-export async function markTask(
-	taskId: string,
-	complete: boolean,
-): Promise<ActionResponse> {
+export async function deleteTask(taskId: string): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
 		const currentUser = await getCurrentUser();
 
@@ -18,22 +15,18 @@ export async function markTask(
 			};
 		}
 
-		const updatedTask = await prisma.task.update({
+		const deletedTask = await prisma.task.delete({
 			where: {
 				id: taskId,
 				user_id: currentUser.id,
-			},
-			data: {
-				is_completed: complete,
 			},
 		});
 
 		await prisma.notification.create({
 			data: {
 				user_id: currentUser.id,
-				task_id: updatedTask.id,
-				message: `Task "${updatedTask.title || "Untitled"}" marked as ${complete ? "complete" : "incomplete"}.`,
-				type: "INFO",
+				message: `Task "${deletedTask.title || "Untitled"}" deleted.`,
+				type: "DELETE_TASK",
 				is_read: false,
 			},
 		});
@@ -42,7 +35,7 @@ export async function markTask(
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Your task has been updated.",
+			successMessage: "Task deleted successfully.",
 		};
 	});
 }

@@ -1,4 +1,5 @@
 import { TaskList } from "./task-list";
+import { Sparkles } from "lucide-react";
 
 type Task = {
 	id: string;
@@ -13,5 +14,20 @@ type TasksProps = {
 };
 
 export function Tasks({ tasks }: TasksProps) {
+	if (!tasks || tasks.length === 0) {
+		return (
+			<div className="py-16 flex items-center justify-center">
+				<div className="flex flex-col space-y-6">
+					<div className="mx-auto flex items-center justify-center">
+						<Sparkles className="size-16 shrink-0 text-muted-foreground" />
+					</div>
+					<p className="text-muted-foreground text-sm">
+						No created tasks found. Create a new one to get started.
+					</p>
+				</div>
+			</div>
+		);
+	}
+
 	return <TaskList tasks={tasks} />;
 }

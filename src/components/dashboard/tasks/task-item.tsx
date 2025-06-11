@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import type { ActionResponse } from "@/lib/serverAction";
-import { markTask } from "@/actions/tasks/mark-task";
+import { markTaskAsComplete } from "@/actions/tasks/mark-task-as-complete";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
+import { DeleteTask } from "./delete-task";
 
 type TaskItemProps = {
 	id: string;
@@ -41,7 +42,7 @@ export function TaskItem({
 			_prevState: ActionResponse,
 			payload: { taskId: string; complete: boolean },
 		) => {
-			return await markTask(payload.taskId, payload.complete);
+			return await markTaskAsComplete(payload.taskId, payload.complete);
 		},
 		initialState,
 	);
@@ -66,6 +67,7 @@ export function TaskItem({
 							{subtitle || "Not specified"}
 						</p>
 					</div>
+					<DeleteTask taskId={id} />
 				</div>
 			</CardHeader>
 			<CardContent className="pt-0">
