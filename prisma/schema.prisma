@@ -127,8 +127,8 @@ model Notification {
 }
 
 enum NotificationType {
-  SCHEDULE_TASK_ASSIGNMENT
   CREATE_TASK
+  UPDATE_TASK
   DELETE_TASK
   UPDATE_USER
   UPDATE_TEAM

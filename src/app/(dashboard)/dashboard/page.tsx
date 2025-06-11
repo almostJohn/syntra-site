@@ -30,7 +30,7 @@ export default async function MainDashboardPage() {
 	}
 
 	return (
-		<div className="p-6 min-h-screen bg-muted flex flex-col space-y-6">
+		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
 			<Header userId={currentUser.id} name={currentUser.name} />
 			<Activities userId={currentUser.id} />
 			<QuickActions />

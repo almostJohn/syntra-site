@@ -104,7 +104,7 @@ export async function createTask(
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Successfully created task.",
+			successMessage: "Task created successfully.",
 		};
 	});
 }

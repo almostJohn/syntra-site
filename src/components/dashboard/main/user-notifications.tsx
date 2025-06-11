@@ -23,14 +23,14 @@ type UserNotificationsProps = {
 };
 
 const LABEL = {
-	SCHEDULE_TASK_ASSIGNMENT: "Schedule Task Assignment",
 	CREATE_TASK: "Task Created",
+	UPDATE_TASK: "Task Updated",
 	DELETE_TASK: "Task Deleted",
 	UPDATE_USER: "Update User",
 	UPDATE_TEAM: "Update Team",
 	REMINDER: "Reminder",
 	ALERT: "Alert",
-	INFO: "Info",
+	INFO: "Information",
 };
 
 const initialState = {
