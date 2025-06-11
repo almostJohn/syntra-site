@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { getAllTasks } from "@/data/db/queries/getAllTasks";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { getAllTasks } from "@/data/db/queries/get-all-tasks";
+import { getCurrentUser } from "@/lib/auth";
 import { Header } from "@/components/dashboard/tasks/header";
 import { Tasks } from "@/components/dashboard/tasks/tasks";
 import { Loader } from "lucide-react";

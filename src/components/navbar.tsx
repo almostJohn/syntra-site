@@ -1,5 +1,5 @@
 import { NextLink } from "./ui/next-link";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { getCurrentUser } from "@/lib/auth";
 import { SignedOutMainNav } from "./signed-out-main-nav";
 import { SignedOutMobileNav } from "./signed-out-mobile-nav";
 import { SignedInMainNav } from "./signed-in-main-nav";

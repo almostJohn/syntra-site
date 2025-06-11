@@ -24,7 +24,7 @@ type RecentActivityProps = {
 
 export function RecentActivity({ activities }: RecentActivityProps) {
 	return (
-		<div className="block p-6 rounded-md bg-background border border-border shadow">
+		<div className="block p-6 rounded-xl bg-background border border-border shadow">
 			<div className="flex flex-col gap-y-2">
 				<h3 className="text-lg font-bold">Recent Activity</h3>
 				<div className="flex flex-col">

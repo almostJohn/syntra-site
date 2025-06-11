@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/data/db/prisma";
-import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function deleteTask(taskId: string): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {

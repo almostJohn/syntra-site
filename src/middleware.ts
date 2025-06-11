@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateAuthentication } from "./lib/auth/validateAuthentication";
-import { getVerifyResultCookie } from "./lib/auth/getVerifyResultCookie";
+import { checkAuth } from "./lib/auth";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
 	DISABLED_ROUTE_AFTER_VERIFICATION,
@@ -10,7 +9,7 @@ import {
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const isAuthenticated = await validateAuthentication();
+	const isAuthenticated = await checkAuth();
 
 	if (
 		DISABLED_ROUTES_AFTER_SIGN_OUT.some((route) => pathname.startsWith(route))
@@ -27,7 +26,9 @@ export async function middleware(request: NextRequest) {
 	}
 
 	if (pathname.startsWith(DISABLED_ROUTE_AFTER_VERIFICATION)) {
-		const verifyStatus = await getVerifyResultCookie();
+		const verifyStatus = request.cookies.get(
+			process.env.NEXT_REQUEST_STATUS_NAME!,
+		)?.value;
 
 		if (!verifyStatus) {
 			return NextResponse.redirect(new URL("/login", request.url));

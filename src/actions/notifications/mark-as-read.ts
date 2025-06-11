@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/data/db/prisma";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
-import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
+import { getCurrentUser } from "@/lib/auth";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 
 export async function markAsRead(): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {

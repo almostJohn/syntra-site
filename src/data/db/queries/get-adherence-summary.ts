@@ -1,7 +1,7 @@
 import { prisma } from "@/data/db/prisma";
 import { startOfMonth, endOfMonth, subMonths } from "date-fns";
 
-export async function getMonthlyAdherenceSummary(userId: string) {
+export async function getAdherenceSummary(userId: string) {
 	const now = new Date();
 	const start = subMonths(startOfMonth(now), 5);
 	const end = endOfMonth(now);

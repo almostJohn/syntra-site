@@ -1,7 +1,7 @@
 import { prisma } from "@/data/db/prisma";
 import { format } from "date-fns";
 
-export async function getUserTaskHeatmapWeeks(userId: string) {
+export async function getUserActivities(userId: string) {
 	const startDate = new Date();
 	const endDate = new Date();
 	startDate.setDate(endDate.getDate() - 364);
