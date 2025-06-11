@@ -1,12 +1,12 @@
 import { TaskHeatmap } from "./task-heatmap";
-import { getUserTaskHeatmapWeeks } from "@/data/db/queries/getUserTaskHeatmapWeeks";
+import { getUserActivities } from "@/data/db/queries/get-user-activities";
 
 type ActivitiesProps = {
 	userId: string;
 };
 
 export async function Activities({ userId }: ActivitiesProps) {
-	const heatmapWeeks = await getUserTaskHeatmapWeeks(userId);
+	const heatmapWeeks = await getUserActivities(userId);
 
 	const flatDays = heatmapWeeks.flat();
 
@@ -16,7 +16,7 @@ export async function Activities({ userId }: ActivitiesProps) {
 	}, {});
 
 	return (
-		<div className="block p-6 bg-background border border-border rounded-md shadow">
+		<div className="block p-6 bg-background border border-border rounded-xl shadow">
 			<div className="flex flex-col space-y-4">
 				<h3 className="text-lg font-bold">Activities</h3>
 				<TaskHeatmap data={heatmapData} />

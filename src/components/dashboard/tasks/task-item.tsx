@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import type { ActionResponse } from "@/lib/serverAction";
+import type { ActionResponse } from "@/lib/server-action";
 import { markTaskAsComplete } from "@/actions/tasks/mark-task-as-complete";
 import { Badge } from "@/components/ui/badge";
 import {

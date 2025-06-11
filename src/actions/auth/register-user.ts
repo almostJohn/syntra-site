@@ -4,9 +4,9 @@ import crypto from "node:crypto";
 import { hash } from "bcrypt";
 import { isBefore, addMinutes } from "date-fns";
 import { prisma } from "@/data/db/prisma";
-import { sendVerificationEmail } from "@/lib/mailer";
-import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
-import { getFormValue } from "@/lib/getFormValue";
+import { sendEmail } from "@/lib/mailer";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
+import { getFormValue } from "@/lib/get-form-value";
 import { NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/constants";
 
 export async function registerUser(
@@ -172,7 +172,7 @@ export async function registerUser(
 		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 		const verificationUrl = `${baseUrl}/api/verify?token=${token}`;
 
-		await sendVerificationEmail({
+		await sendEmail({
 			email,
 			verificationUrl,
 			name: `${firstName} ${lastName}`,

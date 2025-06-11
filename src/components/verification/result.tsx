@@ -57,14 +57,14 @@ const config: Record<
 	},
 };
 
-export function VerifyResult() {
+export function Result() {
 	const router = useRouter();
 	const params = useSearchParams();
 	const status = params.get("status") ?? "error";
 	const { title, message, color, icon: Icon } = config[status] ?? config.error;
 
 	useEffect(() => {
-		document.cookie = `${process.env.NEXT_REQUEST_VERIFIED_NAME}=; Max-Age=0; path=/`;
+		document.cookie = `${process.env.NEXT_REQUEST_STATUS_NAME}=; Max-Age=0; path=/`;
 
 		const timeout = setTimeout(() => {
 			router.push("/login");

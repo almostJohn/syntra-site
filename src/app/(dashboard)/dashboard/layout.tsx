@@ -1,9 +1,8 @@
 import type { PropsWithChildren } from "react";
 import type { Metadata } from "next";
-import type { Auth } from "@/lib/auth/types";
 import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
-import { getSession } from "@/lib/auth/getSession";
+import { getSession, type Auth } from "@/lib/auth";
 import { SidebarWrapper } from "@/components/dashboard/sidebar/sidebar-wrapper";
 
 export const metadata: Metadata = {
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
-	const session = await getSession<Auth>();
+	const session = (await getSession()) as Auth;
 
 	if (!session) {
 		redirect("/login");

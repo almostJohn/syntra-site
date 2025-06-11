@@ -9,7 +9,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Bell, Loader } from "lucide-react";
+import { Bell, Check, Loader } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { markAsRead } from "@/actions/notifications/mark-as-read";
 
 type Notification = {
@@ -62,6 +63,9 @@ export function UserNotifications({ notifications }: UserNotificationsProps) {
 	const unreadNotifications = notifications.filter(
 		(notification) => !notification.is_read,
 	);
+	const readNotifications = notifications.filter(
+		(notification) => notification.is_read,
+	);
 
 	return (
 		<DropdownMenu open={interacted} onOpenChange={setInteracted}>
@@ -106,33 +110,70 @@ export function UserNotifications({ notifications }: UserNotificationsProps) {
 					)}
 				</div>
 				<div className="max-h-80 overflow-y-auto">
-					{unreadNotifications.length === 0 ? (
-						<div className="p-4">
-							<p className="text-sm text-center text-muted-foreground">
-								No new notifications
-							</p>
-						</div>
-					) : (
-						unreadNotifications.map((notification, index) => (
-							<div
-								key={index}
-								className="p-4 border-b border-border transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer"
-							>
-								<div className="flex items-start gap-3">
-									<div className="flex items-center justify-center size-8 bg-blue-50 text-blue-600 rounded-full mt-1">
-										<Bell className="size-4 text-blue-600" />
-									</div>
-									<div className="flex flex-col space-y-0.5">
-										<p className="text-sm font-medium">
-											{LABEL[notification.type as keyof typeof LABEL]}
-										</p>
-										<p className="text-xs text-muted-foreground">
-											{notification.message}
-										</p>
-									</div>
-								</div>
+					{unreadNotifications.length > 0 && (
+						<div className="flex flex-col">
+							<div className="px-4 py-2 bg-muted/50">
+								<h4 className="text-sm font-medium text-muted-foreground">
+									Unread ({unreadNotifications.length})
+								</h4>
 							</div>
-						))
+							<div className="divide-y">
+								{unreadNotifications.map((notification, index) => (
+									<div
+										key={index}
+										className="p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+									>
+										<div className="flex items-start gap-3">
+											<div className="flex items-center justify-center size-8 bg-blue-50 text-blue-600 rounded-full">
+												<Bell className="size-4 text-blue-600" />
+											</div>
+											<div className="flex flex-col space-y-0.5">
+												<p className="text-sm font-medium">
+													{LABEL[notification.type as keyof typeof LABEL]}
+												</p>
+												<p className="text-xs text-muted-foreground">
+													{notification.message}
+												</p>
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+					{unreadNotifications.length > 0 && readNotifications.length > 0 && (
+						<Separator />
+					)}
+					{readNotifications.length > 0 && (
+						<div className="flex flex-col">
+							<div className="px-4 py-2 bg-muted/50">
+								<h4 className="text-sm font-medium text-muted-foreground">
+									Read ({readNotifications.length})
+								</h4>
+							</div>
+							<div className="divide-y">
+								{readNotifications.map((notification, index) => (
+									<div
+										key={index}
+										className="p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+									>
+										<div className="flex items-start gap-3">
+											<div className="flex items-center justify-center size-8 bg-blue-50 text-blue-600 rounded-full">
+												<Check className="size-4 text-blue-600" />
+											</div>
+											<div className="flex flex-col space-y-0.5">
+												<p className="text-sm font-medium">
+													{LABEL[notification.type as keyof typeof LABEL]}
+												</p>
+												<p className="text-xs text-muted-foreground">
+													{notification.message}
+												</p>
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
 					)}
 				</div>
 			</DropdownMenuContent>

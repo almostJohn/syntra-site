@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader, Trash2 } from "lucide-react";
-import type { ActionResponse } from "@/lib/serverAction";
+import type { ActionResponse } from "@/lib/server-action";
 import { deleteTask } from "@/actions/tasks/delete-task";
 import { Button } from "@/components/ui/button";
 import {

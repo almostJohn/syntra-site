@@ -2,9 +2,9 @@
 
 import { prisma } from "@/data/db/prisma";
 import { revalidatePath } from "next/cache";
-import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
-import { getFormValue } from "@/lib/getFormValue";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
+import { getCurrentUser } from "@/lib/auth";
+import { getFormValue } from "@/lib/get-form-value";
 import {
 	TITLE_MAX_LENGTH,
 	SUBTITLE_MAX_LENGTH,

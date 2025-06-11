@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { prisma } from "@/data/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { setVerifyResultCookie } from "@/lib/auth/setVerifyResultCookie";
+import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
 	try {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
 		if (!token) {
 			return NextResponse.redirect(
-				new URL("/verify-result?status=missing", request.url),
+				new URL("/verification/result?status=missing", request.url),
 			);
 		}
 
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
 		if (!session) {
 			return NextResponse.redirect(
-				new URL("/verify-result?status=invalid", request.url),
+				new URL("/verification/result?status=invalid", request.url),
 			);
 		}
 
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 			await prisma.user.delete({ where: { id: session.user_id } });
 
 			return NextResponse.redirect(
-				new URL("/verify-result?status=expired", request.url),
+				new URL("/verification/result?status=expired", request.url),
 			);
 		}
 
@@ -47,16 +47,21 @@ export async function GET(request: NextRequest) {
 
 		const sessionToken = crypto.randomBytes(32).toString("hex");
 
-		await setVerifyResultCookie(sessionToken);
+		const cookieStore = await cookies();
+
+		cookieStore.set(process.env.NEXT_REQUEST_STATUS_NAME!, sessionToken, {
+			maxAge: 10,
+			path: "/",
+		});
 
 		return NextResponse.redirect(
-			new URL("/verify-result?status=success", request.url),
+			new URL("/verification/result?status=success", request.url),
 		);
 	} catch (error_) {
 		const error = error_ as Error;
 		console.error(error.message, error);
 		return NextResponse.redirect(
-			new URL("/verify-result?status=error", request.url),
+			new URL("/verification/result?status=error", request.url),
 		);
 	}
 }

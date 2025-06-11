@@ -12,12 +12,12 @@ import {
 	Text,
 } from "@react-email/components";
 
-type VerifyEmailProps = {
+type EmailProps = {
 	verificationUrl: string;
 	name: string;
 };
 
-export function VerifyEmail({ verificationUrl, name }: VerifyEmailProps) {
+export function Email({ verificationUrl, name }: EmailProps) {
 	return (
 		<Html>
 			<Head>

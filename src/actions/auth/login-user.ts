@@ -2,10 +2,9 @@
 
 import { compare } from "bcrypt";
 import { prisma } from "@/data/db/prisma";
-import { createSession } from "@/lib/auth/createSession";
-import { setCookie } from "@/lib/auth/setCookie";
-import { serverActionCallback, type ActionResponse } from "@/lib/serverAction";
-import { getFormValue } from "@/lib/getFormValue";
+import { createSession, setCookie } from "@/lib/auth";
+import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
+import { getFormValue } from "@/lib/get-form-value";
 import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 
 export async function loginUser(
