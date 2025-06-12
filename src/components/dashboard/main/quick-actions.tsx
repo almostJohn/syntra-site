@@ -1,4 +1,5 @@
 import { CreateTaskQuickAction } from "./create-task-quick-action";
+import { CreateTeamQuickAction } from "./create-team-quick-action";
 
 export function QuickActions() {
 	return (
@@ -7,6 +8,7 @@ export function QuickActions() {
 				<h3 className="text-lg font-bold">Quick Actions</h3>
 				<div className="grid grid-cols-2 gap-6 w-full">
 					<CreateTaskQuickAction />
+					<CreateTeamQuickAction />
 				</div>
 			</div>
 		</div>

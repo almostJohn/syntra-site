@@ -10,6 +10,9 @@ export const TITLE_MAX_LENGTH = 50;
 export const SUBTITLE_MAX_LENGTH = 150;
 export const CONTENT_MAX_LENGTH = 300;
 
+export const TEAM_NAME_MIN_LENGTH = 3;
+export const TEAM_DESCRIPTION_MAX_LENGTH = 100;
+
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
 	"/dashboard/profile",
