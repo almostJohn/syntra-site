@@ -51,6 +51,8 @@ export async function verifySession<T>(sessionToken: string) {
 			},
 			additionalData: { error },
 		});
+
+		return null;
 	}
 }
 
@@ -182,7 +184,7 @@ export async function getCurrentUser() {
 			id: currentUser.id,
 			email: currentUser.email,
 			name: currentUser.name,
-			isEmailVerified: currentUser?.is_email_verified,
+			isEmailVerified: currentUser.is_email_verified,
 			createdAt: currentUser.created_at,
 		};
 	} catch (error_) {
