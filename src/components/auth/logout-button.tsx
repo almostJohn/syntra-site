@@ -53,7 +53,7 @@ export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 						disabled={isPending}
 						className="group focus:bg-red-50 focus:text-red-600"
 					>
-						<button type="submit" className="flex items-center gap-2">
+						<button type="submit" className="flex items-center gap-2 w-full">
 							<LogOut className="size-4 text-red-600" />
 							<span className="text-red-600">Logout</span>
 						</button>
