@@ -61,7 +61,7 @@ export function DeleteTask({ taskId }: DeleteTaskProps) {
 					<DialogTitle>Are you absolutely sure?</DialogTitle>
 					<DialogDescription>
 						This action cannot be undone. This will permanently delete the
-						selected current task. Proceed with caution.
+						selected task. Proceed with caution.
 					</DialogDescription>
 				</DialogHeader>
 				<form

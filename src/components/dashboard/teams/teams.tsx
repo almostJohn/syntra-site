@@ -1,5 +1,5 @@
 import { TeamList } from "./team-list";
-import { Sparkles } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 type Team = {
 	id: string;
@@ -17,7 +17,7 @@ export function Teams({ teams }: TeamsProps) {
 			<div className="py-16 flex items-center justify-center">
 				<div className="flex flex-col space-y-6">
 					<div className="mx-auto flex items-center justify-center">
-						<Sparkles className="size-16 shrink-0 text-muted-foreground" />
+						<Icons.sparkles className="size-16 shrink-0 text-muted-foreground" />
 					</div>
 					<p className="text-muted-foreground text-sm">
 						Unfortunately, you currently have no teams yet. Create a new one to

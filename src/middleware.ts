@@ -42,12 +42,14 @@ export const config = {
 	matcher: [
 		"/dashboard/:path*",
 		"/dashboard/profile/:path*",
-		"/dashboard/account/:path*",
-		"/dashboard/schedule/:path*",
-		"/dashboard/schedule/adherence/:path*",
+		"/dashboard/tasks/:path*",
+		"/dashboard/settings/:path*",
 		"/dashboard/teams/:path*",
+		"/dashboard/teams/settings/:path*",
+		"/dashboard/teams/schedule-tasks/:path*",
+		"/dashboard/teams/schedule-tasks/adherence/:path*",
 		"/login",
 		"/register",
-		"/verify-result",
+		"/verification/result",
 	],
 };

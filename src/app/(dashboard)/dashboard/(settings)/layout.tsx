@@ -4,8 +4,8 @@ import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
 	title: {
-		default: "Account",
-		template: "%s — Account",
+		default: "Settings",
+		template: "%s — Settings",
 	},
 	description: siteConfig.description,
 	appleWebApp: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 	creator: siteConfig.creator,
 };
 
-export default function DashboardAccountLayout({
+export default function DashboardSettingsLayout({
 	children,
 }: PropsWithChildren) {
 	return <>{children}</>;

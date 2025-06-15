@@ -1,11 +1,13 @@
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getUserTeams } from "@/data/db/queries/get-user-teams";
-import { getUserRecentActivity } from "@/data/db/queries/get-user-recent-activity";
+import { getUserTasks } from "@/data/db/queries/get-user-tasks";
+import { getUserUpdate } from "@/data/db/queries/get-user-update";
+import { getUserTeamUpdate } from "@/data/db/queries/get-user-team-update";
+import { getUserScheduleTasksUpdate } from "@/data/db/queries/get-user-schedule-tasks-update";
 import { getUserRoleInTeam } from "@/data/db/queries/get-user-role-in-team";
 import { Header } from "@/components/dashboard/main/header";
 import { Activities } from "@/components/dashboard/main/activities";
-import { QuickActions } from "@/components/dashboard/main/quick-actions";
 import { RecentActivity } from "@/components/dashboard/main/recent-activity";
 
 export default async function MainDashboardPage() {
@@ -15,27 +17,39 @@ export default async function MainDashboardPage() {
 		redirect("/login");
 	}
 
-	let userRecentActivity = [];
 	const teams = await getUserTeams(currentUser.id);
 
-	if (teams.length > 0) {
-		const teamId = teams[0].id;
-		const userRole = await getUserRoleInTeam(currentUser.id, teamId);
+	const [taskActivities, userActivities, teamActivities] = await Promise.all([
+		getUserTasks(currentUser.id),
+		getUserUpdate(currentUser.id),
+		getUserTeamUpdate(currentUser.id),
+	]);
 
-		if (!userRole) {
-			notFound();
-		}
+	const allScheduleActivities = await Promise.all(
+		teams.map(async (team) => {
+			const role = await getUserRoleInTeam(currentUser.id, team.id);
 
-		userRecentActivity = await getUserRecentActivity(currentUser.id, userRole);
-	} else {
-		userRecentActivity = await getUserRecentActivity(currentUser.id, "MEMBER");
-	}
+			if (!role) {
+				return [];
+			}
+
+			return await getUserScheduleTasksUpdate(currentUser.id, role, team.id);
+		}),
+	);
+
+	const userRecentActivity = [
+		...taskActivities,
+		...userActivities,
+		...teamActivities,
+		...allScheduleActivities.flat(),
+	]
+		.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+		.slice(0, 5);
 
 	return (
 		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
 			<Header userId={currentUser.id} />
 			<Activities userId={currentUser.id} />
-			<QuickActions />
 			<RecentActivity activities={userRecentActivity} />
 		</div>
 	);

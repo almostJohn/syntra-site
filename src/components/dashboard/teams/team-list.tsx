@@ -1,4 +1,5 @@
 import { TeamItem } from "./team-item";
+import { getMembersFromTeams } from "@/data/db/queries/get-members-from-teams";
 
 type Team = {
 	id: string;
@@ -10,16 +11,21 @@ type TeamListProps = {
 	teams: Team[];
 };
 
-export function TeamList({ teams }: TeamListProps) {
+export async function TeamList({ teams }: TeamListProps) {
+	const teamWithMembers = await Promise.all(
+		teams.map(async (team) => {
+			const members = await getMembersFromTeams(team.id);
+			return {
+				...team,
+				members,
+			};
+		}),
+	);
+
 	return (
-		<div className="flex flex-col gap-4">
-			{teams.map((team) => (
-				<TeamItem
-					key={team.id}
-					id={team.id}
-					name={team.name}
-					description={team.description}
-				/>
+		<div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
+			{teamWithMembers.map((team) => (
+				<TeamItem key={team.id} id={team.id} name={team.name} />
 			))}
 		</div>
 	);

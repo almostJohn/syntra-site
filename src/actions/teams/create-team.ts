@@ -65,6 +65,12 @@ export async function createTeam(
 				name: teamName,
 				description: teamDescription,
 				owner_id: currentUser.id,
+				members: {
+					create: {
+						user_id: currentUser.id,
+						role: "OWNER",
+					},
+				},
 			},
 		});
 

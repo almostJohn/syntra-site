@@ -27,6 +27,7 @@ model User {
   schedule_tasks_assigned ScheduleTask[] @relation("team_schedule_task_assigned_to")
   teams                   Team[]         @relation("owned_teams")
   members                 Member[]
+  invites                 Invite[]
   notifications           Notification[] @relation("user_notifications")
   sessions                UserSession[]
 }
@@ -86,6 +87,7 @@ model Team {
   owner          User           @relation("owned_teams", fields: [owner_id], references: [id], onDelete: Cascade)
   members        Member[]       @relation("team_members")
   schedule_tasks ScheduleTask[] @relation("team_schedule_tasks")
+  invites        Invite[]
   created_at     DateTime       @default(now())
   updated_at     DateTime       @updatedAt
   notifications  Notification[] @relation("team_notifications")
@@ -101,6 +103,25 @@ model Member {
   joined_at DateTime @default(now())
 
   @@unique([user_id, team_id])
+}
+
+model Invite {
+  id         String       @id @default(cuid())
+  team_id    String
+  team       Team         @relation(fields: [team_id], references: [id], onDelete: Cascade)
+  user_id    String
+  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  invited_by String
+  status     InviteStatus @default(PENDING)
+  created_at DateTime     @default(now())
+
+  @@unique([user_id, team_id])
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum Role {

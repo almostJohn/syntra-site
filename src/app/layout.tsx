@@ -42,7 +42,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			>
 				<div>
 					<ViewTransition>{children}</ViewTransition>
-					<Toaster position="top-center" />
+					<Toaster position="top-center" richColors />
 				</div>
 			</body>
 		</html>

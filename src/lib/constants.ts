@@ -15,13 +15,16 @@ export const TEAM_DESCRIPTION_MAX_LENGTH = 100;
 
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
+	"/dashboard/tasks",
 	"/dashboard/profile",
-	"/dashboard/account",
-	"/dashboard/schedule/adherence",
+	"/dashboard/settings",
 	"/dashboard/teams",
+	"/dashboard/teams/schedule-tasks",
+	"/dashboard/teams/schedule-tasks/adherence",
+	"/dashboard/teams/settings",
 ];
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
-export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verify-result";
+export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verification/result";
 
 export const HERO_SECTION_TITLE = "Workforce Management Made Simple" as const;
 export const HERO_SECTION_DESCRIPTION =

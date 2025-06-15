@@ -38,6 +38,10 @@ export function CreateTeam() {
 		createTeam,
 		initialState,
 	);
+	const [teamName, setTeamName] = useState(state.values?.team_name || "");
+	const [teamDescription, setTeamDescription] = useState(
+		state.values?.team_description || "",
+	);
 
 	useEffect(() => {
 		if (state.successMessage) {
@@ -59,7 +63,7 @@ export function CreateTeam() {
 					<span>Create Team</span>
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="w-full max-w-5xl">
+			<DialogContent className="w-full sm:max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>Create a new team</DialogTitle>
 					<DialogDescription>
@@ -95,7 +99,8 @@ export function CreateTeam() {
 							type="text"
 							id="team_name"
 							name="team_name"
-							defaultValue={state.values?.team_name}
+							value={teamName}
+							onChange={(e) => setTeamName(e.target.value)}
 							className={cn(
 								"focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
 								state.errors?.teamName && "border-red-600",
@@ -115,7 +120,8 @@ export function CreateTeam() {
 						<Textarea
 							id="team_description"
 							name="team_description"
-							defaultValue={state.values?.team_description}
+							value={teamDescription}
+							onChange={(e) => setTeamDescription(e.target.value)}
 							className={cn(
 								"h-50 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
 								state.errors?.teamDescription && "border-red-600",
@@ -140,7 +146,9 @@ export function CreateTeam() {
 						<Button
 							type="submit"
 							variant="primary"
-							disabled={isPending}
+							disabled={
+								isPending || !teamName.trim() || !teamDescription.trim()
+							}
 							className="cursor-pointer"
 						>
 							{isPending ? (

@@ -11,6 +11,7 @@ export async function getUserTeams(userId: string) {
 		},
 		select: {
 			id: true,
+			name: true,
 			owner_id: true,
 		},
 	});

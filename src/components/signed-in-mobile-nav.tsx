@@ -73,11 +73,11 @@ export function SignedInMobileNav({ email, name }: SignedInMobileNavProps) {
 							Profile
 						</NextLink>
 						<NextLink
-							href="/dashboard/account"
+							href="/dashboard/settings"
 							className="text-lg font-semibold underline-offset-2 hover:underline"
 							onClick={() => setInteracted(false)}
 						>
-							Account settings
+							Settings
 						</NextLink>
 					</div>
 					<div className="border-t border-border w-full" />
