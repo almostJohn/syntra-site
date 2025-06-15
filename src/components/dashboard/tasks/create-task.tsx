@@ -61,7 +61,7 @@ export function CreateTask() {
 					<Plus className="size-4" /> Create Task
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="w-full max-w-5xl">
+			<DialogContent className="w-full sm:max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>Create a new task</DialogTitle>
 					<DialogDescription>

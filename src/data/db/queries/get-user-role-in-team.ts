@@ -5,26 +5,17 @@ export async function getUserRoleInTeam(
 	userId: string,
 	teamId: string,
 ): Promise<Role | null> {
-	const teamMember = await prisma.team.findFirst({
+	const member = await prisma.member.findUnique({
 		where: {
-			id: teamId,
-			members: {
-				some: {
-					id: userId,
-				},
+			user_id_team_id: {
+				user_id: userId,
+				team_id: teamId,
 			},
 		},
 		select: {
-			members: {
-				where: {
-					user_id: userId,
-				},
-				select: {
-					role: true,
-				},
-			},
+			role: true,
 		},
 	});
 
-	return teamMember?.members[0]?.role ?? null;
+	return member?.role ?? null;
 }

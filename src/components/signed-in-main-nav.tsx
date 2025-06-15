@@ -67,9 +67,9 @@ export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
 						</NextLink>
 					</DropdownMenuItem>
 					<DropdownMenuItem asChild>
-						<NextLink href="/dashboard/account" className="flex items-center">
+						<NextLink href="/dashboard/settings" className="flex items-center">
 							<Settings className="size-4" />
-							<span>Account settings</span>
+							<span>Settings</span>
 						</NextLink>
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />

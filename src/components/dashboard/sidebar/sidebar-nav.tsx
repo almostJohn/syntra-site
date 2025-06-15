@@ -3,30 +3,18 @@
 import { usePathname } from "next/navigation";
 import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
-import {
-	LayoutGrid,
-	Calendar1,
-	User,
-	Users,
-	Settings,
-	NotebookPen,
-} from "lucide-react";
+import { LayoutDashboard, ListTodo, User, Users, Settings } from "lucide-react";
 
 const navItems = [
 	{
 		title: "Main",
 		href: "/dashboard",
-		icon: LayoutGrid,
+		icon: LayoutDashboard,
 	},
 	{
 		title: "Tasks",
 		href: "/dashboard/tasks",
-		icon: NotebookPen,
-	},
-	{
-		title: "Schedule",
-		href: "/dashboard/schedule",
-		icon: Calendar1,
+		icon: ListTodo,
 	},
 	{
 		title: "Profile",
@@ -39,8 +27,8 @@ const navItems = [
 		icon: Users,
 	},
 	{
-		title: "Account",
-		href: "/dashboard/account",
+		title: "Settings",
+		href: "/dashboard/settings",
 		icon: Settings,
 	},
 ];

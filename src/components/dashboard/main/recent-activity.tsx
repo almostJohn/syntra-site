@@ -3,20 +3,37 @@ import { History } from "lucide-react";
 
 type TaskActivity = {
 	id: string;
-	type: "TASK";
+	type: "TASK_UPDATE";
 	title: string;
 	createdAt: Date;
 };
 
 type ScheduleTaskActivity = {
 	id: string;
-	type: "SCHEDULE_TASK";
+	type: "SCHEDULE_TASK_UPDATE";
 	name: string;
 	createdAt: Date;
 	assignedTo: string;
 };
 
-type Activity = TaskActivity | ScheduleTaskActivity;
+type TeamActivity = {
+	id: string;
+	type: "TEAM_UPDATE";
+	name: string;
+	createdAt: Date;
+};
+
+type UserActivity = {
+	id: string;
+	type: "PROFILE_UPDATE";
+	createdAt: Date;
+};
+
+type Activity =
+	| TaskActivity
+	| ScheduleTaskActivity
+	| TeamActivity
+	| UserActivity;
 
 type RecentActivityProps = {
 	activities: Activity[];
@@ -34,36 +51,74 @@ export function RecentActivity({ activities }: RecentActivityProps) {
 						</p>
 					)}
 					<div className="divide-y pt-0">
-						{activities.map((activity) => (
-							<div key={activity.id} className="flex flex-col">
+						{activities.map((activity, index) => (
+							<div key={activity.id + index + 1} className="flex flex-col">
 								<div className="flex items-center space-x-3.5 py-3.5">
 									<div className="inline-flex items-center justify-center rounded-sm bg-blue-50 border border-blue-600 text-blue-600 size-11">
-										<History className="size-5 shrink-0" />
+										<History className="size-6 shrink-0" />
 									</div>
-									{activity.type === "TASK" ? (
-										<div className="flex flex-col space-y-1">
-											<span className="font-semibold">
-												{activity.title || "Untitled"}
-											</span>
-											<span className="text-sm text-muted-foreground">
-												{formatDistanceToNow(new Date(activity.createdAt), {
-													addSuffix: true,
-												})}
-											</span>
-										</div>
-									) : (
-										<div className="flex flex-col space-y-1">
-											<span className="font-semibold">{activity.name}</span>
-											<span className="text-sm">
-												Assigned to: {activity.assignedTo}
-											</span>
-											<span className="text-sm text-muted-foreground">
-												{formatDistanceToNow(new Date(activity.createdAt), {
-													addSuffix: true,
-												})}
-											</span>
-										</div>
-									)}
+									<div className="flex flex-col space-y-0.5">
+										{activity.type === "TASK_UPDATE" && (
+											<>
+												<div className="flex items-center space-x-2">
+													<h2 className="font-bold">Tasks Update</h2>
+													<span className="text-xs text-muted-foreground">
+														{formatDistanceToNow(new Date(activity.createdAt), {
+															addSuffix: true,
+														})}
+													</span>
+												</div>
+												<p className="text-sm font-medium">
+													Title: {activity.title || "Untitled"}
+												</p>
+											</>
+										)}
+										{activity.type === "SCHEDULE_TASK_UPDATE" && (
+											<>
+												<div className="flex items-center space-x-2">
+													<h2 className="font-bold">Schedule Tasks Update</h2>
+													<span className="text-xs text-muted-foreground">
+														{formatDistanceToNow(new Date(activity.createdAt), {
+															addSuffix: true,
+														})}
+													</span>
+												</div>
+												<p className="text-sm text-muted-foreground">
+													Name: {activity.name}
+												</p>
+											</>
+										)}
+										{activity.type === "TEAM_UPDATE" && (
+											<>
+												<div className="flex items-center space-x-2">
+													<h2 className="font-bold">Teams Update</h2>
+													<span className="text-xs text-muted-foreground">
+														{formatDistanceToNow(new Date(activity.createdAt), {
+															addSuffix: true,
+														})}
+													</span>
+												</div>
+												<p className="text-sm text-muted-foreground">
+													Team: {activity.name}
+												</p>
+											</>
+										)}
+										{activity.type === "PROFILE_UPDATE" && (
+											<>
+												<div className="flex items-center space-x-2">
+													<h2 className="font-bold">Profile Update</h2>
+													<span className="text-xs text-muted-foreground">
+														{formatDistanceToNow(new Date(activity.createdAt), {
+															addSuffix: true,
+														})}
+													</span>
+												</div>
+												<p className="text-sm text-muted-foreground">
+													User ID: {activity.id}
+												</p>
+											</>
+										)}
+									</div>
 								</div>
 							</div>
 						))}
