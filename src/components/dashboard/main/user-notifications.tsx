@@ -27,9 +27,9 @@ const LABEL = {
 	CREATE_TASK: "Task Created",
 	UPDATE_TASK: "Task Updated",
 	DELETE_TASK: "Task Deleted",
-	CREATE_TEAM: "Team Created",
-	UPDATE_TEAM: "Team Updated",
-	DELETE_TEAM: "Team Deleted",
+	CREATE_NOTE: "Note Created",
+	UPDATE_NOTE: "Note Updated",
+	DELETE_NOTE: "Note Deleted",
 	REMINDER: "Reminder",
 	ALERT: "Alert",
 	INFO: "Information",
@@ -111,6 +111,13 @@ export function UserNotifications({ notifications }: UserNotificationsProps) {
 					)}
 				</div>
 				<div className="max-h-80 overflow-y-auto">
+					{notifications.length === 0 && (
+						<div className="px-4 py-2 bg-muted/50">
+							<div className="text-center text-sm text-muted-foreground">
+								No new notifications.
+							</div>
+						</div>
+					)}
 					{unreadNotifications.length > 0 && (
 						<div className="flex flex-col">
 							<div className="px-4 py-2 bg-muted/50">

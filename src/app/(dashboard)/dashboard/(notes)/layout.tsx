@@ -4,8 +4,8 @@ import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
 	title: {
-		default: "Schedule",
-		template: "%s — Schedule",
+		default: "Notes",
+		template: "%s — Notes",
 	},
 	description: siteConfig.description,
 	appleWebApp: {
@@ -27,8 +27,6 @@ export const metadata: Metadata = {
 	creator: siteConfig.creator,
 };
 
-export default function DashboardScheduleLayout({
-	children,
-}: PropsWithChildren) {
+export default function DashboardNotesLayout({ children }: PropsWithChildren) {
 	return <>{children}</>;
 }

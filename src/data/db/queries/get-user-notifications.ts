@@ -10,8 +10,8 @@ export async function getUserNotifications(userId: string) {
 		},
 		include: {
 			task: true,
-			schedule_task: true,
-			team: true,
+			note: true,
+			user: true,
 		},
 	});
 }

@@ -7,25 +7,18 @@ export const WEEKS = 52;
 export const WEEK_DAYS = 7;
 
 export const TITLE_MAX_LENGTH = 50;
-export const SUBTITLE_MAX_LENGTH = 150;
 export const CONTENT_MAX_LENGTH = 300;
-
-export const TEAM_NAME_MIN_LENGTH = 3;
-export const TEAM_DESCRIPTION_MAX_LENGTH = 100;
 
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
 	"/dashboard/tasks",
+	"/dashboard/notes",
 	"/dashboard/profile",
 	"/dashboard/settings",
-	"/dashboard/teams",
-	"/dashboard/teams/schedule-tasks",
-	"/dashboard/teams/schedule-tasks/adherence",
-	"/dashboard/teams/settings",
 ];
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
 export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verification/result";
 
-export const HERO_SECTION_TITLE = "Workforce Management Made Simple" as const;
+export const HERO_SECTION_TITLE = "Capture Your Ideas Effortlessly" as const;
 export const HERO_SECTION_DESCRIPTION =
-	"Syntra delivers powerful workforce management without the complexity. Streamline scheduling, optimize labor costs, and boost productivity with our intuitive, affordable solution." as const;
+	"Keep your thoughts organized, accessible, and secure with our intuitive note-taking platform. From quick reminders to detailed research, we've got you covered." as const;
