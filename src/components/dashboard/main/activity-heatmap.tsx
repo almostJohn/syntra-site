@@ -3,11 +3,11 @@ import { WEEKS, WEEK_DAYS } from "@/lib/constants";
 
 type HeatmapData = Record<string, number>;
 
-type TaskHeatmapProps = {
+type ActivityHeatmapProps = {
 	data: HeatmapData;
 };
 
-export function TaskHeatmap({ data }: TaskHeatmapProps) {
+export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 	const startDate = startOfWeek(subWeeks(new Date(), WEEKS - 1), {
 		weekStartsOn: 1,
 	});
@@ -28,10 +28,7 @@ export function TaskHeatmap({ data }: TaskHeatmapProps) {
 			<div className="grid grid-cols-[auto_1fr] gap-4 items-start">
 				<div className="flex flex-col justify-between text-xs text-muted-foreground h-full">
 					{dayLabels.map((day, index) => (
-						<div
-							key={index}
-							className="h-full flex items-center justify-end pr-2"
-						>
+						<div key={index} className="h-full flex items-center justify-end">
 							{day}
 						</div>
 					))}
@@ -59,7 +56,7 @@ export function TaskHeatmap({ data }: TaskHeatmapProps) {
 								return (
 									<div
 										key={dayIndex}
-										title={`${dateString} (${dayName}): ${count} ${count <= 1 ? "task" : "tasks"}`}
+										title={`${dateString} (${dayName}): ${count} ${count === 1 ? "activity" : "activities"}`}
 										className={`aspect-square w-full rounded-sm cursor-pointer transition-all ${intensity} hover:scale-110`}
 									/>
 								);

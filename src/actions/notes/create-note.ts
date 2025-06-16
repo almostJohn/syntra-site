@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getFormValue } from "@/lib/get-form-value";
 import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "@/lib/constants";
 
-export async function createTask(
+export async function createNote(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
@@ -59,11 +59,10 @@ export async function createTask(
 			};
 		}
 
-		const newTask = await prisma.task.create({
+		const newNote = await prisma.note.create({
 			data: {
 				title,
 				content,
-				status: "INCOMPLETE",
 				user_id: currentUser.id,
 			},
 		});
@@ -71,17 +70,17 @@ export async function createTask(
 		await prisma.notification.create({
 			data: {
 				user_id: currentUser.id,
-				task_id: newTask.id,
-				message: `New task "${newTask.title || "Untitled"}" created.`,
-				type: "CREATE_TASK",
+				note_id: newNote.id,
+				message: `New note "${newNote.title || "Untitled"}" created.`,
+				type: "CREATE_NOTE",
 			},
 		});
 
 		revalidatePath("/dashboard");
-		revalidatePath("/dashboard/tasks");
+		revalidatePath("/dashboard/notes");
 
 		return {
-			successMessage: "Task created successfully.",
+			successMessage: "Note created successfully.",
 		};
 	});
 }

@@ -1,12 +1,10 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getUserTeams } from "@/data/db/queries/get-user-teams";
-import { getUserTasks } from "@/data/db/queries/get-user-tasks";
+import { getUserTasksUpdate } from "@/data/db/queries/get-user-tasks-update";
+import { getUserNotesUpdate } from "@/data/db/queries/get-user-notes-update";
 import { getUserUpdate } from "@/data/db/queries/get-user-update";
-import { getUserTeamUpdate } from "@/data/db/queries/get-user-team-update";
-import { getUserScheduleTasksUpdate } from "@/data/db/queries/get-user-schedule-tasks-update";
-import { getUserRoleInTeam } from "@/data/db/queries/get-user-role-in-team";
 import { Header } from "@/components/dashboard/main/header";
+import { QuickActions } from "@/components/dashboard/main/quick-actions";
 import { Activities } from "@/components/dashboard/main/activities";
 import { RecentActivity } from "@/components/dashboard/main/recent-activity";
 
@@ -17,31 +15,16 @@ export default async function MainDashboardPage() {
 		redirect("/login");
 	}
 
-	const teams = await getUserTeams(currentUser.id);
-
-	const [taskActivities, userActivities, teamActivities] = await Promise.all([
-		getUserTasks(currentUser.id),
+	const [taskActivities, noteActivities, userActivities] = await Promise.all([
+		getUserTasksUpdate(currentUser.id),
+		getUserNotesUpdate(currentUser.id),
 		getUserUpdate(currentUser.id),
-		getUserTeamUpdate(currentUser.id),
 	]);
-
-	const allScheduleActivities = await Promise.all(
-		teams.map(async (team) => {
-			const role = await getUserRoleInTeam(currentUser.id, team.id);
-
-			if (!role) {
-				return [];
-			}
-
-			return await getUserScheduleTasksUpdate(currentUser.id, role, team.id);
-		}),
-	);
 
 	const userRecentActivity = [
 		...taskActivities,
+		...noteActivities,
 		...userActivities,
-		...teamActivities,
-		...allScheduleActivities.flat(),
 	]
 		.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 		.slice(0, 5);
@@ -50,6 +33,7 @@ export default async function MainDashboardPage() {
 		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
 			<Header userId={currentUser.id} />
 			<Activities userId={currentUser.id} />
+			<QuickActions />
 			<RecentActivity activities={userRecentActivity} />
 		</div>
 	);

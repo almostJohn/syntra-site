@@ -7,6 +7,7 @@ export async function getUserUpdate(userId: string) {
 		},
 		select: {
 			updated_at: true,
+			created_at: true,
 			name: true,
 			email: true,
 		},
@@ -16,13 +17,15 @@ export async function getUserUpdate(userId: string) {
 		return [];
 	}
 
+	const isCreated = user.created_at.getTime() === user.updated_at.getTime();
+
 	return [
 		{
 			id: userId,
-			type: "PROFILE_UPDATE" as const,
-			email: user.email,
-			name: user.name,
-			createdAt: user.updated_at,
+			type: isCreated
+				? "USER_CREATE"
+				: ("USER_UPDATE" as "USER_CREATE" | "USER_UPDATE"),
+			createdAt: isCreated ? user.created_at : user.updated_at,
 		},
 	];
 }

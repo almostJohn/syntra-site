@@ -3,37 +3,25 @@ import { History } from "lucide-react";
 
 type TaskActivity = {
 	id: string;
-	type: "TASK_UPDATE";
+	type: "TASK_CREATE" | "TASK_UPDATE";
 	title: string;
 	createdAt: Date;
 };
 
-type ScheduleTaskActivity = {
+type NoteActivity = {
 	id: string;
-	type: "SCHEDULE_TASK_UPDATE";
-	name: string;
-	createdAt: Date;
-	assignedTo: string;
-};
-
-type TeamActivity = {
-	id: string;
-	type: "TEAM_UPDATE";
-	name: string;
+	type: "NOTE_CREATE" | "NOTE_UPDATE";
+	title: string;
 	createdAt: Date;
 };
 
 type UserActivity = {
 	id: string;
-	type: "PROFILE_UPDATE";
+	type: "USER_CREATE" | "USER_UPDATE";
 	createdAt: Date;
 };
 
-type Activity =
-	| TaskActivity
-	| ScheduleTaskActivity
-	| TeamActivity
-	| UserActivity;
+type Activity = TaskActivity | NoteActivity | UserActivity;
 
 type RecentActivityProps = {
 	activities: Activity[];
@@ -50,33 +38,50 @@ export function RecentActivity({ activities }: RecentActivityProps) {
 							No recent activity found.
 						</p>
 					)}
-					<div className="divide-y pt-0">
+					<div className="divide-y">
 						{activities.map((activity, index) => (
-							<div key={activity.id + index + 1} className="flex flex-col">
-								<div className="flex items-center space-x-3.5 py-3.5">
-									<div className="inline-flex items-center justify-center rounded-sm bg-blue-50 border border-blue-600 text-blue-600 size-11">
-										<History className="size-6 shrink-0" />
+							<div
+								key={activity.id + index + 1}
+								className="flex flex-col pt-1 pb-3"
+							>
+								<div className="flex items-center space-x-3 pt-2">
+									<div className="inline-flex items-center justify-center rounded-sm bg-blue-50 border border-blue-600 text-blue-600 size-10">
+										<History className="size-5 shrink-0" />
 									</div>
 									<div className="flex flex-col space-y-0.5">
-										{activity.type === "TASK_UPDATE" && (
+										{(activity.type === "TASK_CREATE" ||
+											activity.type === "TASK_UPDATE") && (
 											<>
 												<div className="flex items-center space-x-2">
-													<h2 className="font-bold">Tasks Update</h2>
+													<h2 className="font-bold">
+														{activity.type === "TASK_CREATE"
+															? "Task Created"
+															: activity.type === "TASK_UPDATE"
+																? "Task Updated"
+																: ""}
+													</h2>
 													<span className="text-xs text-muted-foreground">
 														{formatDistanceToNow(new Date(activity.createdAt), {
 															addSuffix: true,
 														})}
 													</span>
 												</div>
-												<p className="text-sm font-medium">
+												<p className="text-sm text-muted-foreground">
 													Title: {activity.title || "Untitled"}
 												</p>
 											</>
 										)}
-										{activity.type === "SCHEDULE_TASK_UPDATE" && (
+										{(activity.type === "NOTE_CREATE" ||
+											activity.type === "NOTE_UPDATE") && (
 											<>
 												<div className="flex items-center space-x-2">
-													<h2 className="font-bold">Schedule Tasks Update</h2>
+													<h2 className="font-bold">
+														{activity.type === "NOTE_CREATE"
+															? "Note Created"
+															: activity.type === "NOTE_UPDATE"
+																? "Note Updated"
+																: ""}
+													</h2>
 													<span className="text-xs text-muted-foreground">
 														{formatDistanceToNow(new Date(activity.createdAt), {
 															addSuffix: true,
@@ -84,29 +89,21 @@ export function RecentActivity({ activities }: RecentActivityProps) {
 													</span>
 												</div>
 												<p className="text-sm text-muted-foreground">
-													Name: {activity.name}
+													Title: {activity.title || "Untitled"}
 												</p>
 											</>
 										)}
-										{activity.type === "TEAM_UPDATE" && (
+										{(activity.type === "USER_CREATE" ||
+											activity.type === "USER_UPDATE") && (
 											<>
 												<div className="flex items-center space-x-2">
-													<h2 className="font-bold">Teams Update</h2>
-													<span className="text-xs text-muted-foreground">
-														{formatDistanceToNow(new Date(activity.createdAt), {
-															addSuffix: true,
-														})}
-													</span>
-												</div>
-												<p className="text-sm text-muted-foreground">
-													Team: {activity.name}
-												</p>
-											</>
-										)}
-										{activity.type === "PROFILE_UPDATE" && (
-											<>
-												<div className="flex items-center space-x-2">
-													<h2 className="font-bold">Profile Update</h2>
+													<h2 className="font-bold">
+														{activity.type === "USER_CREATE"
+															? "User Created"
+															: activity.type === "USER_UPDATE"
+																? "User Updated"
+																: ""}
+													</h2>
 													<span className="text-xs text-muted-foreground">
 														{formatDistanceToNow(new Date(activity.createdAt), {
 															addSuffix: true,
