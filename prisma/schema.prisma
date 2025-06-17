@@ -78,8 +78,6 @@ enum Status {
   INCOMPLETE
   IN_PROGRESS
   COMPLETE
-  BLOCKED
-  ARCHIVED
 }
 
 enum NotificationType {
