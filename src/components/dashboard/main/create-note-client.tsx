@@ -38,7 +38,6 @@ export function CreateNoteClient() {
 		initialState,
 	);
 	const [interacted, setInteracted] = useState(false);
-	const [content, setContent] = useState(state.values?.content || "");
 
 	useEffect(() => {
 		if (state.successMessage) {
@@ -114,8 +113,7 @@ export function CreateNoteClient() {
 							<Textarea
 								id="content"
 								name="content"
-								value={content}
-								onChange={(e) => setContent(e.target.value)}
+								defaultValue={state.values?.content}
 								className={cn(
 									"h-44 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
 									state.errors?.content && "border-red-600",
@@ -139,7 +137,7 @@ export function CreateNoteClient() {
 							</Button>
 							<Button
 								type="submit"
-								disabled={isPending || !content.trim()}
+								disabled={isPending}
 								className="cursor-pointer"
 								variant="primary"
 							>
