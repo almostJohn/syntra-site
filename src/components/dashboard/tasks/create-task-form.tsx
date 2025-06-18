@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
@@ -26,6 +27,7 @@ const initialState = {
 };
 
 export function CreateTaskForm() {
+	const router = useRouter();
 	const [state, formAction, isPending] = useActionState(
 		createTask,
 		initialState,
@@ -35,10 +37,11 @@ export function CreateTaskForm() {
 	useEffect(() => {
 		if (state.successMessage) {
 			toast.success(state.successMessage);
+			router.push("/dashboard/tasks");
 		} else if (state.errorMessage) {
 			toast.error(state.errorMessage);
 		}
-	}, [state]);
+	}, [state, router]);
 
 	return (
 		<form action={formAction} className="flex flex-col space-y-6">
