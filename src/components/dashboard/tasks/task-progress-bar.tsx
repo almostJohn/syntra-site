@@ -11,22 +11,6 @@ export function TaskProgressBar({
 }: TaskProgressBarProps) {
 	const total = incomplete + inProgress + complete;
 
-	if (total === 0) {
-		return (
-			<div className="mb-6">
-				<div className="flex items-center justify-between mb-2">
-					<h3 className="text-sm font-medium">Overall Progress</h3>
-					<span className="text-sm text-muted-foreground">0 tasks</span>
-				</div>
-				<div className="w-full bg-neutral-200 rounded-full h-3">
-					<div className="bg-neutral-300 h-3 rounded-full flex items-center justify-center">
-						<span className="text-xs text-neutral-600">No tasks</span>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
 	const incompletePercentage = (incomplete / total) * 100;
 	const inProgressPercentage = (inProgress / total) * 100;
 	const completePercentage = (complete / total) * 100;

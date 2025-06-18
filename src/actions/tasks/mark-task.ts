@@ -17,13 +17,22 @@ export async function markTaskAsIncomplete(
 			};
 		}
 
-		await prisma.task.update({
+		const updatedTask = await prisma.task.update({
 			where: {
 				id: taskId,
 				user_id: currentUser.id,
 			},
 			data: {
 				status: "INCOMPLETE",
+			},
+		});
+
+		await prisma.notification.create({
+			data: {
+				task_id: updatedTask.id,
+				user_id: currentUser.id,
+				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
+				type: "UPDATE_TASK",
 			},
 		});
 
@@ -48,13 +57,22 @@ export async function markTaskAsInProgress(
 			};
 		}
 
-		await prisma.task.update({
+		const updatedTask = await prisma.task.update({
 			where: {
 				id: taskId,
 				user_id: currentUser.id,
 			},
 			data: {
 				status: "IN_PROGRESS",
+			},
+		});
+
+		await prisma.notification.create({
+			data: {
+				task_id: updatedTask.id,
+				user_id: currentUser.id,
+				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
+				type: "UPDATE_TASK",
 			},
 		});
 
@@ -79,13 +97,22 @@ export async function markTaskAsComplete(
 			};
 		}
 
-		await prisma.task.update({
+		const updatedTask = await prisma.task.update({
 			where: {
 				id: taskId,
 				user_id: currentUser.id,
 			},
 			data: {
 				status: "COMPLETE",
+			},
+		});
+
+		await prisma.notification.create({
+			data: {
+				task_id: updatedTask.id,
+				user_id: currentUser.id,
+				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
+				type: "UPDATE_TASK",
 			},
 		});
 
