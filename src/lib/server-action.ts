@@ -20,6 +20,7 @@ export async function serverActionCallback(
 			category: "SERVER_ACTION_ERROR",
 			details: {
 				message: error.message,
+				errObj: error,
 			},
 			additionalData: {
 				message: "An error occured while executing server action",

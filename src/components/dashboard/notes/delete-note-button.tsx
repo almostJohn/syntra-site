@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader, Trash2 } from "lucide-react";
@@ -23,7 +22,6 @@ const initialState = {
 };
 
 export function DeleteNoteButton({ noteId }: { noteId: string }) {
-	const router = useRouter();
 	const [state, formAction, isPending] = useActionState(
 		async (
 			_prevState: ActionResponse,
@@ -38,11 +36,10 @@ export function DeleteNoteButton({ noteId }: { noteId: string }) {
 	useEffect(() => {
 		if (state.successMessage) {
 			toast.success(state.successMessage);
-			router.push("/dashboard/notes");
 		} else if (state.errorMessage) {
 			toast.error(state.errorMessage);
 		}
-	}, [state, router]);
+	}, [state]);
 
 	function onCloseHandler() {
 		setInteracted((prev) => !prev);
@@ -54,9 +51,9 @@ export function DeleteNoteButton({ noteId }: { noteId: string }) {
 				<Button
 					size="icon"
 					variant="ghost"
-					className="bg-transparent size-8 px-2 cursor-pointer text-red-600 hover:bg-red-50 active:scale-95"
+					className="bg-transparent size-8 px-2 cursor-pointer text-muted-foreground hover:text-red-600 hover:bg-red-50 active:scale-95"
 				>
-					<Trash2 className="size-4 shrink-0 text-red-600" />
+					<Trash2 className="size-4 shrink-0" />
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
