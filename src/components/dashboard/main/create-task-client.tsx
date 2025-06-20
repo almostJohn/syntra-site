@@ -57,7 +57,7 @@ export function CreateTaskClient() {
 				<ListTodo className="size-6 shrink-0 text-blue-600" />
 				<span className="font-semibold">Create Task</span>
 			</DialogTrigger>
-			<DialogContent className="w-full sm:max-w-3xl">
+			<DialogContent className="w-full sm:max-w-2xl">
 				<DialogHeader>
 					<DialogTitle>Create a new task</DialogTitle>
 					<DialogDescription>
@@ -115,7 +115,7 @@ export function CreateTaskClient() {
 								name="content"
 								defaultValue={state.values?.content}
 								className={cn(
-									"h-44 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+									"h-45 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
 									state.errors?.content && "border-red-600",
 								)}
 								required
