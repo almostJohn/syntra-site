@@ -41,16 +41,16 @@ export function SignedInMobileNav({ email, name }: SignedInMobileNavProps) {
 					<DrawerDescription>DescriptionMenu</DrawerDescription>
 				</VisuallyHidden>
 				<div className="p-8 flex flex-col gap-4">
-					<div className="flex items-center space-x-3.5 mb-2">
-						<Avatar className="size-9 rounded-sm border border-blue-600">
-							<AvatarFallback className="bg-blue-50 rounded-sm text-blue-600">
+					<div className="flex items-center gap-3 mb-2">
+						<Avatar className="size-10 rounded border border-blue-600">
+							<AvatarFallback className="bg-blue-50 rounded text-blue-600">
 								<span className="font-medium">
 									{name.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col space-y-0.5">
-							<span className="text-lg font-semibold">{name}</span>
+							<span className="text-sm font-medium">{name}</span>
 							<span className="text-sm text-muted-foreground truncate">
 								{email}
 							</span>
