@@ -35,11 +35,11 @@ export function SidebarDropdown({
 						<div
 							className={cn(
 								"flex items-center p-2 w-full",
-								isCollapsed ? "justify-center" : "space-x-3",
+								isCollapsed ? "justify-center" : "gap-3",
 							)}
 						>
-							<Avatar className="rounded-md border border-blue-600 size-9">
-								<AvatarFallback className="rounded-md bg-blue-50 text-blue-600">
+							<Avatar className="rounded-full size-9 border border-blue-600">
+								<AvatarFallback className="rounded-full bg-blue-50 text-blue-600">
 									<span className="font-medium">
 										{name.charAt(0).toUpperCase()}
 									</span>
@@ -47,7 +47,7 @@ export function SidebarDropdown({
 							</Avatar>
 							{!isCollapsed && (
 								<div className="flex flex-col space-y-0.5 text-left">
-									<span className="text-sm font-semibold">{name}</span>
+									<span className="text-sm font-medium">{name}</span>
 									<span className="text-xs text-muted-foreground truncate">
 										{email}
 									</span>
@@ -57,21 +57,21 @@ export function SidebarDropdown({
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent
-					className="w-62"
+					className="w-65"
 					align="end"
 					side="right"
 					sideOffset={8}
 				>
 					<DropdownMenuLabel className="flex items-center space-x-2">
-						<Avatar className="rounded-sm border border-blue-600">
-							<AvatarFallback className="rounded-sm bg-blue-50 text-blue-600">
+						<Avatar className="rounded size-9 border border-blue-600">
+							<AvatarFallback className="rounded bg-blue-50 text-blue-600">
 								<span className="font-medium">
 									{name.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col space-y-0.5">
-							<span className="text-sm font-semibold">{name}</span>
+						<div className="flex flex-col space-y-1">
+							<span className="text-sm font-medium">{name}</span>
 							<span className="text-xs text-muted-foreground truncate">
 								{email}
 							</span>

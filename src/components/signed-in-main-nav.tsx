@@ -34,26 +34,26 @@ export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
 				<ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-accent-foreground group-hover:translate-x-1" />
 			</NextLink>
 			<DropdownMenu>
-				<DropdownMenuTrigger className="rounded-md cursor-pointer">
-					<Avatar className="size-9 border border-blue-600 rounded-md">
-						<AvatarFallback className="bg-blue-50 text-blue-600 rounded-md">
+				<DropdownMenuTrigger className="rounded-full cursor-pointer">
+					<Avatar className="size-9 rounded-full border border-blue-600">
+						<AvatarFallback className="bg-blue-50 text-blue-600 rounded-full">
 							<span className="font-medium">
 								{name.charAt(0).toUpperCase()}
 							</span>
 						</AvatarFallback>
 					</Avatar>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-62" align="end">
-					<DropdownMenuLabel className="flex items-center space-x-2">
-						<Avatar className="rounded-sm border border-blue-600">
-							<AvatarFallback className="rounded-sm bg-blue-50 text-blue-600">
+				<DropdownMenuContent className="w-65" align="end">
+					<DropdownMenuLabel className="flex items-center gap-3">
+						<Avatar className="rounded size-9 border border-blue-600">
+							<AvatarFallback className="rounded bg-blue-50 text-blue-600">
 								<span className="font-medium">
 									{name.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col space-y-0.5">
-							<span className="text-sm font-semibold">{name}</span>
+						<div className="flex flex-col space-y-1">
+							<span className="text-sm font-medium">{name}</span>
 							<span className="text-xs text-muted-foreground truncate">
 								{email}
 							</span>
