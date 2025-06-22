@@ -43,6 +43,15 @@ export async function updateNote(
 			},
 		});
 
+		await prisma.notification.create({
+			data: {
+				note_id: updatedNote.id,
+				user_id: currentUser.id,
+				type: "UPDATE_NOTE",
+				message: `Note "${updatedNote.title}" updated.`,
+			},
+		});
+
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/notes");
 
