@@ -79,19 +79,7 @@ export function HeroSection({ title, description }: HeroSectionProps) {
 								}),
 							)}
 						>
-							Login now
-						</NextLink>
-						<NextLink
-							href="/register"
-							className={cn(
-								buttonVariants({
-									variant: "outline",
-									size: "lg",
-									className: "px-8 py-6 text-lg font-bold active:scale-95",
-								}),
-							)}
-						>
-							Create an account
+							Get Started for Free
 						</NextLink>
 					</div>
 				</div>
