@@ -1,3 +1,5 @@
+"use client";
+
 import { Result } from "@/components/verification/result";
 
 export const metadata = {
