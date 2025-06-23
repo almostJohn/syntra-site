@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { Result } from "@/components/verification/result";
 
 export default function VerificationResultPage() {
