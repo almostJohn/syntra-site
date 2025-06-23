@@ -1,11 +1,11 @@
 import { Heatmap } from "./heatmap";
 import { getUserActivities } from "@/data/db/queries/get-user-activities";
 
-type ActivityProps = {
+type ActivitiesProps = {
 	userId: string;
 };
 
-export async function Activity({ userId }: ActivityProps) {
+export async function Activities({ userId }: ActivitiesProps) {
 	const heatmapWeeks = await getUserActivities(userId);
 
 	const flatDays = heatmapWeeks.flat();

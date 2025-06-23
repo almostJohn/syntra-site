@@ -1,6 +1,7 @@
 export const MAX_TRUST_ACCOUNT_AGE = 60 * 60 * 24 * 7;
 export const PASSWORD_MIN_LENGTH = 8;
 export const NAME_MIN_LENGTH = 2;
+export const NAME_MAX_LENGTH = 32;
 
 export const TOTAL_DAYS = 91;
 export const WEEKS = 52;
