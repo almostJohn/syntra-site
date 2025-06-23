@@ -1,8 +1,8 @@
-import { Result } from "@/components/verification/result";
+"use client";
 
-export const metadata = {
-	title: "Verification Result",
-};
+export const dynamic = "force-dynamic";
+
+import { Result } from "@/components/verification/result";
 
 export default function VerificationResultPage() {
 	return (
