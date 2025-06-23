@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { NextLink } from "@/components/ui/next-link";
 
 type User = {
 	id: string;
@@ -54,9 +55,23 @@ export function UserProfile({ user }: UserProfileProps) {
 				</div>
 			</div>
 			<Separator />
-			<div className="flex flex-col space-y-1">
-				<h3 className="font-medium text-sm">Name</h3>
-				<span className="text-sm text-muted-foreground">{user.name}</span>
+			<div className="flex justify-between w-full">
+				<div className="flex flex-col space-y-1">
+					<h3 className="font-medium text-sm">Name</h3>
+					<span className="text-sm text-muted-foreground">
+						Your name can be edited on{" "}
+						<NextLink
+							href="/dashboard/settings"
+							className="text-blue-600 underline-offset-2 hover:underline"
+						>
+							settings
+						</NextLink>
+						.
+					</span>
+				</div>
+				<div className="flex items-center p-3 rounded-md border border-border bg-background/80 text-muted-foreground text-sm font-medium">
+					{user.name}
+				</div>
 			</div>
 			<Separator />
 			<div className="flex flex-col space-y-1">

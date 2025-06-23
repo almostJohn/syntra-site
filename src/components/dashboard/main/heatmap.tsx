@@ -3,11 +3,11 @@ import { WEEKS, WEEK_DAYS } from "@/lib/constants";
 
 type HeatmapData = Record<string, number>;
 
-type ActivityHeatmapProps = {
+type HeatmapProps = {
 	data: HeatmapData;
 };
 
-export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
+export function Heatmap({ data }: HeatmapProps) {
 	const startDate = startOfWeek(subWeeks(new Date(), WEEKS - 1), {
 		weekStartsOn: 1,
 	});
