@@ -19,7 +19,6 @@
 
 # database
 drizzle/
-src/generated
 
 # production
 /build
