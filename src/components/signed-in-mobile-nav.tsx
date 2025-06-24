@@ -16,11 +16,14 @@ import { Icons } from "./icons";
 import { LogoutButton } from "./auth/logout-button";
 
 type SignedInMobileNavProps = {
-	email: string;
-	name: string;
+	username: string;
+	displayName: string;
 };
 
-export function SignedInMobileNav({ email, name }: SignedInMobileNavProps) {
+export function SignedInMobileNav({
+	username,
+	displayName,
+}: SignedInMobileNavProps) {
 	const [interacted, setInteracted] = useState(false);
 
 	return (
@@ -45,14 +48,16 @@ export function SignedInMobileNav({ email, name }: SignedInMobileNavProps) {
 						<Avatar className="size-10 rounded border border-blue-600">
 							<AvatarFallback className="bg-blue-50 rounded text-blue-600">
 								<span className="font-medium">
-									{name.charAt(0).toUpperCase()}
+									{displayName.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col space-y-0.5">
-							<span className="text-sm font-medium">{name}</span>
+							<span className="text-sm font-medium capitalize">
+								{displayName}
+							</span>
 							<span className="text-sm text-muted-foreground truncate">
-								{email}
+								@{username}
 							</span>
 						</div>
 					</div>

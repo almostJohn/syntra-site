@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkAuth } from "./lib/auth";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
-	DISABLED_ROUTE_AFTER_VERIFICATION,
 	DISABLED_ROUTES_AFTER_SIGN_OUT,
 } from "./lib/constants";
 
@@ -25,16 +24,6 @@ export async function middleware(request: NextRequest) {
 		}
 	}
 
-	if (pathname.startsWith(DISABLED_ROUTE_AFTER_VERIFICATION)) {
-		const verifyStatus = request.cookies.get(
-			process.env.NEXT_REQUEST_STATUS_NAME!,
-		)?.value;
-
-		if (!verifyStatus) {
-			return NextResponse.redirect(new URL("/login", request.url));
-		}
-	}
-
 	return NextResponse.next();
 }
 
@@ -47,6 +36,5 @@ export const config = {
 		"/dashboard/settings/:path*",
 		"/login",
 		"/register",
-		"/verification/result",
 	],
 };

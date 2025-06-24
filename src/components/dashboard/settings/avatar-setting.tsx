@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type AvatarSettingProps = {
-	name: string;
+	displayName: string;
 };
 
-export function AvatarSetting({ name }: AvatarSettingProps) {
+export function AvatarSetting({ displayName }: AvatarSettingProps) {
 	return (
 		<div className="flex flex-col rounded-xl bg-background border border-border shadow">
 			<div className="flex justify-between w-full p-6">
@@ -26,7 +26,7 @@ export function AvatarSetting({ name }: AvatarSettingProps) {
 				<div className="flex">
 					<Avatar className="size-20 border border-blue-600">
 						<AvatarFallback className="text-2xl bg-blue-50 text-blue-600">
-							{name.charAt(0).toUpperCase()}
+							{displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				</div>

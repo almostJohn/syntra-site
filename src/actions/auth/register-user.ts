@@ -1,65 +1,83 @@
 "use server";
 
-import crypto from "node:crypto";
 import { hash } from "bcrypt";
-import { isBefore, addMinutes } from "date-fns";
 import { prisma } from "@/data/db/prisma";
-import { sendEmail } from "@/lib/mailer";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getFormValue } from "@/lib/get-form-value";
-import { NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/constants";
+import {
+	PASSWORD_MIN_LENGTH,
+	DISPLAY_NAME_MAX_LENGTH,
+	DISPLAY_NAME_MIN_LENGTH,
+	USERNAME_MAX_LENGTH,
+	USERNAME_MIN_LENGTH,
+} from "@/lib/constants";
 
 export async function registerUser(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const email = getFormValue(formData, "email");
-		const firstName = getFormValue(formData, "first_name");
-		const lastName = getFormValue(formData, "last_name");
+		const username = getFormValue(formData, "username");
+		const displayName = getFormValue(formData, "display_name");
 		const password = getFormValue(formData, "password");
 		const confirmPassword = getFormValue(formData, "confirm_password");
 
-		if (!email || !firstName || !lastName || !password || !confirmPassword) {
+		if (!username || !displayName || !password || !confirmPassword) {
 			return {
 				errorMessage: "All fields are required.",
 				errors: {
-					email: "Email is a required field.",
-					firstName: "First name is a required field.",
-					lastName: "Last name is a required field.",
+					username: "Username is a required field.",
+					displayName: "Display name is a required field.",
 					password: "Password is a required field.",
 					confirmPassword: "Confirm password is a required field.",
 				},
 			};
 		}
 
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-		if (!emailRegex.test(email)) {
+		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: "Invalid email.",
+				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 				errors: {
-					email: "Invalid email.",
+					username: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 				},
 				values: {
-					first_name: firstName,
-					last_name: lastName,
+					display_name: displayName,
 				},
 			};
 		}
 
-		if (
-			firstName &&
-			lastName &&
-			(firstName.length < NAME_MIN_LENGTH || lastName.length < NAME_MIN_LENGTH)
-		) {
+		if (username.length > USERNAME_MAX_LENGTH) {
 			return {
-				errorMessage: `First and last name must be at least ${NAME_MIN_LENGTH} characters long.`,
+				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 				errors: {
-					firstName: `First name must be at least ${NAME_MIN_LENGTH} characters long.`,
-					lastName: `Last name must be at least ${NAME_MIN_LENGTH} characters long.`,
+					username: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 				},
 				values: {
-					email,
+					display_name: displayName,
+				},
+			};
+		}
+
+		if (displayName.length < DISPLAY_NAME_MIN_LENGTH) {
+			return {
+				errorMessage: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				errors: {
+					displayName: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				},
+				values: {
+					username,
+				},
+			};
+		}
+
+		if (displayName.length > DISPLAY_NAME_MAX_LENGTH) {
+			return {
+				errorMessage: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
+				errors: {
+					displayName: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
+				},
+				values: {
+					username,
 				},
 			};
 		}
@@ -71,9 +89,8 @@ export async function registerUser(
 					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
 				},
 				values: {
-					email,
-					first_name: firstName,
-					last_name: lastName,
+					username,
+					display_name: displayName,
 				},
 			};
 		}
@@ -86,101 +103,43 @@ export async function registerUser(
 					confirmPassword: "Passwords do not match.",
 				},
 				values: {
-					email,
-					first_name: firstName,
-					last_name: lastName,
+					username,
+					display_name: displayName,
 				},
 			};
 		}
 
-		const existingVerifiedUser = await prisma.user.findUnique({
-			where: { email },
-			select: {
-				id: true,
-				is_email_verified: true,
+		const existingUser = await prisma.user.findUnique({
+			where: {
+				username,
 			},
 		});
 
-		if (existingVerifiedUser?.is_email_verified) {
+		if (existingUser) {
 			return {
-				errorMessage: "Email is already in use.",
+				errorMessage: "Invalid username.",
 				errors: {
-					email: "Email is already in use.",
+					username: "Invalid username.",
 				},
 				values: {
-					email,
-					first_name: firstName,
-					last_name: lastName,
+					username,
+					display_name: displayName,
 				},
 			};
-		}
-
-		const existingUnverifiedUser = await prisma.user.findUnique({
-			where: { email },
-		});
-
-		if (existingUnverifiedUser) {
-			const existingSession = await prisma.userSession.findFirst({
-				where: {
-					user_id: existingUnverifiedUser.id,
-				},
-			});
-
-			if (existingSession) {
-				if (isBefore(new Date(), existingSession.expires_at)) {
-					return {
-						errorMessage:
-							"A verification email has already been sent. Please check you inbox.",
-					};
-				}
-
-				await prisma.userSession.deleteMany({
-					where: {
-						user_id: existingUnverifiedUser.id,
-					},
-				});
-
-				await prisma.user.delete({
-					where: {
-						id: existingUnverifiedUser.id,
-					},
-				});
-			}
 		}
 
 		const hashedPassword = await hash(password, 12);
 
-		const newUser = await prisma.user.create({
+		await prisma.user.create({
 			data: {
-				email,
-				name: `${firstName} ${lastName}`,
+				username,
+				display_name: displayName,
 				password: hashedPassword,
 			},
 		});
 
-		const token = crypto.randomBytes(32).toString("hex");
-		const expiresAt = addMinutes(new Date(), 30);
-
-		await prisma.userSession.create({
-			data: {
-				user_id: newUser.id,
-				token,
-				expires_at: expiresAt,
-			},
-		});
-
-		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-		const verificationUrl = `${baseUrl}/api/verify?token=${token}`;
-
-		await sendEmail({
-			email,
-			verificationUrl,
-			name: `${firstName} ${lastName}`,
-		});
-
 		return {
-			successMessage:
-				"Registration successful. Please check your email to verify your account.",
+			successMessage: "Account created successfully.",
 		};
 	});
 }

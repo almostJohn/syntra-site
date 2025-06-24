@@ -8,8 +8,7 @@ export async function getUserUpdate(userId: string) {
 		select: {
 			updated_at: true,
 			created_at: true,
-			name: true,
-			email: true,
+			display_name: true,
 		},
 	});
 

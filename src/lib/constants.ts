@@ -1,7 +1,12 @@
 export const MAX_TRUST_ACCOUNT_AGE = 60 * 60 * 24 * 7;
+
+export const DISPLAY_NAME_MIN_LENGTH = 3;
+export const DISPLAY_NAME_MAX_LENGTH = 32;
+
+export const USERNAME_MIN_LENGTH = 3;
+export const USERNAME_MAX_LENGTH = 32;
+
 export const PASSWORD_MIN_LENGTH = 8;
-export const NAME_MIN_LENGTH = 2;
-export const NAME_MAX_LENGTH = 32;
 
 export const TOTAL_DAYS = 91;
 export const WEEKS = 52;
@@ -17,8 +22,8 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard/profile",
 	"/dashboard/settings",
 ];
+
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
-export const DISABLED_ROUTE_AFTER_VERIFICATION = "/verification/result";
 
 export const HERO_SECTION_TITLE = "Capture Your Ideas Effortlessly" as const;
 export const HERO_SECTION_DESCRIPTION =

@@ -9,22 +9,20 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { registerUser } from "@/actions/auth/register-user";
 import { cn } from "@/lib/utils";
-import { Loader, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Loader, Lock, Eye, EyeOff, User } from "lucide-react";
 
 const initialState = {
 	successMessage: "",
 	errorMessage: "",
 	errors: {
-		email: "",
-		firstName: "",
-		lastName: "",
+		username: "",
+		displayName: "",
 		password: "",
 		confirmPassword: "",
 	},
 	values: {
-		email: "",
-		first_name: "",
-		last_name: "",
+		username: "",
+		display_name: "",
 		password: "",
 		confirm_password: "",
 	},
@@ -57,74 +55,50 @@ export function RegisterForm() {
 					Create an account
 				</div>
 				<div className="flex flex-col gap-3">
-					<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-						<div className="flex flex-col gap-1.5">
-							<Label htmlFor="first_name" className="text-sm font-medium">
-								First Name <span className="text-red-600">*</span>
-							</Label>
-							<Input
-								type="text"
-								id="first_name"
-								name="first_name"
-								placeholder="John"
-								defaultValue={state.values?.first_name}
-								className={cn(
-									"h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.firstName && "border-red-600",
-								)}
-								required
-							/>
-							{state.errors?.firstName && (
-								<span className="text-sm font-medium text-red-600">
-									{state.errors.firstName}
-								</span>
+					<div className="flex flex-col gap-1.5">
+						<Label htmlFor="display_name" className="text-sm font-medium">
+							Display Name <span className="text-red-600">*</span>
+						</Label>
+						<Input
+							type="text"
+							id="display_name"
+							name="display_name"
+							placeholder="John"
+							defaultValue={state.values?.display_name}
+							className={cn(
+								"h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+								state.errors?.displayName && "border-red-600",
 							)}
-						</div>
-						<div className="flex flex-col gap-1.5">
-							<Label htmlFor="last_name" className="text-sm font-medium">
-								Last Name <span className="text-red-600">*</span>
-							</Label>
-							<Input
-								type="text"
-								id="last_name"
-								name="last_name"
-								placeholder="Doe"
-								defaultValue={state.values?.last_name}
-								className={cn(
-									"h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.lastName && "border-red-600",
-								)}
-								required
-							/>
-							{state.errors?.lastName && (
-								<span className="text-sm font-medium text-red-600">
-									{state.errors.lastName}
-								</span>
-							)}
-						</div>
+							required
+						/>
+						{state.errors?.displayName && (
+							<span className="text-sm font-medium text-red-600">
+								{state.errors.displayName}
+							</span>
+						)}
 					</div>
 					<div className="flex flex-col gap-1.5">
-						<Label htmlFor="email" className="text-sm font-medium">
-							Email <span className="text-red-600">*</span>
+						<Label htmlFor="username" className="text-sm font-medium">
+							Username <span className="text-red-600">*</span>
 						</Label>
 						<div className="relative">
-							<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
+							<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
 							<Input
-								type="email"
-								id="email"
-								name="email"
-								placeholder="Enter your email"
-								defaultValue={state.values?.email}
+								type="text"
+								id="username"
+								name="username"
+								placeholder="Enter your username"
+								defaultValue={state.values?.username}
 								className={cn(
 									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.email && "border-red-600",
+									state.errors?.username && "border-red-600",
 								)}
 								required
 							/>
 						</div>
-						{state.errors?.email && (
+						{state.errors?.username && (
 							<span className="text-sm font-medium text-red-600">
-								{state.errors.email}
+								{state.errors.username}
 							</span>
 						)}
 					</div>

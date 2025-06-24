@@ -11,14 +11,14 @@ import { LogoutButton } from "@/components/auth/logout-button";
 import { cn } from "@/lib/utils";
 
 type SidebarDropdownProps = {
-	email: string;
-	name: string;
+	username: string;
+	displayName: string;
 	isCollapsed: boolean;
 };
 
 export function SidebarDropdown({
-	email,
-	name,
+	username,
+	displayName,
 	isCollapsed,
 }: SidebarDropdownProps) {
 	return (
@@ -41,15 +41,17 @@ export function SidebarDropdown({
 							<Avatar className="rounded-full size-9 border border-blue-600">
 								<AvatarFallback className="rounded-full bg-blue-50 text-blue-600">
 									<span className="font-medium">
-										{name.charAt(0).toUpperCase()}
+										{displayName.charAt(0).toUpperCase()}
 									</span>
 								</AvatarFallback>
 							</Avatar>
 							{!isCollapsed && (
 								<div className="flex flex-col space-y-0.5 text-left">
-									<span className="text-sm font-medium">{name}</span>
+									<span className="text-sm font-medium capitalize">
+										{displayName}
+									</span>
 									<span className="text-xs text-muted-foreground truncate">
-										{email}
+										@{username}
 									</span>
 								</div>
 							)}
@@ -66,14 +68,16 @@ export function SidebarDropdown({
 						<Avatar className="rounded size-9 border border-blue-600">
 							<AvatarFallback className="rounded bg-blue-50 text-blue-600">
 								<span className="font-medium">
-									{name.charAt(0).toUpperCase()}
+									{displayName.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col space-y-1">
-							<span className="text-sm font-medium">{name}</span>
+							<span className="text-sm font-medium capitalize">
+								{displayName}
+							</span>
 							<span className="text-xs text-muted-foreground truncate">
-								{email}
+								@{username}
 							</span>
 						</div>
 					</DropdownMenuLabel>

@@ -14,11 +14,14 @@ import { ArrowRight, Settings, User } from "lucide-react";
 import { LogoutButton } from "./auth/logout-button";
 
 type SignedInMainNavProps = {
-	email: string;
-	name: string;
+	username: string;
+	displayName: string;
 };
 
-export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
+export function SignedInMainNav({
+	username,
+	displayName,
+}: SignedInMainNavProps) {
 	return (
 		<div className="hidden items-center justify-end space-x-3 md:flex">
 			<NextLink
@@ -38,7 +41,7 @@ export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
 					<Avatar className="size-9 rounded-full border border-blue-600">
 						<AvatarFallback className="bg-blue-50 text-blue-600 rounded-full">
 							<span className="font-medium">
-								{name.charAt(0).toUpperCase()}
+								{displayName.charAt(0).toUpperCase()}
 							</span>
 						</AvatarFallback>
 					</Avatar>
@@ -48,14 +51,16 @@ export function SignedInMainNav({ email, name }: SignedInMainNavProps) {
 						<Avatar className="rounded size-9 border border-blue-600">
 							<AvatarFallback className="rounded bg-blue-50 text-blue-600">
 								<span className="font-medium">
-									{name.charAt(0).toUpperCase()}
+									{displayName.charAt(0).toUpperCase()}
 								</span>
 							</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col space-y-1">
-							<span className="text-sm font-medium">{name}</span>
+							<span className="text-sm font-medium capitalize">
+								{displayName}
+							</span>
 							<span className="text-xs text-muted-foreground truncate">
-								{email}
+								@{username}
 							</span>
 						</div>
 					</DropdownMenuLabel>

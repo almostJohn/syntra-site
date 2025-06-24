@@ -15,26 +15,15 @@ datasource db {
 }
 
 model User {
-  id                String         @id @default(cuid())
-  email             String         @unique
-  name              String
-  password          String
-  is_email_verified Boolean        @default(false)
-  created_at        DateTime       @default(now())
-  updated_at        DateTime       @updatedAt
-  tasks             Task[]
-  notes             Note[]
-  notifications     Notification[] @relation("user_notifications")
-  sessions          UserSession[]
-}
-
-model UserSession {
-  id         String   @id @default(cuid())
-  user_id    String
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  token      String   @unique
-  expires_at DateTime
-  created_at DateTime @default(now())
+  id            String         @id @default(cuid())
+  username      String         @unique
+  display_name  String
+  password      String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  tasks         Task[]
+  notes         Note[]
+  notifications Notification[] @relation("user_notifications")
 }
 
 model Task {

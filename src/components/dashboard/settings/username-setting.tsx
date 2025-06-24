@@ -3,42 +3,42 @@
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { changeDisplayName } from "@/actions/settings/change-name";
+import { changeUsername } from "@/actions/settings/change-username";
 import type { ActionResponse } from "@/lib/server-action";
+import { USERNAME_MAX_LENGTH } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
-import { DISPLAY_NAME_MAX_LENGTH } from "@/lib/constants";
 import { Loader } from "lucide-react";
 
-const intialState = {
+const initialState = {
 	successMessage: "",
 	errorMessage: "",
 	values: {
-		displayName: "",
+		username: "",
 	},
 };
 
 type User = {
-	displayName: string;
+	username: string;
 };
 
-type NameSettingProps = {
+type UsernameSettingProps = {
 	user: User;
 };
 
-export function NameSetting({ user }: NameSettingProps) {
+export function UsernameSetting({ user }: UsernameSettingProps) {
 	const [state, formAction, isPending] = useActionState(
 		async (
 			_prevState: ActionResponse,
-			payload: { displayName: string },
+			payload: { username: string },
 		): Promise<ActionResponse> => {
-			return await changeDisplayName(payload.displayName);
+			return await changeUsername(payload.username);
 		},
-		intialState,
+		initialState,
 	);
-	const [displayName, setDisplayName] = useState(user.displayName);
+	const [username, setUsername] = useState(user.username);
 
 	useEffect(() => {
-		setDisplayName(user.displayName);
+		setUsername(user.username);
 	}, [user]);
 
 	useEffect(() => {
@@ -52,38 +52,40 @@ export function NameSetting({ user }: NameSettingProps) {
 	return (
 		<form
 			action={() => {
-				formAction({ displayName });
+				formAction({ username });
 			}}
 			className="flex flex-col rounded-xl border border-border bg-background shadow"
 		>
 			<div className="flex flex-col space-y-4 p-6">
-				<h3 className="text-lg font-bold">Display Name</h3>
+				<h3 className="text-lg font-bold">Username</h3>
 				<div className="flex flex-col space-y-2">
-					<p className="text-sm">
-						Please enter your full name, or a display name you are comfortable
-						with.
-					</p>
-					<Input
-						type="text"
-						id="display_name"
-						name="display_name"
-						value={displayName}
-						onChange={(e) => setDisplayName(e.target.value)}
-						className="w-70 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all"
-					/>
+					<p className="text-sm">This is your username within Syntra.</p>
+					<div className="flex items-center">
+						<div className="inline-flex items-center justify-center p-2 h-9 bg-muted border-y border-l border-r-none border-border rounded-l-sm text-sm font-medium text-muted-foreground">
+							@
+						</div>
+						<Input
+							type="text"
+							id="username"
+							name="username"
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							className="w-60 rounded-l-none rounded-r-sm focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all"
+						/>
+					</div>
 				</div>
 			</div>
 			<div className="px-6 py-4 mt-auto border-t border-border">
 				<div className="flex items-center justify-between w-full">
 					<p className="text-sm text-muted-foreground">
-						Please use {DISPLAY_NAME_MAX_LENGTH} characters at maximum.
+						Please use {USERNAME_MAX_LENGTH} characters at maximum.
 					</p>
 					<Button
 						type="submit"
 						variant="primary"
 						disabled={isPending}
 						size="sm"
-						className="cursor-pointer rounded-sm"
+						className="rounded-sm cursor-pointer"
 					>
 						{isPending ? <Loader className="size-4 animate-spin" /> : "Save"}
 					</Button>

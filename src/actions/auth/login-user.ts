@@ -5,32 +5,44 @@ import { prisma } from "@/data/db/prisma";
 import { createSession, setCookie } from "@/lib/auth";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getFormValue } from "@/lib/get-form-value";
-import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
+import {
+	PASSWORD_MIN_LENGTH,
+	USERNAME_MAX_LENGTH,
+	USERNAME_MIN_LENGTH,
+} from "@/lib/constants";
 
 export async function loginUser(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const email = getFormValue(formData, "email");
+		const username = getFormValue(formData, "username");
 		const password = getFormValue(formData, "password");
 
-		if (!email || !password) {
+		if (!username || !password) {
 			return {
-				errorMessage: "Email and password are required.",
+				errorMessage: "Username and password are required.",
 				errors: {
-					email: "Email is a required field.",
+					email: "Username is a required field.",
 					password: "Password is a required field.",
 				},
 			};
 		}
 
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-		if (!emailRegex.test(email)) {
+		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: "Invalid email.",
+				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 				errors: {
-					email: "Invalid email.",
+					username: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				},
+			};
+		}
+
+		if (username.length > USERNAME_MAX_LENGTH) {
+			return {
+				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				errors: {
+					username: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 				},
 			};
 		}
@@ -42,34 +54,27 @@ export async function loginUser(
 					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
 				},
 				values: {
-					email,
+					username,
 				},
 			};
 		}
 
 		const user = await prisma.user.findUnique({
 			where: {
-				email,
+				username,
 			},
 		});
 
 		if (!user || !user.password) {
 			return {
-				errorMessage: "Invalid email or password.",
+				errorMessage: "Invalid username or password.",
 				errors: {
-					email: "Invalid email.",
+					username: "Invalid username.",
 					password: "Invalid password.",
 				},
 				values: {
-					email,
+					username,
 				},
-			};
-		}
-
-		if (!user.is_email_verified) {
-			return {
-				errorMessage:
-					"Please verify your email address before attempting to log in.",
 			};
 		}
 
@@ -77,21 +82,21 @@ export async function loginUser(
 
 		if (!isPasswordMatch) {
 			return {
-				errorMessage: "Invalid email or password.",
+				errorMessage: "Invalid username or password.",
 				errors: {
-					email: "Invalid email.",
+					username: "Invalid username.",
 					password: "Invalid password.",
 				},
 				values: {
-					email,
+					username,
 				},
 			};
 		}
 
 		const sessionToken = await createSession({
 			userId: user.id,
-			email: user.email,
-			name: user.name,
+			username: user.username,
+			displayName: user.display_name,
 		});
 
 		if (sessionToken) {
