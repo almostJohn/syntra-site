@@ -8,11 +8,15 @@ import { SidebarNav } from "./sidebar-nav";
 import { SidebarDropdown } from "./sidebar-dropdown";
 
 type SidebarWrapperProps = PropsWithChildren & {
-	email: string;
-	name: string;
+	username: string;
+	displayName: string;
 };
 
-export function SidebarWrapper({ email, name, children }: SidebarWrapperProps) {
+export function SidebarWrapper({
+	username,
+	displayName,
+	children,
+}: SidebarWrapperProps) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
 	function toggleSidebar() {
@@ -41,7 +45,11 @@ export function SidebarWrapper({ email, name, children }: SidebarWrapperProps) {
 					</div>
 				</div>
 				<SidebarNav isCollapsed={isCollapsed} />
-				<SidebarDropdown email={email} name={name} isCollapsed={isCollapsed} />
+				<SidebarDropdown
+					username={username}
+					displayName={displayName}
+					isCollapsed={isCollapsed}
+				/>
 			</aside>
 			<div
 				className={cn(

@@ -52,7 +52,7 @@ export function DeleteAccountForm() {
 			<AlertDialogTrigger asChild>
 				<Button
 					size="sm"
-					className="cursor-pointer rounded-sm bg-red-600 text-white hover:bg-red-700"
+					className="cursor-pointer rounded-sm bg-red-600 text-white hover:bg-red-700 active:scale-95"
 				>
 					Delete Personal Account
 				</Button>

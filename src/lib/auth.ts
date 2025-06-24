@@ -8,8 +8,8 @@ const SECRET = new TextEncoder().encode(process.env.NEXT_SECRET_KEY);
 
 export type Auth = {
 	userId: string;
-	email: string;
-	name: string;
+	username: string;
+	displayName: string;
 };
 
 export async function createSession(payload: Auth) {
@@ -118,7 +118,7 @@ export async function deleteCookie() {
 	}
 }
 
-export async function getSession<T>() {
+export async function getSession() {
 	try {
 		const sessionToken = await getCookie();
 
@@ -126,13 +126,32 @@ export async function getSession<T>() {
 			return null;
 		}
 
-		const session = (await verifySession(sessionToken)) as T;
+		const session = (await verifySession(sessionToken)) as Auth;
 
 		if (!session) {
 			return null;
 		}
 
-		return session;
+		const currentUser = await prisma.user.findUnique({
+			where: {
+				id: session.userId,
+			},
+			select: {
+				id: true,
+				username: true,
+				display_name: true,
+			},
+		});
+
+		if (!currentUser) {
+			return null;
+		}
+
+		return {
+			userId: currentUser.id,
+			username: currentUser.username,
+			displayName: currentUser.display_name,
+		};
 	} catch (error_) {
 		const error = error_ as Error;
 
@@ -169,10 +188,10 @@ export async function getCurrentUser() {
 			},
 			select: {
 				id: true,
-				email: true,
-				name: true,
-				is_email_verified: true,
+				username: true,
+				display_name: true,
 				created_at: true,
+				updated_at: true,
 			},
 		});
 
@@ -182,10 +201,10 @@ export async function getCurrentUser() {
 
 		return {
 			id: currentUser.id,
-			email: currentUser.email,
-			name: currentUser.name,
-			isEmailVerified: currentUser.is_email_verified,
+			username: currentUser.username,
+			displayName: currentUser.display_name,
 			createdAt: currentUser.created_at,
+			updatedAt: currentUser.updated_at,
 		};
 	} catch (error_) {
 		const error = error_ as Error;

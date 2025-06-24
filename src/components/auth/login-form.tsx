@@ -7,7 +7,7 @@ import { loginUser } from "@/actions/auth/login-user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { Mail, Lock, Eye, EyeOff, Loader } from "lucide-react";
+import { Lock, Eye, EyeOff, Loader, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NextLink } from "../ui/next-link";
 
@@ -15,11 +15,11 @@ const initialState = {
 	successMessage: "",
 	errorMessage: "",
 	errors: {
-		email: "",
+		username: "",
 		password: "",
 	},
 	values: {
-		email: "",
+		username: "",
 	},
 };
 
@@ -56,27 +56,27 @@ export function LoginForm() {
 				</div>
 				<div className="flex flex-col gap-3">
 					<div className="flex flex-col gap-1.5">
-						<Label htmlFor="email" className="text-sm font-medium">
-							Email <span className="text-red-600">*</span>
+						<Label htmlFor="username" className="text-sm font-medium">
+							Username <span className="text-red-600">*</span>
 						</Label>
 						<div className="relative">
-							<Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
+							<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
 							<Input
-								type="email"
-								id="email"
-								name="email"
-								placeholder="Enter your email"
-								defaultValue={state.values?.email}
+								type="text"
+								id="username"
+								name="username"
+								placeholder="Enter your username"
+								defaultValue={state.values?.username}
 								className={cn(
 									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.email && "border-red-600",
+									state.errors?.username && "border-red-600",
 								)}
 								required
 							/>
 						</div>
-						{state.errors?.email && (
+						{state.errors?.username && (
 							<span className="text-sm font-medium text-red-600">
-								{state.errors.email}
+								{state.errors.username}
 							</span>
 						)}
 					</div>

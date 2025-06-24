@@ -28,12 +28,12 @@ export async function Navbar() {
 				{currentUser && (
 					<>
 						<SignedInMainNav
-							email={currentUser.email}
-							name={currentUser.name}
+							username={currentUser.username}
+							displayName={currentUser.displayName}
 						/>
 						<SignedInMobileNav
-							email={currentUser.email}
-							name={currentUser.name}
+							username={currentUser.username}
+							displayName={currentUser.displayName}
 						/>
 					</>
 				)}

@@ -4,13 +4,10 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/data/db/prisma";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getCurrentUser } from "@/lib/auth";
-import {
-	DISPLAY_NAME_MIN_LENGTH,
-	DISPLAY_NAME_MAX_LENGTH,
-} from "@/lib/constants";
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/lib/constants";
 
-export async function changeDisplayName(
-	displayName: string,
+export async function changeUsername(
+	username: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
 		const currentUser = await getCurrentUser();
@@ -21,15 +18,15 @@ export async function changeDisplayName(
 			};
 		}
 
-		if (displayName.length < DISPLAY_NAME_MIN_LENGTH) {
+		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 			};
 		}
 
-		if (displayName.length > DISPLAY_NAME_MAX_LENGTH) {
+		if (username.length > USERNAME_MAX_LENGTH) {
 			return {
-				errorMessage: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
+				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 			};
 		}
 
@@ -38,10 +35,10 @@ export async function changeDisplayName(
 				id: currentUser.id,
 			},
 			data: {
-				display_name: displayName,
+				username,
 			},
 			select: {
-				display_name: true,
+				username: true,
 			},
 		});
 
@@ -49,7 +46,7 @@ export async function changeDisplayName(
 			data: {
 				user_id: currentUser.id,
 				type: "ALERT",
-				message: `User display name changed to "${displayName}".`,
+				message: `Username changed to "${username}"`,
 			},
 		});
 
@@ -59,7 +56,7 @@ export async function changeDisplayName(
 		return {
 			successMessage: "User updated successfully.",
 			values: {
-				displayName: updatedUser.display_name,
+				username: updatedUser.username,
 			},
 		};
 	});
