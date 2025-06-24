@@ -18,7 +18,6 @@ export async function deleteAccount(): Promise<ActionResponse> {
 		await prisma.user.delete({
 			where: {
 				id: currentUser.id,
-				is_email_verified: true,
 			},
 		});
 
