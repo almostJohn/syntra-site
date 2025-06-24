@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  username      String         @unique
+  display_name  String
+  password      String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  tasks         Task[]
+  notes         Note[]
+  notifications Notification[] @relation("user_notifications")
+}
+
+model Task {
+  id            String         @id @default(cuid())
+  title         String?
+  content       String
+  status        Status         @default(INCOMPLETE)
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  user_id       String
+  user          User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  notifications Notification[] @relation("task_notifications")
+}
+
+model Note {
+  id            String         @id @default(cuid())
+  title         String?
+  content       String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  user_id       String
+  user          User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  notifications Notification[] @relation("note_notifications")
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  user_id    String
+  user       User             @relation("user_notifications", fields: [user_id], references: [id], onDelete: Cascade)
+  task_id    String?
+  task       Task?            @relation("task_notifications", fields: [task_id], references: [id], onDelete: Cascade)
+  note_id    String?
+  note       Note?            @relation("note_notifications", fields: [note_id], references: [id], onDelete: Cascade)
+  message    String
+  is_read    Boolean          @default(false)
+  created_at DateTime         @default(now())
+  type       NotificationType
+}
+
+enum Status {
+  INCOMPLETE
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum NotificationType {
+  CREATE_TASK
+  UPDATE_TASK
+  DELETE_TASK
+  CREATE_NOTE
+  UPDATE_NOTE
+  DELETE_NOTE
+  REMINDER
+  ALERT
+  INFO
+}
