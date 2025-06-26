@@ -1,24 +1,24 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
-import { getUserTasksUpdate } from "@/data/db/queries/get-user-tasks-update";
-import { getUserNotesUpdate } from "@/data/db/queries/get-user-notes-update";
-import { getUserUpdate } from "@/data/db/queries/get-user-update";
-import { Header } from "@/components/dashboard/main/header";
-import { QuickActions } from "@/components/dashboard/main/quick-actions";
-import { Activities } from "@/components/dashboard/main/activities";
-import { RecentActivity } from "@/components/dashboard/main/recent-activity";
+import { getCurrentUser } from "@/lib/auth/sessions";
+import { getUserTasksUpdate } from "@/data/queries/get-user-tasks-update";
+import { getUserNotesUpdate } from "@/data/queries/get-user-notes-update";
+import { getUserUpdate } from "@/data/queries/get-user-update";
+import { Header } from "../_components/main/header";
+import { Activities } from "../_components/main/activities";
+import { QuickActions } from "../_components/main/quick-actions";
+import { RecentActivity } from "../_components/main/recent-activity";
 
 export default async function MainDashboardPage() {
-	const currentUser = await getCurrentUser();
+	const user = await getCurrentUser();
 
-	if (!currentUser) {
+	if (!user) {
 		redirect("/login");
 	}
 
 	const [taskActivities, noteActivities, userActivities] = await Promise.all([
-		getUserTasksUpdate(currentUser.id),
-		getUserNotesUpdate(currentUser.id),
-		getUserUpdate(currentUser.id),
+		getUserTasksUpdate(user.id),
+		getUserNotesUpdate(user.id),
+		getUserUpdate(user.id),
 	]);
 
 	const userRecentActivity = [
@@ -30,11 +30,11 @@ export default async function MainDashboardPage() {
 		.slice(0, 5);
 
 	return (
-		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
-			<Header userId={currentUser.id} />
-			<Activities userId={currentUser.id} />
+		<>
+			<Header />
+			<Activities userId={user.id} />
 			<QuickActions />
 			<RecentActivity activities={userRecentActivity} />
-		</div>
+		</>
 	);
 }

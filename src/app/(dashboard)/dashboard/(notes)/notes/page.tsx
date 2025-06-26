@@ -1,19 +1,16 @@
 import { redirect } from "next/navigation";
-import { Header } from "@/components/dashboard/notes/header";
-import { Notes } from "@/components/dashboard/notes/notes";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth/sessions";
 
 export default async function NotesPage() {
-	const currentUser = await getCurrentUser();
+	const user = await getCurrentUser();
 
-	if (!currentUser) {
+	if (!user) {
 		redirect("/login");
 	}
 
 	return (
 		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
-			<Header />
-			<Notes userId={currentUser.id} />
+			<h1>Notes Page</h1>
 		</div>
 	);
 }

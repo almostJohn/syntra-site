@@ -1,40 +1,46 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { and, eq } from "drizzle-orm";
+import { tasks, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 
 export async function deleteTask(taskId: string): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		const deletedTask = await prisma.task.delete({
-			where: {
-				id: taskId,
-				user_id: currentUser.id,
-			},
-		});
+		const [deletedTask] = await db
+			.delete(tasks)
+			.where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				user_id: currentUser.id,
-				type: "DELETE_TASK",
-				message: `Task "${deletedTask.title || "Untitled"}" deleted.`,
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			type: "DELETE_TASK",
+			description: `Task "${deletedTask.title || "Untitled"}" deleted.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Task deleted successfully.",
+			success: {
+				statusCode: 200,
+				message: "Task deleted successfully.",
+			},
 		};
 	});
 }

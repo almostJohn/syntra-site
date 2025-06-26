@@ -1,7 +1,10 @@
 "use server";
 
-import { hash } from "bcrypt";
-import { prisma } from "@/data/db/prisma";
+import crypto from "node:crypto";
+import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
+import { db } from "@/data/db/client";
+import { users } from "@/data/db/schema";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getFormValue } from "@/lib/get-form-value";
 import {
@@ -24,7 +27,10 @@ export async function registerUser(
 
 		if (!username || !displayName || !password || !confirmPassword) {
 			return {
-				errorMessage: "All fields are required.",
+				error: {
+					statusCode: 400,
+					message: "All fields are required.",
+				},
 				errors: {
 					username: "Username is a required field.",
 					displayName: "Display name is a required field.",
@@ -36,7 +42,10 @@ export async function registerUser(
 
 		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				},
 				errors: {
 					username: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 				},
@@ -48,7 +57,10 @@ export async function registerUser(
 
 		if (username.length > USERNAME_MAX_LENGTH) {
 			return {
-				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				},
 				errors: {
 					username: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 				},
@@ -60,7 +72,10 @@ export async function registerUser(
 
 		if (displayName.length < DISPLAY_NAME_MIN_LENGTH) {
 			return {
-				errorMessage: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
+				},
 				errors: {
 					displayName: `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`,
 				},
@@ -72,7 +87,10 @@ export async function registerUser(
 
 		if (displayName.length > DISPLAY_NAME_MAX_LENGTH) {
 			return {
-				errorMessage: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
+				},
 				errors: {
 					displayName: `Display name exceeds the maximum allowed length of ${DISPLAY_NAME_MAX_LENGTH} characters.`,
 				},
@@ -84,7 +102,10 @@ export async function registerUser(
 
 		if (password.length < PASSWORD_MIN_LENGTH) {
 			return {
-				errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				},
 				errors: {
 					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
 				},
@@ -97,7 +118,10 @@ export async function registerUser(
 
 		if (password !== confirmPassword) {
 			return {
-				errorMessage: "Passwords do not match.",
+				error: {
+					statusCode: 400,
+					message: "Passwords do not match.",
+				},
 				errors: {
 					password: "Passwords do not match.",
 					confirmPassword: "Passwords do not match.",
@@ -109,15 +133,24 @@ export async function registerUser(
 			};
 		}
 
-		const existingUser = await prisma.user.findUnique({
-			where: {
-				username,
-			},
-		});
+		const result = await db
+			.select({
+				id: users.id,
+				username: users.username,
+				displayName: users.displayName,
+			})
+			.from(users)
+			.where(eq(users.username, username))
+			.limit(1);
+
+		const existingUser = result[0];
 
 		if (existingUser) {
 			return {
-				errorMessage: "Invalid username.",
+				error: {
+					statusCode: 400,
+					message: "Invalid username.",
+				},
 				errors: {
 					username: "Invalid username.",
 				},
@@ -128,18 +161,20 @@ export async function registerUser(
 			};
 		}
 
-		const hashedPassword = await hash(password, 12);
+		const hashedPassword = await bcrypt.hash(password, 12);
 
-		await prisma.user.create({
-			data: {
-				username,
-				display_name: displayName,
-				password: hashedPassword,
-			},
+		await db.insert(users).values({
+			id: crypto.randomUUID(),
+			username,
+			displayName,
+			password: hashedPassword,
 		});
 
 		return {
-			successMessage: "Account created successfully.",
+			success: {
+				statusCode: 201,
+				message: "Account created successfully.",
+			},
 		};
 	});
 }

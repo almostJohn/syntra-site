@@ -1,65 +1,74 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { eq, and } from "drizzle-orm";
+import { notes, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
-import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "@/lib/constants";
+import { TITLE_MAX_LENGTH, DESCRIPTION_MAX_LENGTH } from "@/lib/constants";
 
 export async function updateNote(
 	noteId: string,
 	title: string | null,
-	content: string,
+	description: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
 		if (title && title.length > TITLE_MAX_LENGTH) {
 			return {
-				errorMessage: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				},
 			};
 		}
 
-		if (content.length > CONTENT_MAX_LENGTH) {
+		if (description.length > DESCRIPTION_MAX_LENGTH) {
 			return {
-				errorMessage: `Content exceeds the maximum allowed length of ${CONTENT_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Description exceeds the maximum allowed length of ${DESCRIPTION_MAX_LENGTH} characters.`,
+				},
 			};
 		}
 
-		const updatedNote = await prisma.note.update({
-			where: {
-				id: noteId,
-				user_id: currentUser.id,
-			},
-			data: {
-				title,
-				content,
-			},
-		});
+		const [updatedNote] = await db
+			.update(notes)
+			.set({ title, description })
+			.where(and(eq(notes.id, noteId), eq(notes.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				note_id: updatedNote.id,
-				user_id: currentUser.id,
-				type: "UPDATE_NOTE",
-				message: `Note "${updatedNote.title}" updated.`,
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			noteId: updatedNote.id,
+			type: "UPDATE_NOTE",
+			description: `Note "${updatedNote.title}" updated.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/notes");
 
 		return {
-			successMessage: "Note updated successfully.",
+			success: {
+				statusCode: 200,
+				message: "Note updated successfully.",
+			},
 			values: {
 				title: updatedNote.title || "Untitled",
-				content: updatedNote.content,
+				description: updatedNote.description,
 			},
 		};
 	});

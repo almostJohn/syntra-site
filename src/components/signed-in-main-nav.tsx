@@ -34,31 +34,27 @@ export function SignedInMainNav({
 				)}
 			>
 				Dashboard
-				<ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-accent-foreground group-hover:translate-x-1" />
+				<ArrowRight className="size-4 text-muted-foreground transition-all group-hover:text-accent-foreground group-hover:translate-x-0.5" />
 			</NextLink>
 			<DropdownMenu>
-				<DropdownMenuTrigger className="rounded-full cursor-pointer">
-					<Avatar className="size-9 rounded-full border border-blue-600">
-						<AvatarFallback className="bg-blue-50 text-blue-600 rounded-full">
+				<DropdownMenuTrigger className="rounded-sm cursor-pointer">
+					<Avatar className="size-9 rounded-sm border border-[#5865f2]">
+						<AvatarFallback className="bg-[#5865f2]/10 text-[#5865f2] rounded-sm">
 							<span className="font-medium">
 								{displayName.charAt(0).toUpperCase()}
 							</span>
 						</AvatarFallback>
 					</Avatar>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-65" align="end">
-					<DropdownMenuLabel className="flex items-center gap-3">
-						<Avatar className="rounded size-9 border border-blue-600">
-							<AvatarFallback className="rounded bg-blue-50 text-blue-600">
-								<span className="font-medium">
-									{displayName.charAt(0).toUpperCase()}
-								</span>
+				<DropdownMenuContent className="w-64" align="end">
+					<DropdownMenuLabel className="flex items-center space-x-2">
+						<Avatar className="size-8 rounded-sm border border-[#5865f2]">
+							<AvatarFallback className="bg-[#5865f2]/10 text-[#5865f2] rounded-sm">
+								{displayName.charAt(0).toUpperCase()}
 							</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col space-y-1">
-							<span className="text-sm font-medium capitalize">
-								{displayName}
-							</span>
+						<div className="flex flex-col space-y-0.5">
+							<h3 className="text-sm font-medium capitalize">{displayName}</h3>
 							<span className="text-xs text-muted-foreground truncate">
 								@{username}
 							</span>

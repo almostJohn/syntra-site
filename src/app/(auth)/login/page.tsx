@@ -7,22 +7,22 @@ export const metadata = {
 
 export default function LoginPage() {
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4">
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 via-blue-50 to-indigo-100 p-4">
 			<div className="w-full max-w-md">
 				<LoginForm />
 				<div className="pt-3 flex items-center justify-center text-center">
 					<p className="text-sm text-muted-foreground">
-						By signing in, you agree to our{" "}
+						By logging in, you agree to our{" "}
 						<NextLink
 							href="/terms"
-							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+							className="font-medium text-[#5865f2] transition-colors hover:underline hover:text-[#5865f2]/80"
 						>
 							Terms of Service
 						</NextLink>{" "}
 						and{" "}
 						<NextLink
 							href="/privacy"
-							className="font-medium text-blue-600 transition-colors hover:text-blue-700"
+							className="font-medium text-[#5865f2] transition-colors hover:underline hover:text-[#5865f2]/80"
 						>
 							Privacy Policy
 						</NextLink>

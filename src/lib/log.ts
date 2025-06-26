@@ -5,6 +5,18 @@ export const enum LogType {
 	Debug = "debug",
 }
 
+export const enum Category {
+	CreateSessionError = "createSessionError",
+	VerifySessionError = "verifySessionError",
+	SetCookieError = "setCookieError",
+	GetCookieError = "getCookieError",
+	DeleteCookieError = "deleteCookieError",
+	GetSessionError = "getSessionError",
+	GetCurrentUserError = "getCurrentUserError",
+	CheckAuthError = "checkAuthError",
+	ServerActionError = "serverActionError",
+}
+
 type LogDetails = {
 	message: string;
 	name?: string;
@@ -19,7 +31,7 @@ export function log({
 	additionalData,
 }: {
 	logType: LogType;
-	category: string;
+	category: Category;
 	details: LogDetails;
 	additionalData?: unknown;
 }): void {

@@ -1,8 +1,8 @@
-import { CreateTaskForm } from "@/components/dashboard/tasks/create-task-form";
+import { CreateTaskForm } from "@/app/(dashboard)/_components/tasks/create-task-form";
 
 export default function CreateTaskPage() {
 	return (
-		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
+		<div className="pl-4 pr-6 md:pr-8">
 			<CreateTaskForm />
 		</div>
 	);

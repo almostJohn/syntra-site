@@ -1,8 +1,11 @@
 "use server";
 
-import { compare } from "bcrypt";
-import { prisma } from "@/data/db/prisma";
-import { createSession, setCookie } from "@/lib/auth";
+import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
+import { db } from "@/data/db/client";
+import { users } from "@/data/db/schema";
+import { createSession } from "@/lib/auth/create-session";
+import { setCookie } from "@/lib/auth/cookies";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getFormValue } from "@/lib/get-form-value";
 import {
@@ -21,7 +24,10 @@ export async function loginUser(
 
 		if (!username || !password) {
 			return {
-				errorMessage: "Username and password are required.",
+				error: {
+					statusCode: 400,
+					message: "Username and password are required.",
+				},
 				errors: {
 					email: "Username is a required field.",
 					password: "Password is a required field.",
@@ -31,7 +37,10 @@ export async function loginUser(
 
 		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				},
 				errors: {
 					username: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
 				},
@@ -40,7 +49,10 @@ export async function loginUser(
 
 		if (username.length > USERNAME_MAX_LENGTH) {
 			return {
-				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				},
 				errors: {
 					username: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
 				},
@@ -49,7 +61,10 @@ export async function loginUser(
 
 		if (password.length < PASSWORD_MIN_LENGTH) {
 			return {
-				errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				},
 				errors: {
 					password: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
 				},
@@ -59,15 +74,25 @@ export async function loginUser(
 			};
 		}
 
-		const user = await prisma.user.findUnique({
-			where: {
-				username,
-			},
-		});
+		const result = await db
+			.select({
+				id: users.id,
+				username: users.username,
+				displayName: users.displayName,
+				password: users.password,
+			})
+			.from(users)
+			.where(eq(users.username, username))
+			.limit(1);
+
+		const user = result[0];
 
 		if (!user || !user.password) {
 			return {
-				errorMessage: "Invalid username or password.",
+				error: {
+					statusCode: 400,
+					message: "Invalid username or password.",
+				},
 				errors: {
 					username: "Invalid username.",
 					password: "Invalid password.",
@@ -78,11 +103,14 @@ export async function loginUser(
 			};
 		}
 
-		const isPasswordMatch = await compare(password, user.password);
+		const isPasswordMatch = await bcrypt.compare(password, user.password);
 
 		if (!isPasswordMatch) {
 			return {
-				errorMessage: "Invalid username or password.",
+				error: {
+					statusCode: 400,
+					message: "Invalid username or password.",
+				},
 				errors: {
 					username: "Invalid username.",
 					password: "Invalid password.",
@@ -96,7 +124,7 @@ export async function loginUser(
 		const sessionToken = await createSession({
 			userId: user.id,
 			username: user.username,
-			displayName: user.display_name,
+			displayName: user.displayName,
 		});
 
 		if (sessionToken) {
@@ -104,7 +132,10 @@ export async function loginUser(
 		}
 
 		return {
-			successMessage: "Login successful.",
+			success: {
+				statusCode: 200,
+				message: "Login successful.",
+			},
 		};
 	});
 }

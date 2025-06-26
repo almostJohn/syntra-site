@@ -36,7 +36,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={cn(
-					"bg-background text-foreground antialiased selection:bg-blue-50 selection:text-blue-600",
+					"bg-background text-neutral-900 antialiased selection:bg-[#5865f2]/10 selection:text-[#5865f2]",
 					geist.className,
 				)}
 			>

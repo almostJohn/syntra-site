@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuth } from "./lib/auth";
+import { checkAuth } from "./lib/auth/sessions";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
 	DISABLED_ROUTES_AFTER_SIGN_OUT,

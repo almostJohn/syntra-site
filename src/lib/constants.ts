@@ -13,7 +13,7 @@ export const WEEKS = 52;
 export const WEEK_DAYS = 7;
 
 export const TITLE_MAX_LENGTH = 50;
-export const CONTENT_MAX_LENGTH = 300;
+export const DESCRIPTION_MAX_LENGTH = 300;
 
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
@@ -22,7 +22,6 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard/profile",
 	"/dashboard/settings",
 ];
-
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register"];
 
 export const HERO_SECTION_TITLE = "Capture Your Ideas Effortlessly" as const;

@@ -1,6 +1,6 @@
 "use server";
 
-import { deleteCookie } from "@/lib/auth";
+import { deleteCookie } from "@/lib/auth/cookies";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 
 export async function logoutUser(): Promise<ActionResponse> {
@@ -8,7 +8,10 @@ export async function logoutUser(): Promise<ActionResponse> {
 		await deleteCookie();
 
 		return {
-			successMessage: "Logout successful.",
+			success: {
+				statusCode: 200,
+				message: "Logout successful.",
+			},
 		};
 	});
 }
