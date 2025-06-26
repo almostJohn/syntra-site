@@ -1,8 +1,14 @@
-import { log, LogType } from "./log";
+import { log, LogType, Category } from "./log";
 
 export type ActionResponse = {
-	successMessage?: string;
-	errorMessage?: string;
+	success?: {
+		statusCode?: number;
+		message?: string;
+	};
+	error?: {
+		statusCode?: number;
+		message?: string;
+	};
 	errors?: Record<string, string>;
 	values?: Record<string, string>;
 };
@@ -17,18 +23,21 @@ export async function serverActionCallback(
 
 		log({
 			logType: LogType.Error,
-			category: "SERVER_ACTION_ERROR",
+			category: Category.ServerActionError,
 			details: {
 				message: error.message,
 				errObj: error,
 			},
 			additionalData: {
-				message: "An error occured while executing server action",
+				error,
 			},
 		});
 
 		return {
-			errorMessage: "Something went wrong. Please try again.",
+			error: {
+				statusCode: 500,
+				message: "Internal Server Error.",
+			},
 		};
 	}
 }

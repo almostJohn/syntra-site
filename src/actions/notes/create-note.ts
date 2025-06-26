@@ -1,33 +1,41 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { notes, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 import { getFormValue } from "@/lib/get-form-value";
-import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "@/lib/constants";
+import { TITLE_MAX_LENGTH, DESCRIPTION_MAX_LENGTH } from "@/lib/constants";
 
 export async function createNote(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
 		const title = getFormValue(formData, "title") || "Untitled";
-		const content = getFormValue(formData, "content");
+		const description = getFormValue(formData, "description");
 
-		if (!content) {
+		if (!description) {
 			return {
-				errorMessage: "Content is a required field.",
+				error: {
+					statusCode: 400,
+					message: "Description is a required field.",
+				},
 				errors: {
-					content: "Content is a required field.",
+					description: "Description is a required field.",
 				},
 				values: {
 					title,
@@ -37,21 +45,27 @@ export async function createNote(
 
 		if (title.length > TITLE_MAX_LENGTH) {
 			return {
-				errorMessage: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				},
 				errors: {
 					title: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
 				},
 				values: {
-					content,
+					description,
 				},
 			};
 		}
 
-		if (content.length > CONTENT_MAX_LENGTH) {
+		if (description.length > DESCRIPTION_MAX_LENGTH) {
 			return {
-				errorMessage: `Content exceeds the maximum allowed length of ${CONTENT_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Description exceeds the maximum allowed length of ${DESCRIPTION_MAX_LENGTH} characters.`,
+				},
 				errors: {
-					content: `Content exceeds the maximum allowed length of ${CONTENT_MAX_LENGTH} characters.`,
+					description: `Description exceeds the maximum allowed length of ${DESCRIPTION_MAX_LENGTH} characters.`,
 				},
 				values: {
 					title,
@@ -59,28 +73,32 @@ export async function createNote(
 			};
 		}
 
-		const newNote = await prisma.note.create({
-			data: {
+		const [newNote] = await db
+			.insert(notes)
+			.values({
+				id: crypto.randomUUID(),
 				title,
-				content,
-				user_id: currentUser.id,
-			},
-		});
+				description,
+				userId: user.id,
+			})
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				user_id: currentUser.id,
-				note_id: newNote.id,
-				message: `New note "${newNote.title || "Untitled"}" created.`,
-				type: "CREATE_NOTE",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			noteId: newNote.id,
+			type: "CREATE_NOTE",
+			description: `New note "${newNote.title || "Untitled"}" created.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/notes");
 
 		return {
-			successMessage: "Note created successfully.",
+			success: {
+				statusCode: 201,
+				message: "Note created successfully.",
+			},
 		};
 	});
 }

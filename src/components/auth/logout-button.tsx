@@ -9,8 +9,14 @@ import { Loader, LogOut } from "lucide-react";
 import { logoutUser } from "@/actions/auth/logout-user";
 
 const initialState = {
-	successMessage: "",
-	errorMessage: "",
+	success: {
+		statusCode: 0,
+		message: "",
+	},
+	error: {
+		statusCode: 0,
+		message: "",
+	},
 };
 
 type LogoutButtonProps = {
@@ -25,12 +31,12 @@ export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 	);
 
 	useEffect(() => {
-		if (state.successMessage) {
-			toast.success(state.successMessage);
+		if (state.success?.message) {
+			toast.success(state.success.message);
 			router.push("/login");
 			router.refresh();
-		} else if (state.errorMessage) {
-			toast.error(state.errorMessage);
+		} else if (state.error?.message) {
+			toast.error(state.error.message);
 		}
 	}, [state, router]);
 

@@ -23,7 +23,7 @@ export function HeroSection({ title, description }: HeroSectionProps) {
 	return (
 		<section
 			id="hero"
-			className="relative flex items-center justify-center w-full py-12 md:py-20 overflow-hidden bg-gradient-to-b from-neutral-50 to-blue-50"
+			className="relative flex items-center justify-center w-full overflow-hidden py-12 md:py-24"
 		>
 			<div className="absolute inset-0 overflow-hidden">
 				<PenLine className="text-blue-500/20 absolute top-20 left-[15%] size-12 animate-pulse" />
@@ -75,7 +75,7 @@ export function HeroSection({ title, description }: HeroSectionProps) {
 								buttonVariants({
 									variant: "primary",
 									size: "lg",
-									className: "px-8 py-6 text-lg font-bold",
+									className: "px-8 py-6 text-lg font-bold rounded-sm",
 								}),
 							)}
 						>

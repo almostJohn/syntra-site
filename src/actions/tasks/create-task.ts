@@ -1,33 +1,41 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { tasks, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 import { getFormValue } from "@/lib/get-form-value";
-import { TITLE_MAX_LENGTH, CONTENT_MAX_LENGTH } from "@/lib/constants";
+import { TITLE_MAX_LENGTH, DESCRIPTION_MAX_LENGTH } from "@/lib/constants";
 
 export async function createTask(
 	_prevState: ActionResponse,
 	formData: FormData,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
 		const title = getFormValue(formData, "title") || "Untitled";
-		const content = getFormValue(formData, "content");
+		const description = getFormValue(formData, "description");
 
-		if (!content) {
+		if (!description) {
 			return {
-				errorMessage: "Content is a required field.",
+				error: {
+					statusCode: 400,
+					message: "Description is a required field.",
+				},
 				errors: {
-					content: "Content is a required field.",
+					description: "Description is a required field.",
 				},
 				values: {
 					title,
@@ -37,21 +45,27 @@ export async function createTask(
 
 		if (title.length > TITLE_MAX_LENGTH) {
 			return {
-				errorMessage: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
+				},
 				errors: {
 					title: `Title exceeds the maximum allowed length of ${TITLE_MAX_LENGTH} characters.`,
 				},
 				values: {
-					content,
+					description,
 				},
 			};
 		}
 
-		if (content.length > CONTENT_MAX_LENGTH) {
+		if (description.length > DESCRIPTION_MAX_LENGTH) {
 			return {
-				errorMessage: `Content exceeds the maximum allowed length of ${CONTENT_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Description exceeds the maximum allowed length of ${DESCRIPTION_MAX_LENGTH} characters.`,
+				},
 				errors: {
-					content: `Content exceeds the maximum allowed length of ${CONTENT_MAX_LENGTH} characters.`,
+					description: `Description exceeds the maximum allowed length of ${DESCRIPTION_MAX_LENGTH} characters.`,
 				},
 				values: {
 					title,
@@ -59,29 +73,33 @@ export async function createTask(
 			};
 		}
 
-		const newTask = await prisma.task.create({
-			data: {
+		const [newTask] = await db
+			.insert(tasks)
+			.values({
+				id: crypto.randomUUID(),
 				title,
-				content,
+				description,
 				status: "INCOMPLETE",
-				user_id: currentUser.id,
-			},
-		});
+				userId: user.id,
+			})
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				user_id: currentUser.id,
-				task_id: newTask.id,
-				message: `New task "${newTask.title || "Untitled"}" created.`,
-				type: "CREATE_TASK",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			taskId: newTask.id,
+			type: "CREATE_TASK",
+			description: `New task "${newTask.title || "Untitled"}" created.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Task created successfully.",
+			success: {
+				statusCode: 201,
+				message: "Task created successfully.",
+			},
 		};
 	});
 }

@@ -1,40 +1,46 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { and, eq } from "drizzle-orm";
+import { notes, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 
 export async function deleteNote(noteId: string): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		const deletedNote = await prisma.note.delete({
-			where: {
-				id: noteId,
-				user_id: currentUser.id,
-			},
-		});
+		const [deletedNote] = await db
+			.delete(notes)
+			.where(and(eq(notes.id, noteId), eq(notes.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				user_id: currentUser.id,
-				message: `Note "${deletedNote.title || "Untitled"}" deleted.`,
-				type: "DELETE_NOTE",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			type: "DELETE_NOTE",
+			description: `Note "${deletedNote.title || "Untitled"}" deleted.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/notes");
 
 		return {
-			successMessage: "Note deleted successfully.",
+			success: {
+				statusCode: 200,
+				message: "Note deleted successfully.",
+			},
 		};
 	});
 }

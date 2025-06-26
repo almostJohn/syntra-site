@@ -7,13 +7,19 @@ import { loginUser } from "@/actions/auth/login-user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { Lock, Eye, EyeOff, Loader, User } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NextLink } from "../ui/next-link";
 
 const initialState = {
-	successMessage: "",
-	errorMessage: "",
+	success: {
+		statusCode: 0,
+		message: "",
+	},
+	error: {
+		statusCode: 0,
+		message: "",
+	},
 	errors: {
 		username: "",
 		password: "",
@@ -32,11 +38,11 @@ export function LoginForm() {
 	);
 
 	useEffect(() => {
-		if (state.successMessage) {
-			toast.success(state.successMessage);
+		if (state.success?.message) {
+			toast.success(state.success.message);
 			router.push("/dashboard");
-		} else if (state.errorMessage) {
-			toast.error(state.errorMessage);
+		} else if (state.error?.message) {
+			toast.error(state.error.message);
 		}
 	}, [state, router]);
 
@@ -59,21 +65,18 @@ export function LoginForm() {
 						<Label htmlFor="username" className="text-sm font-medium">
 							Username <span className="text-red-600">*</span>
 						</Label>
-						<div className="relative">
-							<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
-							<Input
-								type="text"
-								id="username"
-								name="username"
-								placeholder="Enter your username"
-								defaultValue={state.values?.username}
-								className={cn(
-									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.username && "border-red-600",
-								)}
-								required
-							/>
-						</div>
+						<Input
+							type="text"
+							id="username"
+							name="username"
+							placeholder="Enter your username"
+							defaultValue={state.values?.username}
+							className={cn(
+								"h-10 rounded-sm focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
+								state.errors?.username && "border-red-600",
+							)}
+							required
+						/>
 						{state.errors?.username && (
 							<span className="text-sm font-medium text-red-600">
 								{state.errors.username}
@@ -85,14 +88,13 @@ export function LoginForm() {
 							Password <span className="text-red-600">*</span>
 						</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
 							<Input
 								type={showPassword ? "text" : "password"}
 								id="password"
 								name="password"
 								placeholder="Enter your password"
 								className={cn(
-									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+									"h-10 rounded-sm focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
 									state.errors?.password && "border-red-600",
 								)}
 								required
@@ -121,7 +123,7 @@ export function LoginForm() {
 						type="submit"
 						variant="primary"
 						disabled={isPending}
-						className="w-full h-11 cursor-pointer"
+						className="w-full h-10 cursor-pointer"
 					>
 						{isPending ? <Loader className="size-5 animate-spin" /> : "Login"}
 					</Button>
@@ -130,7 +132,7 @@ export function LoginForm() {
 							Don&apos;t have an account?{" "}
 							<NextLink
 								href="/register"
-								className="font-medium cursor-pointer text-blue-600 transition-colors hover:text-blue-700"
+								className="font-medium cursor-pointer text-[#5865f2] transition-colors hover:text-[#5865f2]/80 hover:underline"
 							>
 								Register for free
 							</NextLink>

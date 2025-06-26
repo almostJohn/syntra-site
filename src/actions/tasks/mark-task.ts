@@ -1,46 +1,49 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { and, eq } from "drizzle-orm";
+import { tasks, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 
 export async function markTaskAsIncomplete(
 	taskId: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		const updatedTask = await prisma.task.update({
-			where: {
-				id: taskId,
-				user_id: currentUser.id,
-			},
-			data: {
-				status: "INCOMPLETE",
-			},
-		});
+		const [updatedTask] = await db
+			.update(tasks)
+			.set({ status: "INCOMPLETE" })
+			.where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				task_id: updatedTask.id,
-				user_id: currentUser.id,
-				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
-				type: "UPDATE_TASK",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			taskId: updatedTask.id,
+			type: "UPDATE_TASK",
+			description: `Task "${updatedTask.title || "Untitled"}" updated.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Successfully marked task as incomplete.",
+			success: {
+				statusCode: 200,
+				message: "Successfully marked task as incomplete.",
+			},
 		};
 	});
 }
@@ -49,38 +52,39 @@ export async function markTaskAsInProgress(
 	taskId: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		const updatedTask = await prisma.task.update({
-			where: {
-				id: taskId,
-				user_id: currentUser.id,
-			},
-			data: {
-				status: "IN_PROGRESS",
-			},
-		});
+		const [updatedTask] = await db
+			.update(tasks)
+			.set({ status: "IN_PROGRESS" })
+			.where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				task_id: updatedTask.id,
-				user_id: currentUser.id,
-				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
-				type: "UPDATE_TASK",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			taskId: updatedTask.id,
+			type: "UPDATE_TASK",
+			description: `Task "${updatedTask.title || "Untitled"}" updated.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Successfully marked task as in progress.",
+			success: {
+				statusCode: 200,
+				message: "Successfully marked task as in progress.",
+			},
 		};
 	});
 }
@@ -89,38 +93,39 @@ export async function markTaskAsComplete(
 	taskId: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		const updatedTask = await prisma.task.update({
-			where: {
-				id: taskId,
-				user_id: currentUser.id,
-			},
-			data: {
-				status: "COMPLETE",
-			},
-		});
+		const [updatedTask] = await db
+			.update(tasks)
+			.set({ status: "COMPLETE" })
+			.where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				task_id: updatedTask.id,
-				user_id: currentUser.id,
-				message: `Task "${updatedTask.title || "Untitled"}" updated.`,
-				type: "UPDATE_TASK",
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			taskId: updatedTask.id,
+			type: "UPDATE_TASK",
+			description: `Task "${updatedTask.title || "Untitled"}" updated.`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/tasks");
 
 		return {
-			successMessage: "Successfully marked task as complete.",
+			success: {
+				statusCode: 200,
+				message: "Successfully marked task as complete.",
+			},
 		};
 	});
 }

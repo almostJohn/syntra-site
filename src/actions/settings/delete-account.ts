@@ -1,30 +1,33 @@
 "use server";
 
-import { deleteCookie } from "@/lib/auth";
-import { prisma } from "@/data/db/prisma";
-import { getCurrentUser } from "@/lib/auth";
+import { deleteCookie } from "@/lib/auth/cookies";
+import { db } from "@/data/db/client";
+import { eq } from "drizzle-orm";
+import { users } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 
 export async function deleteAccount(): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
-		await prisma.user.delete({
-			where: {
-				id: currentUser.id,
-			},
-		});
-
+		await db.delete(users).where(eq(users.id, user.id));
 		await deleteCookie();
 
 		return {
-			successMessage: "Logout successful.",
+			success: {
+				statusCode: 200,
+				message: "Logout successful.",
+			},
 		};
 	});
 }

@@ -9,11 +9,17 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { registerUser } from "@/actions/auth/register-user";
 import { cn } from "@/lib/utils";
-import { Loader, Lock, Eye, EyeOff, User } from "lucide-react";
+import { Loader, Eye, EyeOff } from "lucide-react";
 
 const initialState = {
-	successMessage: "",
-	errorMessage: "",
+	success: {
+		statusCode: 0,
+		message: "",
+	},
+	error: {
+		statusCode: 0,
+		message: "",
+	},
 	errors: {
 		username: "",
 		displayName: "",
@@ -37,18 +43,18 @@ export function RegisterForm() {
 	);
 
 	useEffect(() => {
-		if (state.successMessage) {
-			toast.success(state.successMessage);
+		if (state.success?.message) {
+			toast.success(state.success.message);
 			router.push("/login");
-		} else if (state.errorMessage) {
-			toast.error(state.errorMessage);
+		} else if (state.error?.message) {
+			toast.error(state.error.message);
 		}
 	}, [state, router]);
 
 	return (
 		<form
 			action={formAction}
-			className="rounded-xl bg-background border border-border shadow-xl backdrop-blur-sm p-7"
+			className="rounded-xl bg-background border border-border shadow-2xl p-7"
 		>
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-center text-center text-2xl font-bold">
@@ -66,11 +72,14 @@ export function RegisterForm() {
 							placeholder="John"
 							defaultValue={state.values?.display_name}
 							className={cn(
-								"h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+								"h-10 peer rounded-sm focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
 								state.errors?.displayName && "border-red-600",
 							)}
 							required
 						/>
+						<span className="hidden transition-all text-sm text-muted-foreground peer-focus:block">
+							You can always change this later.
+						</span>
 						{state.errors?.displayName && (
 							<span className="text-sm font-medium text-red-600">
 								{state.errors.displayName}
@@ -81,21 +90,18 @@ export function RegisterForm() {
 						<Label htmlFor="username" className="text-sm font-medium">
 							Username <span className="text-red-600">*</span>
 						</Label>
-						<div className="relative">
-							<User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
-							<Input
-								type="text"
-								id="username"
-								name="username"
-								placeholder="Enter your username"
-								defaultValue={state.values?.username}
-								className={cn(
-									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
-									state.errors?.username && "border-red-600",
-								)}
-								required
-							/>
-						</div>
+						<Input
+							type="text"
+							id="username"
+							name="username"
+							placeholder="Your unique username"
+							defaultValue={state.values?.username}
+							className={cn(
+								"h-10 rounded-sm focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
+								state.errors?.username && "border-red-600",
+							)}
+							required
+						/>
 						{state.errors?.username && (
 							<span className="text-sm font-medium text-red-600">
 								{state.errors.username}
@@ -107,14 +113,13 @@ export function RegisterForm() {
 							Password <span className="text-red-600">*</span>
 						</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
 							<Input
 								type={showPassword ? "text" : "password"}
 								id="password"
 								name="password"
-								placeholder="Enter password"
+								placeholder="Enter a password"
 								className={cn(
-									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+									"h-10 rounded-sm peer focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
 									state.errors?.password && "border-red-600",
 								)}
 								required
@@ -142,14 +147,13 @@ export function RegisterForm() {
 							Confirm Password <span className="text-red-600">*</span>
 						</Label>
 						<div className="relative">
-							<Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
 							<Input
 								type={showPassword ? "text" : "password"}
 								id="confirm_password"
 								name="confirm_password"
 								placeholder="Confirm password"
 								className={cn(
-									"pl-10 h-11 focus-visible:border-blue-300 focus-visible:ring-blue-600/40 transition-all",
+									"h-10 rounded-sm focus-visible:border-[#5865f2]/60 focus-visible:ring-[#5865f2]/40 transition-all",
 									state.errors?.confirmPassword && "border-red-600",
 								)}
 								required
@@ -178,7 +182,7 @@ export function RegisterForm() {
 						type="submit"
 						variant="primary"
 						disabled={isPending}
-						className="w-full h-11 cursor-pointer"
+						className="w-full h-10 cursor-pointer"
 					>
 						{isPending ? (
 							<Loader className="size-5 animate-spin" />
@@ -191,7 +195,7 @@ export function RegisterForm() {
 							Already have an account?{" "}
 							<NextLink
 								href="/login"
-								className="font-medium cursor-pointer text-blue-600 transition-colors hover:text-blue-700"
+								className="font-medium cursor-pointer text-[#5865f2] transition-colors hover:underline hover:text-[#5865f2]/80"
 							>
 								Login now
 							</NextLink>

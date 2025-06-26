@@ -1,60 +1,68 @@
 "use server";
 
+import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/data/db/prisma";
+import { db } from "@/data/db/client";
+import { eq } from "drizzle-orm";
+import { users, notifications } from "@/data/db/schema";
+import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
-import { getCurrentUser } from "@/lib/auth";
 import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/lib/constants";
 
 export async function changeUsername(
 	username: string,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
-		const currentUser = await getCurrentUser();
+		const user = await getCurrentUser();
 
-		if (!currentUser) {
+		if (!user) {
 			return {
-				errorMessage: "Unauthorized access.",
+				error: {
+					statusCode: 401,
+					message: "Unauthorized access.",
+				},
 			};
 		}
 
 		if (username.length < USERNAME_MIN_LENGTH) {
 			return {
-				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				error: {
+					statusCode: 400,
+					message: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				},
 			};
 		}
 
 		if (username.length > USERNAME_MAX_LENGTH) {
 			return {
-				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				error: {
+					statusCode: 400,
+					message: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				},
 			};
 		}
 
-		const updatedUser = await prisma.user.update({
-			where: {
-				id: currentUser.id,
-			},
-			data: {
-				username,
-			},
-			select: {
-				username: true,
-			},
-		});
+		const [updatedUser] = await db
+			.update(users)
+			.set({ username })
+			.where(eq(users.id, user.id))
+			.returning();
 
-		await prisma.notification.create({
-			data: {
-				user_id: currentUser.id,
-				type: "ALERT",
-				message: `Username changed to "${username}"`,
-			},
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: updatedUser.id,
+			type: "UPDATE_USER",
+			description: `User username changed to "${username}"`,
 		});
 
 		revalidatePath("/dashboard");
 		revalidatePath("/dashboard/settings");
 
 		return {
-			successMessage: "User updated successfully.",
+			success: {
+				statusCode: 200,
+				message: "User updated successfully.",
+			},
 			values: {
 				username: updatedUser.username,
 			},
