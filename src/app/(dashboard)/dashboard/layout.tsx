@@ -3,10 +3,9 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth/sessions";
-import { Navbar } from "../_components/navbar";
-import { SideMenu } from "../_components/side-menu";
-import { BottomNav } from "../_components/bottom-nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Navbar } from "./navbar";
+import { SideMenu } from "./side-menu";
 
 export const metadata: Metadata = {
 	title: {
@@ -43,12 +42,11 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 	return (
 		<main className="flex flex-col max-w-7xl h-screen mx-auto">
 			<Navbar user={session} />
-			<div className="flex-1 flex overflow-hidden">
+			<div className="flex flex-1 overflow-hidden">
 				<SideMenu />
 				<ScrollArea className="flex-1 p-6 pb-26 md:p-8">
 					<div className="flex flex-col min-h-full space-y-6">{children}</div>
 				</ScrollArea>
-				<BottomNav />
 			</div>
 		</main>
 	);

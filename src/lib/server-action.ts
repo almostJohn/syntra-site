@@ -1,14 +1,8 @@
 import { log, LogType, Category } from "./log";
 
 export type ActionResponse = {
-	success?: {
-		statusCode?: number;
-		message?: string;
-	};
-	error?: {
-		statusCode?: number;
-		message?: string;
-	};
+	successMessage?: string;
+	errorMessage?: string;
 	errors?: Record<string, string>;
 	values?: Record<string, string>;
 };
@@ -34,10 +28,7 @@ export async function serverActionCallback(
 		});
 
 		return {
-			error: {
-				statusCode: 500,
-				message: "Internal Server Error.",
-			},
+			errorMessage: "Internal Server Error.",
 		};
 	}
 }

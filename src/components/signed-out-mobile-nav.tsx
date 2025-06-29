@@ -33,7 +33,7 @@ export function SignedOutMobileNav() {
 			<DrawerTrigger asChild>
 				<Button
 					variant="ghost"
-					className="cursor-pointer hover:bg-transparent md:hidden"
+					className="cursor-pointer hover:bg-transparent dark:hover:bg-transparent md:hidden"
 				>
 					<Icons.menu className="size-6 shrink-0" />
 				</Button>
@@ -56,8 +56,8 @@ export function SignedOutMobileNav() {
 										item.href === "/login"
 											? "outline"
 											: item.href === "/register"
-												? "primary"
-												: null,
+											? "default"
+											: null,
 								}),
 							)}
 						>

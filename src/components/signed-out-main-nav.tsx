@@ -25,10 +25,10 @@ export function SignedOutMainNav() {
 							className: "cursor-pointer",
 							variant:
 								item.href === "/login"
-									? "ghost:with-active:scale-95"
+									? "ghost"
 									: item.href === "/register"
-										? "primary"
-										: null,
+									? "default"
+									: null,
 						}),
 					)}
 				>

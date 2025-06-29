@@ -1,26 +1,5 @@
 import { pgEnum, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
-export enum TaskStatus {
-	Incomplete = "INCOMPLETE",
-	InProgress = "IN_PROGRESS",
-	Complete = "COMPLETE",
-}
-
-export enum NotificationType {
-	CreateTask = "CREATE_TASK",
-	UpdateTask = "UPDATE_TASK",
-	DeleteTask = "DELETE_TASK",
-	CreateNote = "CREATE_NOTE",
-	UpdateNote = "UPDATE_NOTE",
-	DeleteNote = "DELETE_NOTE",
-	CreateUser = "CREATE_USER",
-	UpdateUser = "UPDATE_USER",
-	DeleteUser = "DELETE_USER",
-	Alert = "ALERT",
-	Info = "INFO",
-	Reminder = "REMINDER",
-}
-
 export const statusEnum = pgEnum("Status", [
 	"INCOMPLETE",
 	"IN_PROGRESS",
@@ -31,15 +10,9 @@ export const notificationTypeEnum = pgEnum("NotificationType", [
 	"CREATE_TASK",
 	"UPDATE_TASK",
 	"DELETE_TASK",
-	"CREATE_NOTE",
-	"UPDATE_NOTE",
-	"DELETE_NOTE",
-	"CREATE_USER",
-	"UPDATE_USER",
-	"DELETE_USER",
-	"ALERT",
-	"INFO",
-	"REMINDER",
+	"CREATE_PROJECT",
+	"UPDATE_PROJECT",
+	"DELETE_PROJECT",
 ]);
 
 export const users = pgTable("users", {
@@ -55,10 +28,23 @@ export const users = pgTable("users", {
 		.notNull(),
 });
 
+export const projects = pgTable("projects", {
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+	updatedat: timestamp("updated_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+});
+
 export const tasks = pgTable("tasks", {
 	id: text("id").primaryKey(),
-	title: text("title"),
-	description: text("description").notNull(),
+	content: text("content").notNull(),
 	status: statusEnum("status").default("INCOMPLETE").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
@@ -69,21 +55,9 @@ export const tasks = pgTable("tasks", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
-});
-
-export const notes = pgTable("notes", {
-	id: text("id").primaryKey(),
-	title: text("title"),
-	description: text("description").notNull(),
-	createdAt: timestamp("created_at", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
-	updatedAt: timestamp("updated_at", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
-	userId: text("user_id")
+	projectId: text("project_id")
 		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
+		.references(() => projects.id, { onDelete: "cascade" }),
 });
 
 export const notifications = pgTable("notifications", {
@@ -91,8 +65,10 @@ export const notifications = pgTable("notifications", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
+	projectId: text("project_id").references(() => projects.id, {
+		onDelete: "cascade",
+	}),
 	taskId: text("task_id").references(() => tasks.id, { onDelete: "cascade" }),
-	noteId: text("note_id").references(() => notes.id, { onDelete: "cascade" }),
 	description: text("description").notNull(),
 	isArchived: boolean("is_archived").default(false).notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })

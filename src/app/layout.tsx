@@ -4,10 +4,11 @@ import {
 	type PropsWithChildren,
 	unstable_ViewTransition as ViewTransition,
 } from "react";
-import { Toaster } from "sonner";
 import { siteConfig } from "@/config/site";
 import { geist } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { Providers } from "./providers";
+import { ToastProvider } from "@/components/toast-provider";
 
 export const metadata: Metadata = {
 	title: siteConfig.title,
@@ -33,18 +34,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={cn(
-					"bg-background text-neutral-900 antialiased selection:bg-[#5865f2]/10 selection:text-[#5865f2]",
-					geist.className,
-				)}
-			>
-				<div>
-					<ViewTransition>{children}</ViewTransition>
-					<Toaster position="top-center" richColors />
-				</div>
-			</body>
-		</html>
+		<ToastProvider>
+			<html lang="en" suppressHydrationWarning>
+				<body
+					className={cn(
+						"bg-neutral-100 text-neutral-900 antialiased dark:bg-neutral-800 dark:text-neutral-100",
+						geist.className,
+					)}
+				>
+					<ViewTransition>
+						<Providers>{children}</Providers>
+					</ViewTransition>
+				</body>
+			</html>
+		</ToastProvider>
 	);
 }
