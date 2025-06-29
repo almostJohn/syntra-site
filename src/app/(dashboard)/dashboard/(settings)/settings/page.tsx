@@ -9,7 +9,7 @@ export default async function SettingsPage() {
 	}
 
 	return (
-		<div className="p-8 min-h-screen bg-muted flex flex-col space-y-6">
+		<div className="p-8 min-h-screen">
 			<h1>Settings Page</h1>
 		</div>
 	);
