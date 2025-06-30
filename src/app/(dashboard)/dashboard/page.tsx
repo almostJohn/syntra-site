@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/sessions";
-import { Header } from "./header";
-import { Projects } from "./projects";
+import { Header } from "../_components/header";
+import { Projects } from "../_components/projects";
 
 export default async function DashboardPage() {
 	const user = await getCurrentUser();
