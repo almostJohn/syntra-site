@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { getProjectById } from "@/data/queries/get-project-by-id";
 import { Header } from "../_components/header";
+import { TaskBoard } from "../_components/task-board";
 
 export async function generateMetadata({
 	params,
@@ -41,6 +42,7 @@ export default async function ProjectPage({
 	return (
 		<>
 			<Header project={project} />
+			<TaskBoard userId={user.id} projectId={project.id} />
 		</>
 	);
 }
