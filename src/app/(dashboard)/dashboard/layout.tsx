@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth/sessions";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Navbar } from "./navbar";
-import { SideMenu } from "./side-menu";
+import { Navbar } from "../_components/navbar";
+import { SideMenu } from "../_components/side-menu";
 
 export const metadata: Metadata = {
 	title: {
