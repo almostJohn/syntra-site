@@ -42,8 +42,8 @@ export function TaskProgressBar({
 				)}
 			</div>
 			<div className="mt-2">
-				<div className="flex flex-col gap-3 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between">
-					<div className="flex items-center gap-4">
+				<div className="flex items-center justify-between text-xs text-neutral-500">
+					<div className="flex flex-wrap items-center space-x-2">
 						<div className="flex items-center gap-1">
 							<div className="size-2 rounded-full bg-red-500" />
 							<span>Incomplete ({incomplete})</span>
