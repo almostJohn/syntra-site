@@ -12,6 +12,7 @@ import {
 	AlertDialogContent,
 	AlertDialogTrigger,
 	AlertDialogHeader,
+	AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import type { ActionResponse } from "@/lib/server-action";
@@ -65,7 +66,7 @@ export function DeleteTaskDialog({ taskId }: { taskId: string }) {
 						selected task. Please proceed with caution.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
-				<div className="flex items-center justify-between mt-auto">
+				<AlertDialogFooter>
 					<Button
 						type="button"
 						variant="outline"
@@ -84,7 +85,7 @@ export function DeleteTaskDialog({ taskId }: { taskId: string }) {
 							type="submit"
 							variant="destructive"
 							disabled={isPending}
-							className="cursor-pointer"
+							className="cursor-pointer w-full"
 						>
 							{isPending ? (
 								<Icons.loading className="size-4 shrink-0" />
@@ -93,7 +94,7 @@ export function DeleteTaskDialog({ taskId }: { taskId: string }) {
 							)}
 						</Button>
 					</form>
-				</div>
+				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
 	);
