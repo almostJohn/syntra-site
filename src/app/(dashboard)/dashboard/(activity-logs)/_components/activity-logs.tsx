@@ -30,59 +30,74 @@ export function ActivityLogs({ activities }: ActivityLogsProps) {
 			{activities.map((activity) => (
 				<div
 					key={activity.id}
-					className="bg-transparent border border-neutral-200 dark:border-neutral-700 rounded-sm shadow-sm transition-shadow hover:shadow-md"
+					className="bg-transparent p-3 border border-neutral-200 dark:border-neutral-700 rounded-sm shadow-sm transition-shadow hover:shadow-md"
 				>
-					<div className="flex items-center justify-between px-4 py-2">
-						<div className="flex flex-col space-y-0.5">
+					<div className="flex items-center gap-3">
+						<div className="bg-neutral-200 dark:bg-neutral-700 hidden items-center justify-center size-11 rounded-sm shrink-0 md:inline-flex">
+							<History className="size-5 shrink-0" />
+						</div>
+						<div className="flex flex-col space-y-1.5">
 							{(activity.type === "CREATE_PROJECT" ||
 								activity.type === "UPDATE_PROJECT" ||
 								activity.type === "DELETE_PROJECT") && (
 								<>
-									<div className="flex items-center gap-1">
-										<History className="size-5 shrink-0" />
-										<h1 className="font-medium">
-											{activity.type === "CREATE_PROJECT"
-												? "Project Created"
-												: activity.type === "UPDATE_PROJECT"
-												? "Project Updated"
-												: activity.type === "DELETE_PROJECT"
-												? "Project Deleted"
-												: "Unknown Type Event"}
-										</h1>
+									<div className="flex items-center gap-2">
+										<div className="flex gap-1 items-center">
+											<h1 className="font-medium">
+												{activity.type === "CREATE_PROJECT"
+													? "Project Created"
+													: activity.type === "UPDATE_PROJECT"
+													? "Project Updated"
+													: activity.type === "DELETE_PROJECT"
+													? "Project Deleted"
+													: "Unknown Type Event"}
+											</h1>
+											<span className="text-[#5865f2] underline underline-offset-2">
+												({truncate(activity.id, 16)})
+											</span>
+										</div>
+										<span className="text-xs text-neutral-500">
+											{formatDistanceToNow(new Date(activity.createdAt), {
+												addSuffix: true,
+											})}
+										</span>
 									</div>
-									<span className="text-sm text-neutral-500">
-										{activity.projectName} ({truncate(activity.id, 16)})
-									</span>
+									<p className="text-sm text-neutral-500">
+										{activity.description}
+									</p>
 								</>
 							)}
 							{(activity.type === "CREATE_TASK" ||
 								activity.type === "UPDATE_TASK" ||
 								activity.type === "DELETE_TASK") && (
 								<>
-									<div className="flex items-center gap-1">
-										<History className="size-5 shrink-0" />
-										<h1 className="font-medium">
-											{activity.type === "CREATE_TASK"
-												? "Task Created"
-												: activity.type === "UPDATE_TASK"
-												? "Task Updated"
-												: activity.type === "DELETE_TASK"
-												? "Task Deleted"
-												: "Unknown Type Event"}
-										</h1>
+									<div className="flex items-center gap-2">
+										<div className="flex items-center gap-1">
+											<h1 className="font-medium">
+												{activity.type === "CREATE_TASK"
+													? "Task Created"
+													: activity.type === "UPDATE_TASK"
+													? "Task Updated"
+													: activity.type === "DELETE_TASK"
+													? "Task Deleted"
+													: "Unknown Type Event"}
+											</h1>
+											<span className="text-[#5865f2] underline underline-offset-2">
+												({truncate(activity.id, 16)})
+											</span>
+										</div>
+										<span className="text-xs text-neutral-500">
+											{formatDistanceToNow(new Date(activity.createdAt), {
+												addSuffix: true,
+											})}
+										</span>
 									</div>
-									<span className="text-sm text-neutral-500">
-										{truncate(activity.taskContent ?? "", 32)} (
-										{truncate(activity.id, 16)})
-									</span>
+									<p className="text-sm text-neutral-500">
+										{activity.description}
+									</p>
 								</>
 							)}
 						</div>
-						<span className="text-sm text-neutral-500">
-							{formatDistanceToNow(new Date(activity.createdAt), {
-								addSuffix: true,
-							})}
-						</span>
 					</div>
 				</div>
 			))}
