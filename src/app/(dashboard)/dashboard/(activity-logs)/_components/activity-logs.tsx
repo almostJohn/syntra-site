@@ -33,7 +33,7 @@ export function ActivityLogs({ activities }: ActivityLogsProps) {
 					className="bg-transparent p-3 border border-neutral-200 dark:border-neutral-700 rounded-sm shadow-sm transition-shadow hover:shadow-md"
 				>
 					<div className="flex items-center gap-3">
-						<div className="bg-neutral-200 dark:bg-neutral-700 hidden items-center justify-center size-11 rounded-sm shrink-0 md:inline-flex">
+						<div className="bg-neutral-200 border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-700 hidden items-center justify-center size-11 rounded-sm shrink-0 md:inline-flex">
 							<History className="size-5 shrink-0" />
 						</div>
 						<div className="flex flex-col space-y-1.5">
