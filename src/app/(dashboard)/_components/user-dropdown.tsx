@@ -34,7 +34,7 @@ export function UserDropdown({ username, displayName }: UserDropdownProps) {
 					size="icon"
 					className="hidden cursor-pointer rounded-sm md:flex hover:bg-transparent dark:hover:bg-transparent"
 				>
-					<Avatar className="size-9 rounded-sm border-none">
+					<Avatar className="size-9 rounded-sm border border-neutral-300 dark:border-neutral-700">
 						<AvatarFallback className="rounded-sm bg-neutral-200 dark:bg-neutral-700">
 							{displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
