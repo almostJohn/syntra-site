@@ -76,7 +76,7 @@ export function DisplayNameSetting({ user }: DisplayNameSettingProps) {
 							minLength={DISPLAY_NAME_MIN_LENGTH}
 							maxLength={DISPLAY_NAME_MAX_LENGTH}
 							onChange={(e) => setDisplayName(e.target.value)}
-							className="w-full h-9"
+							className="w-full h-10"
 						/>
 					</div>
 				</div>
@@ -86,12 +86,7 @@ export function DisplayNameSetting({ user }: DisplayNameSettingProps) {
 					<span className="text-sm text-neutral-500">
 						Please use {DISPLAY_NAME_MAX_LENGTH} characters at maximum.
 					</span>
-					<Button
-						type="submit"
-						size="sm"
-						disabled={isPending}
-						className="cursor-pointer"
-					>
+					<Button type="submit" disabled={isPending} className="cursor-pointer">
 						{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Save"}
 					</Button>
 				</div>

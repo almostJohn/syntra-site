@@ -62,7 +62,7 @@ export function UsernameSetting({ user }: UsernameSettingProps) {
 				<div className="flex flex-col space-y-2">
 					<span className="text-sm">This is your username within Syntra.</span>
 					<div className="max-w-md w-full flex items-center">
-						<div className="inline-flex items-center justify-center p-2 h-9 border border-neutral-300 bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-700 text-sm font-medium rounded-l-sm rounded-r-none text-neutral-500">
+						<div className="inline-flex items-center justify-center p-2 h-10 border border-neutral-300 bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-700 text-sm font-medium rounded-l-sm rounded-r-none text-neutral-500">
 							@
 						</div>
 						<Input
@@ -73,7 +73,7 @@ export function UsernameSetting({ user }: UsernameSettingProps) {
 							minLength={USERNAME_MIN_LENGTH}
 							maxLength={USERNAME_MAX_LENGTH}
 							onChange={(e) => setUsername(e.target.value)}
-							className="w-full h-9 rounded-l-none rounded-r-sm"
+							className="w-full h-10 rounded-l-none rounded-r-sm"
 						/>
 					</div>
 				</div>
@@ -83,12 +83,7 @@ export function UsernameSetting({ user }: UsernameSettingProps) {
 					<span className="text-sm text-neutral-500">
 						Please use {USERNAME_MAX_LENGTH} characters at maximum.
 					</span>
-					<Button
-						type="submit"
-						size="sm"
-						disabled={isPending}
-						className="cursor-pointer"
-					>
+					<Button type="submit" disabled={isPending} className="cursor-pointer">
 						{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Save"}
 					</Button>
 				</div>

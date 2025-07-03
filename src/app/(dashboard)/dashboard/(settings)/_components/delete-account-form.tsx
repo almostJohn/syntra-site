@@ -51,7 +51,7 @@ export function DeleteAccountForm() {
 	return (
 		<AlertDialog open={interacted} onOpenChange={setInteracted}>
 			<AlertDialogTrigger asChild>
-				<Button size="sm" variant="destructive" className="cursor-pointer">
+				<Button variant="destructive" className="cursor-pointer">
 					Delete Account
 				</Button>
 			</AlertDialogTrigger>

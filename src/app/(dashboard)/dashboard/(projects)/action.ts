@@ -129,7 +129,7 @@ export async function markTaskAsIncomplete(
 
 		const [updatedTask] = await db
 			.update(tasks)
-			.set({ status: "INCOMPLETE" })
+			.set({ status: "INCOMPLETE", updatedAt: new Date() })
 			.where(
 				and(
 					eq(tasks.id, taskId),
@@ -149,6 +149,7 @@ export async function markTaskAsIncomplete(
 
 		revalidatePath("/dashboard");
 		revalidatePath(`/dashboard/projects/${existingProject.id}`);
+		revalidatePath("/dashboard/profile");
 
 		return {
 			successMessage: `Task "${updatedTask.id}" was successfully updated.`,
@@ -186,7 +187,7 @@ export async function markTaskAsInProgress(
 
 		const [updatedTask] = await db
 			.update(tasks)
-			.set({ status: "IN_PROGRESS" })
+			.set({ status: "IN_PROGRESS", updatedAt: new Date() })
 			.where(
 				and(
 					eq(tasks.id, taskId),
@@ -206,6 +207,7 @@ export async function markTaskAsInProgress(
 
 		revalidatePath("/dashboard");
 		revalidatePath(`/dashboard/projects/${existingProject.id}`);
+		revalidatePath("/dashboard/profile");
 
 		return {
 			successMessage: `Task "${updatedTask.id}" was successfully updated.`,
@@ -243,7 +245,7 @@ export async function markTaskAsComplete(
 
 		const [updatedTask] = await db
 			.update(tasks)
-			.set({ status: "COMPLETE" })
+			.set({ status: "COMPLETE", updatedAt: new Date() })
 			.where(
 				and(
 					eq(tasks.id, taskId),
@@ -263,6 +265,7 @@ export async function markTaskAsComplete(
 
 		revalidatePath("/dashboard");
 		revalidatePath(`/dashboard/projects/${existingProject.id}`);
+		revalidatePath("/dashboard/profile");
 
 		return {
 			successMessage: `Task "${updatedTask.id}" was successfully updated.`,
