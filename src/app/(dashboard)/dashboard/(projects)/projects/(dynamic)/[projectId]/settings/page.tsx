@@ -2,9 +2,10 @@ import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { getProjectById } from "@/data/queries/get-project-by-id";
-import { Header } from "../_components/header";
-import { TaskBoard } from "../_components/task-board";
-import { Navigation } from "../_components/navigation";
+import { Navigation } from "../../_components/navigation";
+import { Header } from "./header";
+import { ProjectNameSetting } from "./project-name-setting";
+import { DangerZone } from "./danger-zone";
 
 export async function generateMetadata({
 	params,
@@ -14,14 +15,14 @@ export async function generateMetadata({
 	const { projectId } = await params;
 	const project = await getProjectById(projectId);
 	const rawName = project?.name ?? "Untitled";
-	const title = toKebabCase(rawName);
+	const title = `${toKebabCase(rawName)}'s Settings`;
 
 	return {
 		title,
 	};
 }
 
-export default async function ProjectPage({
+export default async function ProjectSettingsPage({
 	params,
 }: {
 	params: Promise<{ projectId: string }>;
@@ -32,19 +33,20 @@ export default async function ProjectPage({
 
 	const project = await getProjectById(projectId);
 
-	if (!project) {
-		notFound();
-	}
-
 	if (!user) {
 		redirect("/login");
+	}
+
+	if (!project) {
+		notFound();
 	}
 
 	return (
 		<>
 			<Navigation projectId={project.id} />
-			<Header project={project} />
-			<TaskBoard userId={user.id} projectId={project.id} />
+			<Header />
+			<ProjectNameSetting project={project} />
+			<DangerZone projectId={project.id} />
 		</>
 	);
 }
