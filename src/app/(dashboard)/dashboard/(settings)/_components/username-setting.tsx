@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useToast } from "@/components/toast-provider";
 import { Button } from "@/components/ui/button";
-import { changeUsername } from "../action";
+import { updateUsername } from "@/app/(dashboard)/actions/update-username";
 import type { ActionResponse } from "@/lib/server-action";
 import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
@@ -12,9 +12,6 @@ import { Icons } from "@/components/icons";
 const initialState = {
 	successMessage: "",
 	errorMessage: "",
-	values: {
-		username: "",
-	},
 };
 
 type User = {
@@ -31,7 +28,7 @@ export function UsernameSetting({ user }: UsernameSettingProps) {
 			_prevState: ActionResponse,
 			payload: { username: string },
 		): Promise<ActionResponse> => {
-			return await changeUsername(payload.username);
+			return await updateUsername(payload.username);
 		},
 		initialState,
 	);

@@ -6,7 +6,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/components/toast-provider";
-import { logout } from "../action";
+import { logoutUser } from "../actions/logout-user";
 
 const initialState = {
 	successMessage: "",
@@ -19,7 +19,10 @@ type LogoutButtonProps = {
 
 export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 	const router = useRouter();
-	const [state, formAction, isPending] = useActionState(logout, initialState);
+	const [state, formAction, isPending] = useActionState(
+		logoutUser,
+		initialState,
+	);
 	const { addToast } = useToast();
 
 	useEffect(() => {

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { useToast } from "@/components/toast-provider";
-import { deleteAccount } from "../action";
+import { deleteAccount } from "@/app/(dashboard)/actions/delete-account";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";

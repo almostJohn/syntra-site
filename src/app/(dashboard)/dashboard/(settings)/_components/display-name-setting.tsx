@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useToast } from "@/components/toast-provider";
 import { Button } from "@/components/ui/button";
-import { changeDisplayName } from "../action";
+import { updateDisplayName } from "@/app/(dashboard)/actions/update-display-name";
 import type { ActionResponse } from "@/lib/server-action";
 import {
 	DISPLAY_NAME_MAX_LENGTH,
@@ -15,9 +15,6 @@ import { Icons } from "@/components/icons";
 const initialState = {
 	successMessage: "",
 	errorMessage: "",
-	values: {
-		displayName: "",
-	},
 };
 
 type User = {
@@ -34,7 +31,7 @@ export function DisplayNameSetting({ user }: DisplayNameSettingProps) {
 			_prevState: ActionResponse,
 			payload: { displayName: string },
 		): Promise<ActionResponse> => {
-			return await changeDisplayName(payload.displayName);
+			return await updateDisplayName(payload.displayName);
 		},
 		initialState,
 	);

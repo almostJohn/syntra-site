@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { useToast } from "@/components/toast-provider";
-import { deleteProject } from "../../../../action";
+import { deleteProject } from "@/app/(dashboard)/actions/delete-project";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

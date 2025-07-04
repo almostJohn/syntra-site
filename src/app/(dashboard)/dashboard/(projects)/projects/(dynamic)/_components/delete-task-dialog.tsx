@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { deleteTask } from "../../../action";
+import { deleteTask } from "@/app/(dashboard)/actions/delete-task";
 import { useToast } from "@/components/toast-provider";
 import { Trash2 } from "lucide-react";
 import { Icons } from "@/components/icons";

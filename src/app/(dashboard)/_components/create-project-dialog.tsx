@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { createProject } from "../action";
+import { createProject } from "../actions/create-project";
 import { useToast } from "@/components/toast-provider";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
@@ -15,7 +15,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { NAME_MAX_LENGTH, NAME_MIN_LENGTH } from "@/lib/constants";
+import {
+	PROJECT_NAME_MAX_LENGTH,
+	PROJECT_NAME_MIN_LENGTH,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const initialState = {
@@ -23,9 +26,6 @@ const initialState = {
 	errorMessage: "",
 	errors: {
 		projectName: "",
-	},
-	values: {
-		project_name: "",
 	},
 };
 
@@ -80,8 +80,8 @@ export function CreateProjectDialog() {
 							id="project_name"
 							name="project_name"
 							defaultValue={state.values?.project_name}
-							minLength={NAME_MIN_LENGTH}
-							maxLength={NAME_MAX_LENGTH}
+							minLength={PROJECT_NAME_MIN_LENGTH}
+							maxLength={PROJECT_NAME_MAX_LENGTH}
 							placeholder="Cool project name"
 							className={cn(
 								"h-10 rounded-sm",
