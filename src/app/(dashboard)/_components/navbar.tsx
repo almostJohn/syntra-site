@@ -3,6 +3,7 @@ import { getUserNotifications } from "@/data/queries/get-user-notifications";
 import { UserDropdown } from "./user-dropdown";
 import { UserNotifications } from "./user-notifications";
 import { ModeToggle } from "./mode-toggle";
+import { HamburgerMenu } from "./hamburger-menu";
 
 type User = {
 	userId: string;
@@ -29,12 +30,15 @@ export async function Navbar({ user }: NavbarProps) {
 					</div>
 				</NextLink>
 				<div className="flex items-center justify-end gap-3">
-					<ModeToggle />
+					<div className="hidden md:flex">
+						<ModeToggle />
+					</div>
 					<UserNotifications notifications={notifications} />
 					<UserDropdown
 						username={user.username}
 						displayName={user.displayName}
 					/>
+					<HamburgerMenu />
 				</div>
 			</div>
 		</header>

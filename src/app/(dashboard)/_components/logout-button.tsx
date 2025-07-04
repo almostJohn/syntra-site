@@ -43,7 +43,7 @@ export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
 						type="submit"
 						variant="destructive"
 						disabled={isPending}
-						className="cursor-pointer"
+						className="cursor-pointer w-full"
 					>
 						{isPending ? (
 							<Icons.loading className="size-4 shrink-0" />

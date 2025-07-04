@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth/sessions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Navbar } from "../_components/navbar";
 import { SideMenu } from "../_components/side-menu";
+import { BottomNav } from "../_components/bottom-nav";
 
 export const metadata: Metadata = {
 	title: {
@@ -44,9 +45,10 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 			<Navbar user={session} />
 			<div className="flex flex-1 overflow-hidden">
 				<SideMenu />
-				<ScrollArea className="flex-1 p-6 pb-26 md:p-8">
+				<ScrollArea className="flex-1 p-6 pb-24 md:p-8">
 					<div className="flex flex-col min-h-full space-y-6">{children}</div>
 				</ScrollArea>
+				<BottomNav />
 			</div>
 		</main>
 	);
