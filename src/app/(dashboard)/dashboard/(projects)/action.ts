@@ -8,7 +8,12 @@ import { tasks, projects, notifications } from "@/data/db/schema";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
 import { getFormValue } from "@/lib/get-form-value";
-import { CONTENT_MAX_LENGTH, CONTENT_MIN_LENGTH } from "@/lib/constants";
+import {
+	CONTENT_MAX_LENGTH,
+	CONTENT_MIN_LENGTH,
+	NAME_MAX_LENGTH,
+	NAME_MIN_LENGTH,
+} from "@/lib/constants";
 import { truncate } from "@/lib/truncate";
 
 export async function createTask(
@@ -328,6 +333,88 @@ export async function deleteTask(taskId: string): Promise<ActionResponse> {
 				deletedTask.content,
 				32,
 			)}" was successfully deleted.`,
+		};
+	});
+}
+
+export async function changeProjectName(
+	projectName: string,
+	projectId: string,
+): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		const user = await getCurrentUser();
+
+		if (!user) {
+			return {
+				errorMessage: "Unauthorized access.",
+			};
+		}
+
+		if (projectName.length < NAME_MIN_LENGTH) {
+			return {
+				errorMessage: `Project name must be at least ${NAME_MIN_LENGTH} characters long.`,
+			};
+		}
+
+		if (projectName.length > NAME_MAX_LENGTH) {
+			return {
+				errorMessage: `Project name exceeds the maximum allowed length of ${NAME_MAX_LENGTH} characters.`,
+			};
+		}
+
+		const [updatedProject] = await db
+			.update(projects)
+			.set({ name: projectName, updatedat: new Date() })
+			.where(and(eq(projects.id, projectId), eq(projects.userId, user.id)))
+			.returning();
+
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			projectId: updatedProject.id,
+			type: "UPDATE_PROJECT",
+			description: `Project "${updatedProject.id}" has been updated.`,
+		});
+
+		revalidatePath("/dashboard");
+		revalidatePath(`/dashboard/projects/${updatedProject.id}`);
+		revalidatePath(`/dashboard/projects/${updatedProject.id}/settings`);
+
+		return {
+			successMessage: `Project name was successfully updated to "${updatedProject.name}"`,
+			values: {
+				projectName: updatedProject.name,
+			},
+		};
+	});
+}
+
+export async function deleteProject(
+	projectId: string,
+): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		const user = await getCurrentUser();
+
+		if (!user) {
+			return {
+				errorMessage: "Unauthorized access.",
+			};
+		}
+
+		const [deletedProject] = await db
+			.delete(projects)
+			.where(and(eq(projects.userId, user.id), eq(projects.id, projectId)))
+			.returning();
+
+		await db.insert(notifications).values({
+			id: crypto.randomUUID(),
+			userId: user.id,
+			type: "DELETE_PROJECT",
+			description: `Project "${deletedProject.name}" has been deleted.`,
+		});
+
+		return {
+			successMessage: `Project "${deletedProject.name}" was successfully deleted.`,
 		};
 	});
 }
