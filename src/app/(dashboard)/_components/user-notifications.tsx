@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { markNotificationsAsArchived } from "../action";
+import { archiveNotifications } from "../actions/archive-notifications";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -41,7 +41,7 @@ const initialState = {
 export function UserNotifications({ notifications }: UserNotificationsProps) {
 	const router = useRouter();
 	const [state, formAction, isPending] = useActionState(
-		markNotificationsAsArchived,
+		archiveNotifications,
 		initialState,
 	);
 	const [interacted, setInteracted] = useState(false);

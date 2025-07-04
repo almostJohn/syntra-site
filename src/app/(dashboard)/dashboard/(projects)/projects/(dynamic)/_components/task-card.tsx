@@ -1,9 +1,5 @@
-import {
-	MarkTaskAsIncomplete,
-	MarkTaskAsInProgress,
-	MarkTaskAsComplete,
-} from "./mark-task";
 import { DeleteTaskDialog } from "./delete-task-dialog";
+import { UpdateTaskStatus } from "./update-task-status";
 import { truncate } from "@/lib/truncate";
 
 type Task = {
@@ -32,18 +28,30 @@ export function TaskCard({ task }: TaskCardProps) {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center justify-start">
 						{task.status === "IN_PROGRESS" && (
-							<MarkTaskAsIncomplete taskId={task.id} isBackward />
+							<UpdateTaskStatus
+								taskId={task.id}
+								status="INCOMPLETE"
+								isBackward
+							/>
 						)}
 						{task.status === "COMPLETE" && (
-							<MarkTaskAsInProgress taskId={task.id} isBackward />
+							<UpdateTaskStatus
+								taskId={task.id}
+								status="IN_PROGRESS"
+								isBackward
+							/>
 						)}
 					</div>
 					<div className="flex items-center justify-end">
 						{task.status === "INCOMPLETE" && (
-							<MarkTaskAsInProgress taskId={task.id} isForward />
+							<UpdateTaskStatus
+								taskId={task.id}
+								status="IN_PROGRESS"
+								isForward
+							/>
 						)}
 						{task.status === "IN_PROGRESS" && (
-							<MarkTaskAsComplete taskId={task.id} isForward />
+							<UpdateTaskStatus taskId={task.id} status="COMPLETE" isForward />
 						)}
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { createTask } from "../../../action";
+import { createTask } from "@/app/(dashboard)/actions/create-task";
 import { useToast } from "@/components/toast-provider";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
@@ -15,7 +15,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { CONTENT_MAX_LENGTH, CONTENT_MIN_LENGTH } from "@/lib/constants";
+import {
+	TASK_CONTENT_MAX_LENGTH,
+	TASK_CONTENT_MIN_LENGTH,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const initialState = {
@@ -23,9 +26,6 @@ const initialState = {
 	errorMessage: "",
 	errors: {
 		taskContent: "",
-	},
-	values: {
-		task_content: "",
 	},
 };
 
@@ -76,9 +76,8 @@ export function CreateTaskDialog() {
 						<Textarea
 							id="task_content"
 							name="task_content"
-							defaultValue={state.values?.task_content}
-							minLength={CONTENT_MIN_LENGTH}
-							maxLength={CONTENT_MAX_LENGTH}
+							minLength={TASK_CONTENT_MIN_LENGTH}
+							maxLength={TASK_CONTENT_MAX_LENGTH}
 							placeholder="A cool task to finish"
 							className={cn(
 								"h-40 rounded-sm",

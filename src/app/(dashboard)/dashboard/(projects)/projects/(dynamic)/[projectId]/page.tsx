@@ -13,7 +13,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { projectId } = await params;
 	const project = await getProjectById(projectId);
-	const rawName = project?.name ?? "Untitled";
+	const rawName = project?.name ?? "untitled";
 	const title = toKebabCase(rawName);
 
 	return {
