@@ -5,7 +5,7 @@ export const siteConfig = {
 		template: "Syntra — %s",
 	},
 	description:
-		"Syntra is a simple, powerful system management platform built for clarity, control, and productivity. With a clean, user-friendly interface and essential features that just work, Syntra helps teams streamline operations, manage workflows, and stay organized — all at an affordable cost.",
+		"Syntra helps you stay on top of your personal tasks using a simple and effective Kanban-style workflow. Plan, prioritize, and complete your work—all in one place.",
 	creator: "@almostJohn",
 };
 

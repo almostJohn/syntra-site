@@ -16,6 +16,15 @@ export const metadata: Metadata = {
 	appleWebApp: {
 		title: siteConfig.name,
 	},
+	icons: {
+		other: [
+			{
+				url: "/syntra-logo.png",
+				sizes: "32x32",
+				type: "image/png",
+			},
+		],
+	},
 	applicationName: siteConfig.name,
 	openGraph: {
 		siteName: siteConfig.name,

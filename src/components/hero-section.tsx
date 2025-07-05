@@ -6,7 +6,6 @@ import {
 	Bookmark,
 	Tag,
 	Search,
-	ArrowRight,
 } from "lucide-react";
 import { NextLink } from "./ui/next-link";
 import { Icons } from "./icons";
@@ -70,22 +69,6 @@ export function HeroSection({ title, description }: HeroSectionProps) {
 							)}
 						>
 							Get Started for Free
-						</NextLink>
-						<NextLink
-							href="/#features"
-							className={cn(
-								buttonVariants({
-									variant: "outline",
-									size: "lg",
-									className: "px-8 py-6 text-lg font-semibold group",
-								}),
-							)}
-						>
-							<div className="flex items-center gap-2 md:hidden">
-								See Features{" "}
-								<ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-							</div>
-							<div className="hidden md:flex">See Features</div>
 						</NextLink>
 					</div>
 				</div>
