@@ -1,10 +1,12 @@
 import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { getProjectById } from "@/data/queries/get-project-by-id";
 import { Header } from "../_components/header";
 import { TaskBoard } from "../_components/task-board";
 import { Navigation } from "../_components/navigation";
+import { Icons } from "@/components/icons";
 
 export async function generateMetadata({
 	params,
@@ -44,8 +46,21 @@ export default async function ProjectPage({
 		<>
 			<Navigation projectId={project.id} />
 			<Header project={project} />
-			<TaskBoard userId={user.id} projectId={project.id} />
+			<Suspense fallback={<Loading />}>
+				<TaskBoard userId={user.id} projectId={project.id} />
+			</Suspense>
 		</>
+	);
+}
+
+function Loading() {
+	return (
+		<div className="mx-auto max-w-3xl flex flex-col space-y-4 items-center justify-center py-18 md:py-28">
+			<div className="mx-auto flex justify-center">
+				<Icons.loading className="size-16 shrink-0" />
+			</div>
+			<p className="font-medium">Loading Tasks...</p>
+		</div>
 	);
 }
 
