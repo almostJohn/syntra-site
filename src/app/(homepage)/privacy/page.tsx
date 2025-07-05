@@ -4,13 +4,13 @@ export const metadata = {
 
 export default function PrivacyPage() {
 	return (
-		<div className="mx-auto max-w-3xl px-6 md:px-0 py-10 flex flex-col gap-6">
+		<div className="mx-auto max-w-2xl px-6 md:px-0 py-10 flex flex-col gap-6">
 			<div className="flex flex-col space-y-2">
 				<h1 className="text-3xl font-extrabold leading-none md:text-4xl">
 					Privacy Policy
 				</h1>
 				<p className="text-muted-foreground text-sm">
-					Last Updated: June 23, 2025
+					Last Updated: July 5, 2025
 				</p>
 				<p>
 					We respect your privacy and are committed to protecting your personal
@@ -23,13 +23,13 @@ export default function PrivacyPage() {
 					<h3 className="font-bold leading-snug">What We Collect</h3>
 					<ul className="space-y-1">
 						<li className="list-item list-disc list-inside">
-							Your email address and password (securely stored).
+							Your username and password (securely stored).
 						</li>
 						<li className="list-item list-disc list-inside">
-							The notes and tasks you create while using Syntra.
+							The tasks you create, update, or delete within Syntra.
 						</li>
 						<li className="list-item list-disc list-inside">
-							The date and time you verified your email.
+							Basic metadata such as account creation date and task timestamps.
 						</li>
 					</ul>
 				</div>
@@ -39,7 +39,10 @@ export default function PrivacyPage() {
 					</h3>
 					<ul className="space-y-1">
 						<li className="list-item list-disc list-inside">
-							We don’t use third-party logins.
+							We don’t collect or require your email address.
+						</li>
+						<li className="list-item list-disc list-inside">
+							We don’t use third-party logins or analytics tools.
 						</li>
 						<li className="list-item list-disc list-inside">
 							We don’t show ads or sell your data.
@@ -56,25 +59,26 @@ export default function PrivacyPage() {
 							Passwords are encrypted and never stored in plain text.
 						</li>
 						<li className="list-item list-inside list-disc">
-							Your notes and tasks are private—only you can see them.
+							Your tasks are private and only accessible by you.
 						</li>
 						<li className="list-item list-inside list-disc">
-							Your verified email helps secure your account.
+							All data is stored securely and only used to provide core app
+							functionality.
 						</li>
 					</ul>
 				</div>
 				<div className="flex flex-col space-y-3">
-					<h3 className="font-bold leading-snug">Deleting Your Info</h3>
+					<h3 className="font-bold leading-snug">Deleting Your Information</h3>
 					<p>
-						When you delete your account, all your notes, tasks, and personal
-						data are permanently removed from our system.
+						When you delete your account, all your tasks and personal data are
+						permanently removed from our system.
 					</p>
 				</div>
 				<div className="flex flex-col space-y-3">
 					<h3 className="font-bold leading-snug">Changes to This Policy</h3>
 					<p>
-						We may update this policy. If we make significant changes, we’ll
-						notify you through the app.
+						We may update this policy from time to time. If significant changes
+						are made, we’ll notify you through the app.
 					</p>
 				</div>
 				<div className="flex flex-col space-y-3">
@@ -85,7 +89,7 @@ export default function PrivacyPage() {
 							href="mailto:garcia.johngale@gmail.com"
 							rel="noreferrer"
 							target="_blank"
-							className="underline text-blue-600"
+							className="underline text-[#5865f2]"
 						>
 							garcia.johngale@gmail.com
 						</a>

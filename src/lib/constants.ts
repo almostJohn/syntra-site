@@ -23,6 +23,6 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 ];
 export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register", "/"];
 
-export const HERO_SECTION_TITLE = "Capture Your Ideas Effortlessly" as const;
+export const HERO_SECTION_TITLE = "Organize Your Tasks with Clarity" as const;
 export const HERO_SECTION_DESCRIPTION =
-	"Keep your thoughts organized, accessible, and secure with our intuitive note-taking platform. From quick reminders to detailed research, we've got you covered." as const;
+	"Syntra helps you stay on top of your personal tasks using a simple and effective Kanban-style workflow. Plan, prioritize, and complete your work—all in one place." as const;
