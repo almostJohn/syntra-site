@@ -13,18 +13,16 @@ export default async function ActivityLogsPage() {
 
 	const activities = await getRecentActivities(user.id, 10);
 
-	if (activities.length === 0) {
-		return (
-			<div className="mx-auto flex justify-center text-center py-18 md:py-28">
-				<p className="font-medium">No Logs Found.</p>
-			</div>
-		);
-	}
-
 	return (
 		<>
 			<Header />
-			<ActivityLogs activities={activities} />
+			{activities.length === 0 ? (
+				<div className="mx-auto flex justify-center text-center py-18 md:py-28">
+					<p className="font-medium">No Logs Found.</p>
+				</div>
+			) : (
+				<ActivityLogs activities={activities} />
+			)}
 		</>
 	);
 }
