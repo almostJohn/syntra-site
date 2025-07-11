@@ -47,33 +47,31 @@ export function UpdateProjectName({ project }: UpdateProjectNameProps) {
 			action={() => {
 				formAction([project.id, projectName]);
 			}}
-			className="flex flex-col bg-transparent rounded-sm shadow border border-neutral-200 dark:border-neutral-700"
+			className="flex flex-col bg-transparent rounded-sm border border-neutral-200 dark:border-neutral-700"
 		>
-			<div className="p-6 flex flex-col space-y-4">
-				<h3 className="text-lg font-bold">Project Name</h3>
-				<div className="flex flex-col space-y-2">
-					<span className="text-sm">
+			<div className="flex flex-col gap-4 p-5">
+				<div className="font-medium">Project Name</div>
+				<div className="flex flex-col gap-2 text-sm max-w-xl">
+					<div>
 						This is your project&apos;s name. You can update it anytime.
-					</span>
-					<div className="max-w-md w-full">
-						<Input
-							type="text"
-							id="project_name"
-							name="project_name"
-							value={projectName}
-							onChange={(e) => setProjectName(e.target.value)}
-							minLength={PROJECT_NAME_MIN_LENGTH}
-							maxLength={PROJECT_NAME_MAX_LENGTH}
-							className="w-full h-10 rounded-sm"
-						/>
 					</div>
+					<Input
+						type="text"
+						id="project_name"
+						name="project_name"
+						value={projectName}
+						onChange={(e) => setProjectName(e.target.value)}
+						minLength={PROJECT_NAME_MIN_LENGTH}
+						maxLength={PROJECT_NAME_MAX_LENGTH}
+						className="w-full h-10 rounded-sm"
+					/>
 				</div>
 			</div>
-			<div className="mt-auto px-6 py-4 border-t border-neutral-200 dark:border-neutral-700">
+			<div className="mt-auto px-5 py-3 border-t border-neutral-200 dark:border-neutral-700">
 				<div className="flex items-center justify-between">
-					<span className="text-sm text-neutral-500">
+					<div className="text-sm max-w-sm text-neutral-500">
 						Please use {PROJECT_NAME_MAX_LENGTH} characters at maximum.
-					</span>
+					</div>
 					<Button type="submit" disabled={isPending} className="cursor-pointer">
 						{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Save"}
 					</Button>

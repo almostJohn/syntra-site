@@ -44,10 +44,10 @@ export function UsernameSettings({ user }: UsernameSettingsProps) {
 		>
 			<div className="flex flex-col gap-4 p-5">
 				<div className="font-medium">Username</div>
-				<div className="flex flex-col gap-2 max-w-md text-sm">
+				<div className="flex flex-col gap-2 max-w-xl text-sm">
 					<div>This is your username within Syntra.</div>
 					<div className="flex items-center w-full">
-						<div className="inline-flex items-center justify-center p-2 h-9 border border-neutral-300 dark:border-neutral-700 bg-neutral-200 dark:bg-neutral-700 text-neutral-500 text-sm font-medium rounded-l-sm rounded-r-none">
+						<div className="inline-flex items-center justify-center p-2 h-10 border border-neutral-300 dark:border-neutral-700 bg-neutral-200 dark:bg-neutral-700 text-neutral-500 text-sm font-medium rounded-l-sm rounded-r-none">
 							@
 						</div>
 						<Input
@@ -59,21 +59,17 @@ export function UsernameSettings({ user }: UsernameSettingsProps) {
 							maxLength={USERNAME_MAX_LENGTH}
 							onChange={(e) => setUsername(e.target.value)}
 							disabled={isPending}
-							className="w-full h-9 rounded-l-none rounded-r-sm"
+							className="w-full h-10 rounded-l-none rounded-r-sm"
 						/>
 					</div>
 				</div>
 			</div>
 			<div className="px-5 py-3 mt-auto border-t border-neutral-200 dark:border-neutral-700">
 				<div className="flex items-center justify-between">
-					<div className="text-sm max-w-md text-neutral-500">
+					<div className="text-sm max-w-sm text-neutral-500">
 						Please use {USERNAME_MAX_LENGTH} characters at maximum.
 					</div>
-					<Button
-						type="submit"
-						className="cursor-pointer h-9"
-						disabled={isPending}
-					>
+					<Button type="submit" className="cursor-pointer" disabled={isPending}>
 						{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Save"}
 					</Button>
 				</div>

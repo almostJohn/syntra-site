@@ -18,15 +18,15 @@ export default async function ActivityLogsPage() {
 	return (
 		<div className="flex flex-col gap-4">
 			<Header />
-			{activities.length === 0 ? (
-				<div className="mx-auto flex justify-center text-center py-18 md:py-28">
-					<p className="font-medium">No Logs Found.</p>
-				</div>
-			) : (
-				<Suspense fallback={<Loading />}>
+			<Suspense fallback={<Loading />}>
+				{activities.length === 0 ? (
+					<div className="mx-auto flex justify-center text-center py-18 md:py-28">
+						<p className="font-medium">No Logs Found.</p>
+					</div>
+				) : (
 					<Logs activities={activities} />
-				</Suspense>
-			)}
+				)}
+			</Suspense>
 		</div>
 	);
 }
