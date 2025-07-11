@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { getSession } from "@/lib/auth/sessions";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Navbar } from "../_components/navbar";
-import { SideMenu } from "../_components/side-menu";
-import { BottomNav } from "../_components/bottom-nav";
+import { Navbar } from "@/app/(dashboard)/_components/navbar";
+import { SideNav } from "@/app/(dashboard)/_components/side-nav";
+import { BottomNav } from "@/app/(dashboard)/_components/bottom-nav";
 
 export const metadata: Metadata = {
 	title: {
@@ -44,9 +44,9 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
 		<main className="flex flex-col max-w-7xl h-screen mx-auto">
 			<Navbar user={session} />
 			<div className="flex flex-1 overflow-hidden">
-				<SideMenu />
-				<ScrollArea className="flex-1 p-6 pb-24 md:p-8">
-					<div className="flex flex-col min-h-full space-y-6">{children}</div>
+				<SideNav />
+				<ScrollArea className="flex-1 flex flex-col min-h-full p-6 pb-24 md:p-8">
+					{children}
 				</ScrollArea>
 				<BottomNav />
 			</div>

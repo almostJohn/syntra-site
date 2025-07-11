@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/sessions";
-import { Header } from "../_components/header";
-import { AvatarSettings } from "../_components/avatar-settings";
-import { UsernameSetting } from "../_components/username-setting";
-import { DisplayNameSetting } from "../_components/display-name-setting";
-import { DangerZoneSetting } from "../_components/danger-zone-setting";
+import { Header } from "@/app/(dashboard)/_components/settings/header";
+import { AvatarSettings } from "@/app/(dashboard)/_components/settings/avatar-settings";
+import { UsernameSettings } from "@/app/(dashboard)/_components/settings/username-settings";
+import { DisplayNameSettings } from "@/app/(dashboard)/_components/settings/display-name-settings";
+import { DangerZoneSettings } from "@/app/(dashboard)/_components/settings/danger-zone-settings";
 
 export default async function SettingsPage() {
 	const user = await getCurrentUser();
@@ -14,12 +14,12 @@ export default async function SettingsPage() {
 	}
 
 	return (
-		<div className="flex flex-col space-y-6">
+		<div className="flex flex-col gap-4">
 			<Header />
 			<AvatarSettings displayName={user.displayName} />
-			<UsernameSetting user={user} />
-			<DisplayNameSetting user={user} />
-			<DangerZoneSetting />
+			<UsernameSettings user={user} />
+			<DisplayNameSettings user={user} />
+			<DangerZoneSettings />
 		</div>
 	);
 }

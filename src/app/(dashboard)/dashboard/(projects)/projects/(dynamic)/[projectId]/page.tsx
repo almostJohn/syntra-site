@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { getProjectById } from "@/data/queries/get-project-by-id";
-import { Header } from "../_components/header";
-import { TaskBoard } from "../_components/task-board";
-import { Navigation } from "../_components/navigation";
+import { Header } from "@/app/(dashboard)/_components/tasks/header";
+import { TaskBoard } from "@/app/(dashboard)/_components/tasks/task-board";
+import { Breadcrumbs } from "@/app/(dashboard)/_components/tasks/breadcrumbs";
 import { Icons } from "@/components/icons";
 
 export async function generateMetadata({
@@ -43,13 +43,13 @@ export default async function ProjectPage({
 	}
 
 	return (
-		<>
-			<Navigation projectId={project.id} />
+		<div className="flex flex-col gap-4">
+			<Breadcrumbs projectId={project.id} />
 			<Header project={project} />
 			<Suspense fallback={<Loading />}>
 				<TaskBoard userId={user.id} projectId={project.id} />
 			</Suspense>
-		</>
+		</div>
 	);
 }
 

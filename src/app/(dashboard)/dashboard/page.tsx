@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth/sessions";
-import { Header } from "../_components/header";
-import { Projects } from "../_components/projects";
+import { Header } from "../_components/main/header";
+import { Projects } from "../_components/main/projects";
 import { Icons } from "@/components/icons";
 
 export default async function DashboardPage() {
@@ -13,12 +13,12 @@ export default async function DashboardPage() {
 	}
 
 	return (
-		<>
+		<div className="flex flex-col gap-4">
 			<Header />
 			<Suspense fallback={<Loading />}>
 				<Projects userId={user.id} />
 			</Suspense>
-		</>
+		</div>
 	);
 }
 

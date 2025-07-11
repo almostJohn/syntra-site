@@ -33,7 +33,7 @@ export const config = {
 		"/dashboard/:path*",
 		"/dashboard/profile/:path*",
 		"/dashboard/projects/:path*",
-		"/dashboard/activity-log/:path",
+		"/dashboard/activity-logs/:path",
 		"/dashboard/settings/:path*",
 		"/login",
 		"/register",

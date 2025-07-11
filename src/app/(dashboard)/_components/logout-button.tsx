@@ -1,67 +1,50 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { useServerAction } from "@/hooks/use-server-action";
+import { logoutUser } from "@/app/(dashboard)/actions/logout-user";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { useToast } from "@/components/toast-provider";
-import { logoutUser } from "../actions/logout-user";
 
 const initialState = {
 	successMessage: "",
 	errorMessage: "",
 };
 
-type LogoutButtonProps = {
-	isDropdownMenu?: boolean;
-};
+export function LogoutButton({ isDropdownMenu }: { isDropdownMenu?: boolean }) {
+	const { formAction, isPending } = useServerAction(logoutUser, initialState, {
+		redirectTo: "/login",
+	});
 
-export function LogoutButton({ isDropdownMenu }: LogoutButtonProps) {
-	const router = useRouter();
-	const [state, formAction, isPending] = useActionState(
-		logoutUser,
-		initialState,
-	);
-	const { addToast } = useToast();
-
-	useEffect(() => {
-		if (state.successMessage) {
-			addToast({ description: state.successMessage, type: "success" });
-			router.push("/login");
-			router.refresh();
-		} else if (state.errorMessage) {
-			addToast({ description: state.errorMessage, type: "error" });
-		}
-	}, [state, router, addToast]);
+	if (isDropdownMenu) {
+		return (
+			<form action={formAction}>
+				<button
+					type="submit"
+					disabled={isPending}
+					className="px-3 py-1 h-8 rounded-b-sm w-full inline-flex items-center gap-2 text-sm font-medium transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700"
+				>
+					{isPending ? (
+						<Icons.loading className="size-4 shrink-0" />
+					) : (
+						<>
+							<Icons.logout className="size-4 shrink-0" /> Logout
+						</>
+					)}
+				</button>
+			</form>
+		);
+	}
 
 	return (
-		<>
-			{!isDropdownMenu ? (
-				<form action={formAction}>
-					<Button
-						type="submit"
-						variant="destructive"
-						disabled={isPending}
-						className="cursor-pointer w-full"
-					>
-						{isPending ? (
-							<Icons.loading className="size-4 shrink-0" />
-						) : (
-							"Logout"
-						)}
-					</Button>
-				</form>
-			) : (
-				<form action={formAction}>
-					<DropdownMenuItem disabled={isPending}>
-						<button type="submit" className="w-full flex items-center gap-2">
-							<Icons.logout className="size-4 text-red-500" />
-							<span className="text-red-500">Logout</span>
-						</button>
-					</DropdownMenuItem>
-				</form>
-			)}
-		</>
+		<form action={formAction}>
+			<Button
+				type="submit"
+				disabled={isPending}
+				variant="destructive"
+				className="cursor-pointer w-full h-10"
+			>
+				{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Logout"}
+			</Button>
+		</form>
 	);
 }

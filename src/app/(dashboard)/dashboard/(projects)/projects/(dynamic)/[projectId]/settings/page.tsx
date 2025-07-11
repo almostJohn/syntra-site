@@ -2,10 +2,9 @@ import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth/sessions";
 import { getProjectById } from "@/data/queries/get-project-by-id";
-import { Navigation } from "../../_components/navigation";
-import { Header } from "./header";
-import { ProjectNameSetting } from "./project-name-setting";
-import { DangerZone } from "./danger-zone";
+import { Breadcrumbs } from "@/app/(dashboard)/_components/tasks/breadcrumbs";
+import { UpdateProjectName } from "@/app/(dashboard)/_components/tasks/update-project-name";
+import { DangerZone } from "@/app/(dashboard)/_components/tasks/danger-zone";
 
 export async function generateMetadata({
 	params,
@@ -42,12 +41,11 @@ export default async function ProjectSettingsPage({
 	}
 
 	return (
-		<>
-			<Navigation projectId={project.id} />
-			<Header />
-			<ProjectNameSetting project={project} />
+		<div className="flex flex-col gap-4">
+			<Breadcrumbs projectId={project.id} />
+			<UpdateProjectName project={project} />
 			<DangerZone projectId={project.id} />
-		</>
+		</div>
 	);
 }
 

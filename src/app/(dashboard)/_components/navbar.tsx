@@ -1,9 +1,9 @@
-import { NextLink } from "@/components/ui/next-link";
-import { getUserNotifications } from "@/data/queries/get-user-notifications";
-import { UserDropdown } from "./user-dropdown";
-import { UserNotifications } from "./user-notifications";
+import { NextLink } from "../../../components/ui/next-link";
 import { ModeToggle } from "./mode-toggle";
-import { HamburgerMenu } from "./hamburger-menu";
+import { getUserNotifications } from "@/data/queries/get-user-notifications";
+import { NotificationsDropdown } from "./notifications-dropdown";
+import { UserDropdown } from "./user-dropdown";
+import { MobileNav } from "./mobile-nav";
 
 type User = {
 	userId: string;
@@ -29,16 +29,11 @@ export async function Navbar({ user }: NavbarProps) {
 						BETA
 					</div>
 				</NextLink>
-				<div className="flex items-center justify-end gap-3">
-					<div className="hidden md:flex">
-						<ModeToggle />
-					</div>
-					<UserNotifications notifications={notifications} />
-					<UserDropdown
-						username={user.username}
-						displayName={user.displayName}
-					/>
-					<HamburgerMenu />
+				<div className="flex items-center justify-end gap-2">
+					<ModeToggle className="hidden md:flex" />
+					<NotificationsDropdown notifications={notifications} />
+					<UserDropdown user={user} />
+					<MobileNav />
 				</div>
 			</div>
 		</header>
