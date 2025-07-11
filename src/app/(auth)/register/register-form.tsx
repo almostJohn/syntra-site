@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useState } from "react";
 import { register } from "../action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +16,7 @@ import {
 	DISPLAY_NAME_MIN_LENGTH,
 } from "@/lib/constants";
 import { NextLink } from "@/components/ui/next-link";
-import { useToast } from "@/components/toast-provider";
+import { useServerAction } from "@/hooks/use-server-action";
 
 const initialState = {
 	successMessage: "",
@@ -37,20 +36,13 @@ const initialState = {
 };
 
 export function RegisterForm() {
-	const router = useRouter();
-	const [state, formAction, isPending] = useActionState(register, initialState);
+	const { state, formAction, isPending } = useServerAction(
+		register,
+		initialState,
+		{ redirectTo: "/login" },
+	);
 	const [showPassword, setShowPassword] = useState(false);
 	const [acceptTerms, setAcceptTerms] = useState(false);
-	const { addToast } = useToast();
-
-	useEffect(() => {
-		if (state.successMessage) {
-			addToast({ description: state.successMessage, type: "success" });
-			router.push("/login");
-		} else if (state.errorMessage) {
-			addToast({ description: state.errorMessage, type: "error" });
-		}
-	}, [state, router, addToast]);
 
 	return (
 		<form
@@ -187,7 +179,7 @@ export function RegisterForm() {
 					</div>
 					<div className="flex flex-col gap-3 pt-2">
 						<div className="flex flex-col gap-2">
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-3">
 								<Checkbox
 									id="accept-terms"
 									checked={acceptTerms}

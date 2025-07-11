@@ -1,28 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { NextLink } from "@/components/ui/next-link";
-import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
 	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { NextLink } from "../../../components/ui/next-link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Icons } from "@/components/icons";
 import { LogoutButton } from "./logout-button";
+import { Icons } from "../../../components/icons";
 
-type UserDropdownProps = {
+type User = {
+	userId: string;
 	username: string;
 	displayName: string;
 };
 
-export function UserDropdown({ username, displayName }: UserDropdownProps) {
+type UserDropdownProps = {
+	user: User;
+};
+
+export function UserDropdown({ user }: UserDropdownProps) {
 	const [interacted, setInteracted] = useState(false);
 
-	function onCloseHandler() {
+	function onClose() {
 		setInteracted((prev) => !prev);
 	}
 
@@ -32,43 +35,41 @@ export function UserDropdown({ username, displayName }: UserDropdownProps) {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="hidden cursor-pointer rounded-sm md:flex hover:bg-transparent dark:hover:bg-transparent"
+					className="hidden cursor-pointer md:flex hover:bg-transparent dark:hover:bg-transparent"
 				>
 					<Avatar className="size-9 rounded-sm border border-neutral-300 dark:border-neutral-700">
 						<AvatarFallback className="rounded-sm bg-neutral-200 dark:bg-neutral-700">
-							{displayName.charAt(0).toUpperCase()}
+							{user.displayName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-52" align="end">
-				<div className="flex flex-col space-y-0.5 px-2 py-0.5">
-					<span className="font-medium text-sm capitalize">{displayName}</span>
-					<span className="text-sm text-neutral-500">@{username}</span>
+			<DropdownMenuContent className="w-50" align="end">
+				<div className="flex flex-col">
+					<div className="flex flex-col space-y-0.5 px-3 py-2 border-b border-neutral-200 dark:border-neutral-700">
+						<div className="text-sm font-medium">{user.displayName}</div>
+						<div className="text-sm text-neutral-500">@{user.username}</div>
+					</div>
+					<div className="flex flex-col border-b border-neutral-200 dark:border-neutral-700">
+						<NextLink
+							href="/dashboard/profile"
+							className="px-3 py-1 h-8 inline-flex items-center gap-2 text-sm font-medium transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700"
+							onClick={onClose}
+						>
+							<Icons.user className="size-4 shrink-0" /> Profile
+						</NextLink>
+						<NextLink
+							href="/dashboard/settings"
+							className="px-3 py-1 h-8 inline-flex items-center gap-2 text-sm font-medium transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700"
+							onClick={onClose}
+						>
+							<Icons.settings className="size-4 shrink-0" /> Settings
+						</NextLink>
+					</div>
+					<div className="mt-auto">
+						<LogoutButton isDropdownMenu />
+					</div>
 				</div>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem asChild>
-					<NextLink
-						href="/dashboard/profile"
-						className="flex items-center"
-						onClick={onCloseHandler}
-					>
-						<Icons.user className="size-4 shrink-0" />
-						<span>Profile</span>
-					</NextLink>
-				</DropdownMenuItem>
-				<DropdownMenuItem asChild>
-					<NextLink
-						href="/dashboard/settings"
-						className="flex items-center"
-						onClick={onCloseHandler}
-					>
-						<Icons.settings className="size-4 shrink-0" />
-						<span>Settings</span>
-					</NextLink>
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<LogoutButton isDropdownMenu />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

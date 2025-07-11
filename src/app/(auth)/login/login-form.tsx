@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useState } from "react";
 import { login } from "../action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +13,7 @@ import {
 	PASSWORD_MIN_LENGTH,
 } from "@/lib/constants";
 import { NextLink } from "@/components/ui/next-link";
-import { useToast } from "@/components/toast-provider";
+import { useServerAction } from "@/hooks/use-server-action";
 
 const initialState = {
 	successMessage: "",
@@ -30,19 +29,12 @@ const initialState = {
 };
 
 export function LoginForm() {
-	const router = useRouter();
-	const [state, formAction, isPending] = useActionState(login, initialState);
+	const { state, formAction, isPending } = useServerAction(
+		login,
+		initialState,
+		{ redirectTo: "/dashboard" },
+	);
 	const [showPassword, setShowPassword] = useState(false);
-	const { addToast } = useToast();
-
-	useEffect(() => {
-		if (state.successMessage) {
-			addToast({ description: state.successMessage, type: "success" });
-			router.push("/dashboard");
-		} else if (state.errorMessage) {
-			addToast({ description: state.errorMessage, type: "error" });
-		}
-	}, [state, router, addToast]);
 
 	return (
 		<form
