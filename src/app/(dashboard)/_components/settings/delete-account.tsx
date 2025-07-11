@@ -68,7 +68,7 @@ export function DeleteAccount() {
 						value={confirmMessage}
 						onChange={(e) => setConfirmMessage(e.target.value)}
 						placeholder="Delete My Account"
-						className="rounded-sm h-9"
+						className="rounded-sm h-10"
 						required
 					/>
 				</div>
@@ -76,7 +76,7 @@ export function DeleteAccount() {
 					<Button
 						type="button"
 						variant="outline"
-						className="cursor-pointer h-9"
+						className="cursor-pointer"
 						onClick={onClose}
 					>
 						Cancel
@@ -90,7 +90,7 @@ export function DeleteAccount() {
 						<Button
 							type="submit"
 							variant="destructive"
-							className="cursor-pointer h-9"
+							className="cursor-pointer"
 							disabled={isPending || confirmMessage !== messageBeforeDeleting}
 						>
 							{isPending ? (

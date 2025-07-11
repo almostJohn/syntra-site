@@ -47,7 +47,7 @@ export function DisplayNameSettings({ user }: DisplayNameSettingsProps) {
 		>
 			<div className="flex flex-col gap-4 p-5">
 				<div className="font-medium">Display Name</div>
-				<div className="flex flex-col gap-2 max-w-md text-sm">
+				<div className="flex flex-col gap-2 max-w-xl text-sm">
 					<div>
 						Please enter your full name, or a display name you are comfortable
 						with.
@@ -61,20 +61,16 @@ export function DisplayNameSettings({ user }: DisplayNameSettingsProps) {
 						maxLength={DISPLAY_NAME_MAX_LENGTH}
 						onChange={(e) => setDisplayName(e.target.value)}
 						disabled={isPending}
-						className="w-full h-9"
+						className="w-full h-10"
 					/>
 				</div>
 			</div>
 			<div className="px-5 py-3 mt-auto border-t border-neutral-200 dark:border-neutral-700">
 				<div className="flex items-center justify-between">
-					<div className="text-sm max-w-md text-neutral-500">
+					<div className="text-sm max-w-sm text-neutral-500">
 						Please use {DISPLAY_NAME_MAX_LENGTH} characters at maximum.
 					</div>
-					<Button
-						type="submit"
-						className="cursor-pointer h-9"
-						disabled={isPending}
-					>
+					<Button type="submit" className="cursor-pointer" disabled={isPending}>
 						{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Save"}
 					</Button>
 				</div>

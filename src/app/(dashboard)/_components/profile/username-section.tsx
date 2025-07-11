@@ -21,8 +21,8 @@ export function UsernameSection({ username }: UsernameSectionProps) {
 				</div>
 			</div>
 			<div className="flex items-center">
-				<div className="inline-flex items-center justify-center rounded-sm px-2 py-0.5 text-xs text-neutral-500 font-medium bg-neutral-200 border border-neutral-300 dark:bg-neutral-700 dark:border-neutral-700">
-					@{username}
+				<div className="inline-flex items-center justify-center rounded h-8 px-2 py-0.5 text-sm text-neutral-500 font-medium bg-neutral-200 border border-neutral-300 dark:bg-neutral-700 dark:border-neutral-700">
+					{username}
 				</div>
 			</div>
 		</div>

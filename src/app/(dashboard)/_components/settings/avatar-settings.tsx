@@ -15,7 +15,7 @@ export function AvatarSettings({ displayName }: AvatarSettingsProps) {
 							Beta
 						</div>
 					</div>
-					<div className="max-w-md text-sm flex flex-col gap-2">
+					<div className="max-w-xl text-sm flex flex-col gap-2">
 						<div>This is your avatar.</div>
 						<div>
 							We&apos;re working hard to bring you custom avatar uploads! This

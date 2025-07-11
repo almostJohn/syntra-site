@@ -67,7 +67,7 @@ export function DeleteProject({ projectId }: DeleteProjectProps) {
 						value={confirmMessage}
 						onChange={(e) => setConfirmMessage(e.target.value)}
 						placeholder="Delete My Project"
-						className="h-10 rounded-sm"
+						className="h-10"
 						required
 					/>
 				</div>
