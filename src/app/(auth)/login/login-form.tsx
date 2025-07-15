@@ -74,9 +74,17 @@ export function LoginForm() {
 						)}
 					</div>
 					<div className="flex flex-col gap-1.5">
-						<Label htmlFor="password">
-							Password <span className="text-red-500">*</span>
-						</Label>
+						<div className="flex items-center justify-between">
+							<Label htmlFor="password">
+								Password <span className="text-red-500">*</span>
+							</Label>
+							<NextLink
+								href="/forgot-password"
+								className="font-medium text-sm text-[#5865f2] hover:underline"
+							>
+								Forgot your password?
+							</NextLink>
+						</div>
 						<div className="relative">
 							<Input
 								type={showPassword ? "text" : "password"}

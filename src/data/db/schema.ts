@@ -1,11 +1,4 @@
-import {
-	pgEnum,
-	pgTable,
-	text,
-	integer,
-	timestamp,
-	boolean,
-} from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const statusEnum = pgEnum("Status", [
 	"INCOMPLETE",
@@ -35,20 +28,13 @@ export const users = pgTable("users", {
 		.notNull(),
 });
 
-export const sessions = pgTable("sessions", {
+export const authChallenges = pgTable("auth_challenges", {
 	id: text("id").primaryKey(),
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
 	question: text("question").notNull(),
-	hashedAnswer: text("hashed_answer").notNull(),
-	failedAttempts: integer("failed_attempts").notNull().default(0),
-	lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
-	lockedUntil: timestamp("locked_until", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
+	answer: text("answer").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),

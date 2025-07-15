@@ -37,5 +37,7 @@ export const config = {
 		"/dashboard/settings/:path*",
 		"/login",
 		"/register",
+		"/forgot-password",
+		"/forgot-password/step-two",
 	],
 };

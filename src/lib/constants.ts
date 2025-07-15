@@ -14,6 +14,10 @@ export const PROJECT_NAME_MIN_LENGTH = 2;
 export const TASK_CONTENT_MAX_LENGTH = 150;
 export const TASK_CONTENT_MIN_LENGTH = 2;
 
+export const SECURITY_QUESTION_MAX_LENGTH = 32;
+export const SECURITY_QUESTION_MIN_LENGTH = 2;
+export const SECURITY_ANSWER_MIN_LENGTH = 5;
+
 export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard",
 	"/dashboard/projects",
@@ -21,7 +25,13 @@ export const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 	"/dashboard/profile",
 	"/dashboard/settings",
 ];
-export const DISABLED_ROUTES_AFTER_SIGN_IN = ["/login", "/register", "/"];
+export const DISABLED_ROUTES_AFTER_SIGN_IN = [
+	"/login",
+	"/register",
+	"/",
+	"/forgot-password",
+	"/forgot-password/step-two",
+];
 
 export const HERO_SECTION_TITLE = "Organize Your Tasks with Clarity" as const;
 export const HERO_SECTION_DESCRIPTION =

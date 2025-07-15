@@ -4,7 +4,8 @@ import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "@/data/db/client";
-import { users } from "@/data/db/schema";
+import { cookies } from "next/headers";
+import { users, authChallenges } from "@/data/db/schema";
 import { createSession } from "@/lib/auth/create-session";
 import { setCookie } from "@/lib/auth/cookies";
 import { serverActionCallback, type ActionResponse } from "@/lib/server-action";
@@ -15,6 +16,7 @@ import {
 	USERNAME_MIN_LENGTH,
 	DISPLAY_NAME_MAX_LENGTH,
 	DISPLAY_NAME_MIN_LENGTH,
+	SECURITY_ANSWER_MIN_LENGTH,
 } from "@/lib/constants";
 
 export async function login(
@@ -268,6 +270,179 @@ export async function register(
 
 		return {
 			successMessage: "Registration successful.",
+		};
+	});
+}
+
+export async function forgotPasswordStepOne(
+	_prevState: ActionResponse,
+	formData: FormData,
+): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		const username = getFormValue(formData, "username");
+
+		if (!username) {
+			return {
+				errorMessage: "Username is a required field.",
+				errors: {
+					username: "Username is a required field.",
+				},
+			};
+		}
+
+		if (username.length < USERNAME_MIN_LENGTH) {
+			return {
+				errorMessage: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				errors: {
+					username: `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`,
+				},
+			};
+		}
+
+		if (username.length > USERNAME_MAX_LENGTH) {
+			return {
+				errorMessage: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				errors: {
+					username: `Username exceeds the maximum allowed length of ${USERNAME_MAX_LENGTH} characters.`,
+				},
+			};
+		}
+
+		const [user] = await db
+			.select({ id: users.id })
+			.from(users)
+			.where(eq(users.username, username))
+			.limit(1);
+
+		if (!user) {
+			return {
+				errorMessage: `User "${username}" not found.`,
+				errors: {
+					username: `User "${username}" not found.`,
+				},
+			};
+		}
+
+		const [challenges] = await db
+			.select({ question: authChallenges.question })
+			.from(authChallenges)
+			.where(eq(authChallenges.userId, user.id))
+			.limit(1);
+
+		if (!challenges) {
+			return {
+				errorMessage: "No security question found for this user.",
+			};
+		}
+
+		const cookieStore = await cookies();
+		cookieStore.set("forgot-username", username, {
+			httpOnly: true,
+			secure: true,
+			path: "/",
+			maxAge: 600,
+		});
+
+		return {
+			successMessage: "Username found.",
+		};
+	});
+}
+
+export async function forgotPasswordStepTwo(
+	_prevState: ActionResponse,
+	formData: FormData,
+): Promise<ActionResponse> {
+	return serverActionCallback(async (): Promise<ActionResponse> => {
+		const cookieStore = await cookies();
+		const username = cookieStore.get("forgot-username")?.value;
+		const answer = getFormValue(formData, "answer");
+		const newPassword = getFormValue(formData, "new_password");
+
+		if (!username) {
+			return {
+				errorMessage: "Your session expired. Please try again.",
+			};
+		}
+
+		if (!answer || !newPassword) {
+			return {
+				errorMessage: "Answer and new password are required.",
+				errors: {
+					answer: "Answer is a required field.",
+					newPassword: "New password is a required field.",
+				},
+			};
+		}
+
+		if (answer.length < SECURITY_ANSWER_MIN_LENGTH) {
+			return {
+				errorMessage: `Answer must be at least ${SECURITY_ANSWER_MIN_LENGTH} characters long.`,
+				errors: {
+					answer: `Answer must be at least ${SECURITY_ANSWER_MIN_LENGTH} characters long.`,
+				},
+			};
+		}
+
+		if (newPassword.length < PASSWORD_MIN_LENGTH) {
+			return {
+				errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				errors: {
+					newPassword: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`,
+				},
+			};
+		}
+
+		const [user] = await db
+			.select({ id: users.id })
+			.from(users)
+			.where(eq(users.username, username))
+			.limit(1);
+
+		if (!user) {
+			return {
+				errorMessage: `User "${username}" not found.`,
+			};
+		}
+
+		const [challenges] = await db
+			.select({
+				question: authChallenges.question,
+				answer: authChallenges.answer,
+			})
+			.from(authChallenges)
+			.where(eq(authChallenges.userId, user.id))
+			.limit(1);
+
+		if (!challenges) {
+			return {
+				errorMessage: "No security question found for this user.",
+			};
+		}
+
+		const isAnswerMatch = await bcrypt.compare(answer, challenges.answer);
+
+		if (!isAnswerMatch) {
+			return {
+				errorMessage: "Incorrect answer to security question.",
+				errors: {
+					answer: "Incorrect answer.",
+				},
+				values: {
+					answer,
+				},
+			};
+		}
+
+		const newHashedPassword = await bcrypt.hash(newPassword, 12);
+
+		await db
+			.update(users)
+			.set({ password: newHashedPassword, updatedAt: new Date() })
+			.where(eq(users.id, user.id));
+
+		return {
+			successMessage: "Password reset successfully.",
 		};
 	});
 }
