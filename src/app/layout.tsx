@@ -47,7 +47,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						"bg-neutral-100 text-neutral-900 antialiased dark:bg-neutral-800 dark:text-neutral-100",
+						"bg-neutral-100 text-neutral-800 antialiased dark:bg-neutral-800 dark:text-neutral-100",
 						geist.className,
 					)}
 				>

@@ -1,7 +1,7 @@
-import { eq, and } from "drizzle-orm";
 import { db } from "../db/client";
+import { eq, and } from "drizzle-orm";
 import { projects } from "../db/schema";
-import { getCurrentUser } from "@/lib/auth/sessions";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function getProjectById(projectId: string) {
 	const user = await getCurrentUser();
@@ -14,12 +14,17 @@ export async function getProjectById(projectId: string) {
 		.select({
 			id: projects.id,
 			name: projects.name,
-			createdAt: projects.createdAt,
 			userId: projects.userId,
+			createdAt: projects.createdAt,
+			updatedAt: projects.updatedAt,
 		})
 		.from(projects)
-		.where(and(eq(projects.id, projectId), eq(projects.userId, user.id)))
+		.where(and(eq(projects.userId, user.id), eq(projects.id, projectId)))
 		.limit(1);
+
+	if (!project) {
+		return null;
+	}
 
 	return project;
 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuth } from "./lib/auth/sessions";
+import { checkAuth } from "./lib/auth";
 import {
 	DISABLED_ROUTES_AFTER_SIGN_IN,
 	DISABLED_ROUTES_AFTER_SIGN_OUT,
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
 
 	if (DISABLED_ROUTES_AFTER_SIGN_IN.includes(pathname)) {
 		if (isAuthenticated) {
-			return NextResponse.redirect(new URL("/dashboard", request.url));
+			return NextResponse.redirect(new URL("/app", request.url));
 		}
 	}
 
@@ -30,14 +30,13 @@ export async function middleware(request: NextRequest) {
 export const config = {
 	matcher: [
 		"/",
-		"/dashboard/:path*",
-		"/dashboard/profile/:path*",
-		"/dashboard/projects/:path*",
-		"/dashboard/activity-logs/:path",
-		"/dashboard/settings/:path*",
+		"/app/:path*",
+		"/app/projects/:path*",
+		"/app/audit-logs/:path*",
+		"/app/profile/:path*",
+		"/app/settings/:path*",
 		"/login",
 		"/register",
 		"/forgot-password",
-		"/forgot-password/step-two",
 	],
 };
