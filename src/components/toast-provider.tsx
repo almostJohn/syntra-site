@@ -8,9 +8,9 @@ import {
 	useEffect,
 	type PropsWithChildren,
 } from "react";
-import { X, CircleAlert, CheckCircle, Info, AlertTriangle } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { Icons } from "./icons";
 
 export type Toast = {
 	id: string;
@@ -34,30 +34,6 @@ export function useToast() {
 	}
 	return context;
 }
-
-const toastIcons = {
-	success: CheckCircle,
-	error: CircleAlert,
-	info: Info,
-	warning: AlertTriangle,
-};
-
-const toastColors = {
-	success:
-		"border-green-500 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
-	error:
-		"border-red-500 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
-	info: "border-blurple bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
-	warning:
-		"border-amber-500 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100",
-};
-
-const toastIconColors = {
-	success: "text-green-500",
-	error: "text-red-500",
-	info: "text-blurple",
-	warning: "text-amber-500",
-};
 
 function ToastComponent({
 	toast,
@@ -91,28 +67,38 @@ function ToastComponent({
 		}, 200);
 	}
 
-	const Icon = toast.type ? toastIcons[toast.type] : Info;
-	const colorClass = toast.type
-		? toastColors[toast.type]
-		: "border-neutral-500 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100";
-	const iconColorClass = toast.type
-		? toastIconColors[toast.type]
-		: "text-neutral-400";
-
 	return (
 		<div
 			className={cn(
-				"relative flex items-center gap-3 p-4 mb-2 rounded-sm border shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
-				colorClass,
+				"relative flex items-center gap-3 px-4 py-3 mb-1 rounded-md bg-transparent border border-neutral-200 dark:border-neutral-700 shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
 				isVisible && !isLeaving
 					? "translate-y-0 opacity-100 scale-100"
 					: "translate-y-2 opacity-0 scale-95",
 			)}
 		>
-			<Icon className={`size-5 shrink-0 mt-0.5 ${iconColorClass}`} />
+			{toast.type === "success" && (
+				<Icons.circleSuccess className="size-5 shrink-0 text-green-500" />
+			)}
+			{toast.type === "error" && (
+				<Icons.circleX className="size-5 shrink-0 text-red-500" />
+			)}
+			{toast.type === "info" && (
+				<Icons.circleInfo className="size-5 shrink-0 text-blue-500" />
+			)}
+			{toast.type === "warning" && (
+				<Icons.circleAlert className="size-5 shrink-0 text-orange-500" />
+			)}
 			<div className="flex-1 min-w-0">
 				{toast.description && (
-					<div className="text-sm text-neutral-900 dark:text-neutral-100">
+					<div
+						className={cn(
+							"text-sm",
+							toast.type === "success" && "text-green-500",
+							toast.type === "error" && "text-red-500",
+							toast.type === "info" && "text-blue-500",
+							toast.type === "warning" && "text-orange-500",
+						)}
+					>
 						{toast.description}
 					</div>
 				)}
@@ -121,10 +107,10 @@ function ToastComponent({
 				type="button"
 				variant="ghost"
 				size="icon"
-				className="size-6 shrink-0 rounded-sm"
+				className="cursor-pointer"
 				onClick={handleRemove}
 			>
-				<X className="size-4" />
+				<Icons.x className="size-6 shrink-0" />
 			</Button>
 		</div>
 	);

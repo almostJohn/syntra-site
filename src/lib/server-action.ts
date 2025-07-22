@@ -1,5 +1,3 @@
-import { log, LogType, Category } from "./log";
-
 export type ActionResponse = {
 	successMessage?: string;
 	errorMessage?: string;
@@ -14,19 +12,7 @@ export async function serverActionCallback(
 		return await action();
 	} catch (error_) {
 		const error = error_ as Error;
-
-		log({
-			logType: LogType.Error,
-			category: Category.ServerActionError,
-			details: {
-				message: error.message,
-				errObj: error,
-			},
-			additionalData: {
-				error,
-			},
-		});
-
+		console.error(error.message, error);
 		return {
 			errorMessage: "Internal Server Error.",
 		};

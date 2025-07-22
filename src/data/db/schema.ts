@@ -1,40 +1,17 @@
-import { pgEnum, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, boolean } from "drizzle-orm/pg-core";
 
-export const statusEnum = pgEnum("Status", [
+export const taskStatusEnum = pgEnum("task_status", [
 	"INCOMPLETE",
 	"IN_PROGRESS",
 	"COMPLETE",
 ]);
 
-export const notificationTypeEnum = pgEnum("NotificationType", [
-	"CREATE_TASK",
-	"UPDATE_TASK",
-	"DELETE_TASK",
-	"CREATE_PROJECT",
-	"UPDATE_PROJECT",
-	"DELETE_PROJECT",
-]);
-
 export const users = pgTable("users", {
 	id: text("id").primaryKey(),
-	username: text("username").notNull().unique(),
+	username: text("username").unique().notNull(),
+	userTag: text("user_tag").notNull(),
 	displayName: text("display_name").notNull(),
 	password: text("password").notNull(),
-	createdAt: timestamp("created_at", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
-	updatedAt: timestamp("updated_at", { withTimezone: true })
-		.defaultNow()
-		.notNull(),
-});
-
-export const authChallenges = pgTable("auth_challenges", {
-	id: text("id").primaryKey(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
-	question: text("question").notNull(),
-	answer: text("answer").notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
@@ -46,51 +23,58 @@ export const authChallenges = pgTable("auth_challenges", {
 export const projects = pgTable("projects", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
-	updatedat: timestamp("updated_at", { withTimezone: true })
+	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
 });
 
 export const tasks = pgTable("tasks", {
 	id: text("id").primaryKey(),
-	content: text("content").notNull(),
-	status: statusEnum("status").default("INCOMPLETE").notNull(),
+	name: text("name").notNull(),
+	status: taskStatusEnum("status").default("INCOMPLETE").notNull(),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
+	projectId: text("project_id").references(() => projects.id, {
+		onDelete: "cascade",
+	}),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
+});
+
+export const auditLogs = pgTable("audit_logs", {
+	id: text("id").primaryKey(),
+	title: text("title").notNull(),
+	description: text("description").notNull(),
 	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
-	projectId: text("project_id")
-		.notNull()
-		.references(() => projects.id, { onDelete: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
 });
 
 export const notifications = pgTable("notifications", {
 	id: text("id").primaryKey(),
-	userId: text("user_id")
-		.notNull()
-		.references(() => users.id, { onDelete: "cascade" }),
-	projectId: text("project_id").references(() => projects.id, {
-		onDelete: "cascade",
-	}),
-	taskId: text("task_id").references(() => tasks.id, { onDelete: "cascade" }),
 	description: text("description").notNull(),
 	isArchived: boolean("is_archived").default(false).notNull(),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
-	type: notificationTypeEnum("type").notNull(),
 });
