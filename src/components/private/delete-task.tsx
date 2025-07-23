@@ -48,7 +48,7 @@ export function DeleteTask({
 					<Icons.trash className="size-5 shrink-0" />
 				</Button>
 			</AlertDialogTrigger>
-			<AlertDialogContent className="w-full sm:max-w-lg">
+			<AlertDialogContent className="w-full sm:max-w-2xl">
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
