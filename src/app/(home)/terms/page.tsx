@@ -85,7 +85,7 @@ export default function TermsPage() {
 							href="mailto:garcia.johngale@gmail.com"
 							rel="noreferrer"
 							target="_blank"
-							className="underline text-[#5865f2]"
+							className="text-blue-500 font-medium transition-colors hover:text-blue-400"
 						>
 							garcia.johngale@gmail.com
 						</a>
