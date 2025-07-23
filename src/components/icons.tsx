@@ -73,14 +73,14 @@ export const Icons = {
 	sparkles: (props: IconProps) => {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-				<g fill="none">
-					<path
-						fillRule="evenodd"
-						clipRule="evenodd"
-						d="M6 3a1 1 0 0 0-2 0v1H3a1 1 0 0 0 0 2h1v1a1 1 0 0 0 2 0V6h1a1 1 0 0 0 0-2H6V3zm7-1a1 1 0 0 1 1 1c0 3.344 1.148 5.296 2.514 6.43C17.918 10.598 19.672 11 21 11a1 1 0 1 1 0 2c-3.26 0-4.924 1.324-5.838 2.881C14.2 17.524 14 19.556 14 21a1 1 0 1 1-2 0c0-3.344-1.148-5.296-2.514-6.43C8.082 13.402 6.328 13 5 13a1 1 0 1 1 0-2c3.26 0 4.924-1.324 5.838-2.881C11.8 6.476 12 4.444 12 3a1 1 0 0 1 1-1z"
-						fill="currentColor"
-					/>
-				</g>
+				<path
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="2"
+					d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"
+				/>
 			</svg>
 		);
 	},
@@ -111,9 +111,10 @@ export const Icons = {
 	auditLogs: (props: IconProps) => {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-				<g fill="currentColor">
-					<path d="M2 6a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm6 0a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1zm-6 4a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm6 0a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1zm-6 4a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1zm6 0a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1zm-6 4a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1zm6 0a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1z" />
-				</g>
+				<path
+					fill="currentColor"
+					d="M2 20v-4h4v4zm6 0v-4h14v4zm-6-6v-4h4v4zm6 0v-4h14v4zM2 8V4h4v4zm6 0V4h14v4z"
+				/>
 			</svg>
 		);
 	},
