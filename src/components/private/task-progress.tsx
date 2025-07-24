@@ -41,8 +41,8 @@ export function TaskProgress({
 					/>
 				)}
 			</div>
-			<div className="flex items-center justify-between text-xs text-neutral-500">
-				<div className="flex flex-wrap items-center gap-2">
+			<div className="flex justify-between text-xs text-neutral-500">
+				<div className="flex flex-wrap gap-2">
 					<div className="flex items-center gap-1">
 						<div className="size-2 rounded-full bg-red-500" />
 						<span>Incomplete ({incomplete})</span>
@@ -56,7 +56,7 @@ export function TaskProgress({
 						<span>Complete ({complete})</span>
 					</div>
 				</div>
-				<div className="font-medium">
+				<div className="font-medium flex justify-end text-right">
 					{Math.round(completePercentage)}% Completed
 				</div>
 			</div>

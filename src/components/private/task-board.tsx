@@ -1,73 +1,39 @@
-import { TaskColumn } from "./task-column";
-import { TaskCard } from "./task-card";
-import { TaskProgress } from "./task-progress";
-import { getTasks } from "@/data/queries/get-tasks";
-import { Icons } from "../icons";
+import type { PropsWithChildren } from "react";
+import { CreateTask } from "./create-task";
 
-type TaskBoardProps = {
-	userId: string;
+type TaskBoardProps = PropsWithChildren & {
+	title: string;
+	color: string;
+	taskLength: number;
 	projectId: string;
+	status: "INCOMPLETE" | "IN_PROGRESS" | "COMPLETE";
 };
 
-export async function TaskBoard({ userId, projectId }: TaskBoardProps) {
-	const tasks = await getTasks(userId, projectId);
-
-	const incompleteTasks = tasks.filter((task) => task.status === "INCOMPLETE");
-	const inProgressTask = tasks.filter((task) => task.status === "IN_PROGRESS");
-	const completeTasks = tasks.filter((task) => task.status === "COMPLETE");
-
-	if (tasks.length === 0) {
-		return (
-			<div className="mx-auto max-w-3xl flex flex-col gap-2 items-center justify-center py-18 md:py-32">
-				<div className="mx-auto flex justify-center">
-					<Icons.sparkles className="size-12 shrink-0 text-neutral-500" />
-				</div>
-				<div className="flex flex-col space-y-1 text-center justify-center">
-					<span className="font-medium">No Tasks Found</span>
-					<span className="text-sm text-neutral-500">
-						Create a new task to get started.
-					</span>
-				</div>
-			</div>
-		);
-	}
-
+export function TaskBoard({
+	title,
+	color,
+	taskLength,
+	projectId,
+	status,
+	children,
+}: TaskBoardProps) {
 	return (
-		<>
-			<TaskProgress
-				incomplete={incompleteTasks.length}
-				inProgress={inProgressTask.length}
-				complete={completeTasks.length}
-			/>
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
-				<TaskColumn
-					title="Incomplete"
-					count={incompleteTasks.length}
-					color="bg-red-500"
-				>
-					{incompleteTasks.map((task) => (
-						<TaskCard key={task.id} projectId={projectId} task={task} />
-					))}
-				</TaskColumn>
-				<TaskColumn
-					title="In Progress"
-					count={inProgressTask.length}
-					color="bg-orange-500"
-				>
-					{inProgressTask.map((task) => (
-						<TaskCard key={task.id} projectId={projectId} task={task} />
-					))}
-				</TaskColumn>
-				<TaskColumn
-					title="Complete"
-					count={completeTasks.length}
-					color="bg-green-500"
-				>
-					{completeTasks.map((task) => (
-						<TaskCard key={task.id} projectId={projectId} task={task} />
-					))}
-				</TaskColumn>
+		<div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-sm shadow-lg">
+			<div className="p-4 border-b border-neutral-200 dark:border-neutral-700">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-3">
+						<div className={`size-3 rounded-full ${color} shrink-0`} />
+						<div className="text-lg font-semibold">{title}</div>
+					</div>
+					<div className="flex items-center gap-3">
+						<div className="flex items-center justify-center text-center rounded-full text-xs font-medium size-5 shrink-0 bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-100">
+							{taskLength}
+						</div>
+						<CreateTask projectId={projectId} status={status} />
+					</div>
+				</div>
 			</div>
-		</>
+			{children}
+		</div>
 	);
 }

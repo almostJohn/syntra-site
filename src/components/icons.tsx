@@ -26,6 +26,20 @@ export const Icons = {
 			</svg>
 		);
 	},
+	dotsVertical: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<g fill="none">
+					<path
+						fillRule="evenodd"
+						clipRule="evenodd"
+						d="M10 5a2 2 0 1 0 4 0a2 2 0 0 0-4 0zm0 7a2 2 0 1 0 4 0a2 2 0 0 0-4 0zm0 7a2 2 0 1 0 4 0a2 2 0 0 0-4 0z"
+						fill="currentColor"
+					/>
+				</g>
+			</svg>
+		);
+	},
 	check: (props: IconProps) => {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>

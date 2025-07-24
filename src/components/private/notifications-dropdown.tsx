@@ -112,8 +112,8 @@ export function NotificationsDropdown({
 								key={notification.id}
 								className="p-4 cursor-pointer transition-colors duration-200 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							>
-								<div className="flex items-start gap-3">
-									<div className="rounded-full size-3 shrink-0 bg-blue-400 animate-pulse mt-1" />
+								<div className="flex items-center gap-3">
+									<div className="rounded-full size-3.5 shrink-0 bg-blue-400 animate-pulse" />
 									<div className="text-sm text-neutral-500 whitespace-pre-wrap">
 										{notification.description}
 									</div>
@@ -137,8 +137,8 @@ export function NotificationsDropdown({
 								key={notification.id}
 								className="p-4 cursor-pointer transition-colors duration-200 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							>
-								<div className="flex items-start gap-3">
-									<Icons.check className="size-3 shrink-0 mt-1" />
+								<div className="flex items-center gap-3">
+									<Icons.check className="size-3.5 shrink-0" />
 									<div className="text-sm text-neutral-500 whitespace-pre-wrap">
 										{notification.description}
 									</div>
