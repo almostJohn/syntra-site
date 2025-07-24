@@ -22,7 +22,13 @@ const initialState = {
 	errorMessage: "",
 };
 
-export function CreateTask({ projectId }: { projectId: string }) {
+export function CreateTask({
+	projectId,
+	status,
+}: {
+	projectId: string;
+	status: "INCOMPLETE" | "IN_PROGRESS" | "COMPLETE";
+}) {
 	const { formAction, isPending } = useServerAction(
 		toAction(createTask),
 		initialState,
@@ -36,16 +42,22 @@ export function CreateTask({ projectId }: { projectId: string }) {
 	return (
 		<AlertDialog open={interacted} onOpenChange={setInteracted}>
 			<AlertDialogTrigger asChild>
-				<Button className="h-10 cursor-pointer">Create a new task</Button>
+				<Button
+					variant="ghost"
+					size="icon"
+					className="size-8 px-2 rounded-full cursor-pointer"
+				>
+					<Icons.plus className="size-4 shrink-0" />
+				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent className="w-full sm:max-w-2xl">
 				<VisuallyHidden>
-					<AlertDialogTitle>Create Project</AlertDialogTitle>
-					<AlertDialogDescription>Create Project</AlertDialogDescription>
+					<AlertDialogTitle>Create Task</AlertDialogTitle>
+					<AlertDialogDescription>Create Task</AlertDialogDescription>
 				</VisuallyHidden>
 				<form
 					action={(formData) => {
-						formAction([initialState, formData, projectId]);
+						formAction([initialState, formData, projectId, status]);
 						onClose();
 					}}
 					className="flex flex-col gap-4"
@@ -60,7 +72,7 @@ export function CreateTask({ projectId }: { projectId: string }) {
 							name="taskName"
 							minLength={NAME_MIN_LENGTH}
 							maxLength={NAME_MAX_LENGTH}
-							placeholder="What's your next task going to be?"
+							placeholder="A cool task"
 							className="h-10"
 							disabled={isPending}
 							autoComplete="off"

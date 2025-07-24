@@ -4,10 +4,9 @@ import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { getProjectById } from "@/data/queries/get-project-by-id";
 import { toKebabCase } from "@/lib/to-kebab-case";
-import { CreateTask } from "@/components/private/create-task";
-import { TaskBoard } from "@/components/private/task-board";
 import { Icons } from "@/components/icons";
 import { Breadcrumbs } from "@/components/private/breadcrumbs";
+import { Kanban } from "@/components/private/kanban";
 
 export async function generateMetadata({
 	params,
@@ -44,14 +43,11 @@ export default async function ProjectIdPage({
 	return (
 		<div className="flex flex-col gap-4">
 			<Breadcrumbs projectId={project.id} />
-			<div className="flex items-center justify-between w-full">
-				<div className="text-lg font-bold leading-snug md:text-xl">
-					{toKebabCase(project.name)}
-				</div>
-				<CreateTask projectId={project.id} />
+			<div className="text-lg font-bold leading-snug md:text-xl">
+				{toKebabCase(project.name)}
 			</div>
 			<Suspense fallback={<Loading />}>
-				<TaskBoard userId={user.id} projectId={project.id} />
+				<Kanban userId={user.id} projectId={project.id} />
 			</Suspense>
 		</div>
 	);

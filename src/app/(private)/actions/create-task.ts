@@ -14,6 +14,7 @@ export async function createTask(
 	_prevState: ActionResponse,
 	formData: FormData,
 	projectId: string,
+	status?: "INCOMPLETE" | "IN_PROGRESS" | "COMPLETE",
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
 		const user = await getCurrentUser();
@@ -61,7 +62,7 @@ export async function createTask(
 			.values({
 				id: crypto.randomUUID(),
 				name: taskName,
-				status: "INCOMPLETE",
+				status,
 				projectId: project.id,
 				userId: user.id,
 			})

@@ -1,57 +1,28 @@
-import { UpdateTaskStatus } from "./update-task-status";
-import { DeleteTask } from "./delete-task";
+import { formatDistanceToNow } from "date-fns";
+import { TaskDropdown } from "./task-dropdown";
 
 type Task = {
 	id: string;
 	name: string;
 	status: "INCOMPLETE" | "IN_PROGRESS" | "COMPLETE";
+	createdAt: Date;
 };
 
 type TaskCardProps = {
-	projectId: string;
 	task: Task;
+	projectId: string;
 };
 
-export function TaskCard({ projectId, task }: TaskCardProps) {
+export function TaskCard({ task, projectId }: TaskCardProps) {
 	return (
-		<div className="group cursor-pointer flex flex-col gap-2">
-			<div className="p-4 rounded-sm border border-neutral-200 dark:border-neutral-700">
-				<div className="whitespace-pre-wrap text-sm">{task.name}</div>
-				<div className="flex items-center justify-end gap-2">
-					<DeleteTask projectId={projectId} taskId={task.id} />
-					{task.status === "IN_PROGRESS" && (
-						<UpdateTaskStatus
-							projectId={projectId}
-							taskId={task.id}
-							status="INCOMPLETE"
-							isBackward
-						/>
-					)}
-					{task.status === "COMPLETE" && (
-						<UpdateTaskStatus
-							projectId={projectId}
-							taskId={task.id}
-							status="IN_PROGRESS"
-							isBackward
-						/>
-					)}
-					{task.status === "INCOMPLETE" && (
-						<UpdateTaskStatus
-							projectId={projectId}
-							taskId={task.id}
-							status="IN_PROGRESS"
-							isForward
-						/>
-					)}
-					{task.status === "IN_PROGRESS" && (
-						<UpdateTaskStatus
-							projectId={projectId}
-							taskId={task.id}
-							status="COMPLETE"
-							isForward
-						/>
-					)}
-				</div>
+		<div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-md">
+			<div className="flex items-center justify-between px-3 py-1 w-full">
+				<div className="text-sm whitespace-pre-wrap max-w-sm">{task.name}</div>
+				<TaskDropdown projectId={projectId} task={task} />
+			</div>
+			<div className="text-xs text-neutral-500 mt-auto px-3 py-2">
+				Created{" "}
+				{formatDistanceToNow(new Date(task.createdAt), { addSuffix: true })}
 			</div>
 		</div>
 	);
