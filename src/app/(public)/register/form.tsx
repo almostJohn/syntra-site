@@ -17,6 +17,7 @@ import {
 	DISPLAY_NAME_MIN_LENGTH,
 	PASSWORD_MIN_LENGTH,
 } from "@/lib/constants";
+import { Agreement } from "./agreement";
 
 const initialState = {
 	successMessage: "",
@@ -57,13 +58,16 @@ export function Form() {
 					maxLength={DISPLAY_NAME_MAX_LENGTH}
 					placeholder="What's your name?"
 					className={cn(
-						"h-10",
+						"h-10 peer",
 						state.errors?.displayName && "ring-4 ring-red-500/30",
 					)}
 					disabled={isPending}
 					autoComplete="off"
 					required
 				/>
+				<span className="hidden text-sm text-neutral-500 peer-focus:block">
+					You can always change this later.
+				</span>
 				{state.errors?.displayName && (
 					<span className="text-sm text-red-500">
 						{state.errors.displayName}
@@ -164,8 +168,8 @@ export function Form() {
 					</span>
 				)}
 			</div>
-			<div className="flex flex-col gap-2">
-				<div className="flex items-center gap-3">
+			<div className="flex flex-col gap-4">
+				<div className="flex items-center gap-2.5">
 					<Checkbox
 						id="acceptTerms"
 						checked={acceptTerms}
@@ -173,21 +177,11 @@ export function Form() {
 						className="rounded-sm"
 					/>
 					<Label htmlFor="acceptTerms">
-						<p className="text-sm">
-							By clicking &quot;Register&quot;, you agree to our{" "}
-							<NextLink
-								href="/terms"
-								className="font-medium text-sm text-blue-500 transition-colors duration-200 hover:text-blue-400"
-							>
-								Terms of Service
-							</NextLink>{" "}
-							and{" "}
-							<NextLink
-								href="/privacy"
-								className="font-medium text-sm text-blue-500 transition-colors duration-200 hover:text-blue-400"
-							>
-								Privacy Policy
-							</NextLink>
+						<p className="text-sm text-neutral-500">
+							I have read and agree to the{" "}
+							<span>
+								<Agreement />
+							</span>
 							.
 						</p>
 					</Label>
@@ -203,7 +197,7 @@ export function Form() {
 						"Register"
 					)}
 				</Button>
-				<p className="text-sm text-neutral-500">
+				<p className="text-sm text-center text-neutral-500">
 					Already have an account?{" "}
 					<NextLink
 						href="/login"

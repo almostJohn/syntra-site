@@ -62,17 +62,9 @@ export function Form() {
 				)}
 			</div>
 			<div className="flex flex-col gap-1.5">
-				<div className="flex justify-between">
-					<Label htmlFor="password">
-						Password <span className="text-red-500">*</span>
-					</Label>
-					<NextLink
-						href="/forgot-password"
-						className="font-medium text-sm text-blue-500 transition-colors duration-200 hover:text-blue-400"
-					>
-						Forgot your password?
-					</NextLink>
-				</div>
+				<Label htmlFor="password">
+					Password <span className="text-red-500">*</span>
+				</Label>
 				<div className="relative">
 					<Input
 						type={showPassword ? "text" : "password"}
@@ -103,7 +95,13 @@ export function Form() {
 					<span className="text-sm text-red-500">{state.errors.password}</span>
 				)}
 			</div>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-4">
+				<NextLink
+					href="/forgot-password"
+					className="font-medium text-sm text-right text-blue-500 transition-colors duration-200 hover:text-blue-400"
+				>
+					Forgot password?
+				</NextLink>
 				<Button
 					type="submit"
 					disabled={isPending}
@@ -111,7 +109,7 @@ export function Form() {
 				>
 					{isPending ? <Icons.loading className="size-4 shrink-0" /> : "Login"}
 				</Button>
-				<p className="text-sm text-neutral-500">
+				<p className="text-sm text-center text-neutral-500">
 					Need an account?{" "}
 					<NextLink
 						href="/register"

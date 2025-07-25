@@ -19,9 +19,9 @@ export const metadata: Metadata = {
 	icons: {
 		other: [
 			{
-				url: "/syntra-logo.png",
+				url: "/syntra.svg",
 				sizes: "32x32",
-				type: "image/png",
+				type: "image/svg",
 			},
 		],
 	},
