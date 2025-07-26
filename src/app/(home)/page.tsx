@@ -30,8 +30,7 @@ export default function HomePage() {
 					<div className="mx-auto max-w-4xl text-center">
 						<div className="flex flex-col items-center">
 							<div className="flex items-center justify-center gap-2 rounded-full mb-5 px-3 py-1 text-sm font-medium border border-neutral-300 bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-700 shadow">
-								<span className="text-xs font-bold">PH</span> proudly
-								Filipino-founded
+								proudly Filipino-founded
 							</div>
 							<h1 className="text-5xl font-semibold tracking-tight text-balance sm:text-6xl">
 								Organize and{" "}
