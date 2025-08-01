@@ -5,8 +5,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { getProjectById } from "@/data/queries/get-project-by-id";
 import { toKebabCase } from "@/lib/to-kebab-case";
 import { Icons } from "@/components/icons";
-import { Breadcrumbs } from "@/components/private/breadcrumbs";
-import { Kanban } from "@/components/private/kanban";
+import { Breadcrumbs } from "@/components/private/projects/breadcrumbs";
+import { Header as TasksHeader } from "@/components/private/tasks/header";
+import { Kanban } from "@/components/private/tasks/kanban";
 
 export async function generateMetadata({
 	params,
@@ -43,9 +44,7 @@ export default async function ProjectIdPage({
 	return (
 		<div className="flex flex-col gap-4">
 			<Breadcrumbs projectId={project.id} />
-			<div className="text-lg font-bold leading-snug md:text-xl">
-				{toKebabCase(project.name)}
-			</div>
+			<TasksHeader title={toKebabCase(project.name)} />
 			<Suspense fallback={<Loading />}>
 				<Kanban userId={user.id} projectId={project.id} />
 			</Suspense>

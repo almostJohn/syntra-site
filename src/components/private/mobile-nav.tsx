@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useServerAction } from "@/hooks/use-server-action";
 import { Button, buttonVariants } from "../ui/button";
 import { ModeToggle } from "./mode-toggle";
-import { logout } from "@/app/(private)/actions/logout";
+import { logout } from "@/actions/auth/logout";
 import { Icons } from "../icons";
 import { NextLink } from "../ui/next-link";
 import { cn } from "@/lib/utils";

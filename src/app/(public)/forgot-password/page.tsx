@@ -1,4 +1,4 @@
-import { Form as ForgotPasswordForm } from "./form";
+import { ResetPasswordForm } from "@/components/auth/forms/reset-password-form";
 
 export const metadata = {
 	title: "Forgot Password",
@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
 							Enter your username below and set a new password.
 						</div>
 					</div>
-					<ForgotPasswordForm />
+					<ResetPasswordForm />
 				</div>
 			</div>
 		</div>

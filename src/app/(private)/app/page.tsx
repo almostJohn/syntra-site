@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth";
-import { CreateProject } from "@/components/private/create-project";
-import { Projects } from "@/components/private/projects";
+import { Header as ProjectsHeader } from "@/components/private/projects/header";
+import { Projects } from "@/components/private/projects/projects";
 import { Icons } from "@/components/icons";
 
 export default async function AppPage() {
@@ -14,12 +14,7 @@ export default async function AppPage() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="flex items-center justify-between w-full">
-				<div className="text-lg font-bold leading-snug md:text-xl">
-					Projects
-				</div>
-				<CreateProject />
-			</div>
+			<ProjectsHeader title="Projects" />
 			<Suspense fallback={<Loading />}>
 				<Projects userId={user.id} />
 			</Suspense>

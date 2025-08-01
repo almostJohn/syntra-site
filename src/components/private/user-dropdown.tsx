@@ -7,7 +7,7 @@ import {
 	DropdownMenu,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { logout } from "@/app/(private)/actions/logout";
+import { logout } from "@/actions/auth/logout";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { NextLink } from "../ui/next-link";
