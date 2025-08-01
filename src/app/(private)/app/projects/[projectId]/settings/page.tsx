@@ -2,9 +2,8 @@ import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth";
 import { getProjectById } from "@/data/queries/get-project-by-id";
-import { Breadcrumbs } from "@/components/private/breadcrumbs";
-import { UpdateProjectName } from "@/components/private/update-project-name";
-import { ProjectDangerZone } from "@/components/private/project-danger-zone";
+import { Breadcrumbs } from "@/components/private/projects/breadcrumbs";
+import { ProjectSettings } from "@/components/private/projects/project-settings";
 import { toKebabCase } from "@/lib/to-kebab-case";
 
 export async function generateMetadata({
@@ -42,8 +41,7 @@ export default async function ProjectIdSettingsPage({
 	return (
 		<div className="flex flex-col gap-4">
 			<Breadcrumbs projectId={project.id} />
-			<UpdateProjectName project={project} />
-			<ProjectDangerZone projectId={project.id} />
+			<ProjectSettings project={project} />
 		</div>
 	);
 }

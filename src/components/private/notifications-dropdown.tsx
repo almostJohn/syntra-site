@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useServerAction } from "@/hooks/use-server-action";
-import { archiveNotifications } from "@/app/(private)/actions/archive-notifications";
+import { archiveNotifications } from "@/actions/notifications/archive-notifications";
 import {
 	DropdownMenu,
 	DropdownMenuContent,

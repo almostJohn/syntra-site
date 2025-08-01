@@ -1,10 +1,11 @@
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { AvatarSettings } from "@/components/private/avatar-settings";
-import { DisplayNameSettings } from "@/components/private/display-name-settings";
-import { UsernameSettings } from "@/components/private/username-settings";
-import { UpdatePassword } from "@/components/private/update-password";
-import { UserDangerZoneSettings } from "@/components/private/user-danger-zone-settings";
+import { Header as SettingsHeader } from "@/components/private/settings/header";
+import { AvatarSettings } from "@/components/private/settings/avatar-settings";
+import { DisplayNameSettings } from "@/components/private/settings/display-name-settings";
+import { UsernameSettings } from "@/components/private/settings/username-settings";
+import { PasswordSettings } from "@/components/private/settings/password-settings";
+import { DeleteAccountSettings } from "@/components/private/settings/delete-account-settings";
 
 export default async function SettingsPage() {
 	const user = await getCurrentUser();
@@ -15,12 +16,14 @@ export default async function SettingsPage() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="text-lg font-bold leading-snug md:text-xl">Settings</div>
-			<AvatarSettings displayName={user.displayName} />
-			<DisplayNameSettings user={user} />
-			<UsernameSettings user={user} />
-			<UpdatePassword />
-			<UserDangerZoneSettings />
+			<SettingsHeader title="Settings" />
+			<div className="flex flex-col gap-5">
+				<AvatarSettings displayName={user.displayName} />
+				<DisplayNameSettings user={user} />
+				<UsernameSettings user={user} />
+				<PasswordSettings />
+				<DeleteAccountSettings user={user} />
+			</div>
 		</div>
 	);
 }
