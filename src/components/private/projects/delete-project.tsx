@@ -89,8 +89,8 @@ export function DeleteProject({
 				<div className="font-semibold text-lg">Delete Project</div>
 				<div className="text-sm">
 					Permanently remove this project and all of it&apos;s contents from the
-					Syntra platform. This action is irreversible, so please continue with
-					caution.
+					taskthing platform. This action is irreversible, so please continue
+					with caution.
 				</div>
 			</div>
 			<div className="mt-auto p-6 md:px-6 md:py-4 border-t border-neutral-300 dark:border-neutral-700">

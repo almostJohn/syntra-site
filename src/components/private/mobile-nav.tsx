@@ -50,15 +50,9 @@ export function MobileNav() {
 					)}
 				>
 					<div className="flex items-center justify-between h-18 px-6 border-b border-neutral-200 dark:border-neutral-700">
-						<NextLink href="/app" className="flex items-center gap-4">
-							<div className="flex items-center gap-2">
-								<Icons.syntra className="size-6 shrink-0" />
-								<div className="font-medium">syntra.</div>
-							</div>
-							<div className="flex items-center justify-center rounded-sm px-2 py-0.5 text-xs font-medium border border-neutral-300 dark:border-neutral-700 bg-neutral-200 dark:bg-neutral-700">
-								Beta
-							</div>
-						</NextLink>
+						<div className="flex items-center">
+							<Branding />
+						</div>
 						<div className="flex items-center gap-2.5">
 							<ModeToggle className="md:hidden" />
 							<Button
@@ -123,5 +117,13 @@ export function MobileNav() {
 				</div>
 			)}
 		</div>
+	);
+}
+
+function Branding() {
+	return (
+		<NextLink href="/app" className="text-xl font-bold md:text-2xl">
+			task<span className="text-blue-500">thing</span>
+		</NextLink>
 	);
 }
