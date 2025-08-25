@@ -4,8 +4,8 @@ import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
 	title: {
-		default: "Public",
-		template: "%s — Public",
+		default: "taskthing",
+		template: "%s — taskthing",
 	},
 	description: siteConfig.description,
 	appleWebApp: {

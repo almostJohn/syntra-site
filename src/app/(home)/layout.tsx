@@ -4,7 +4,10 @@ import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
-	title: "Home",
+	title: {
+		default: "taskthing",
+		template: "%s — taskthing",
+	},
 	description: siteConfig.description,
 	appleWebApp: {
 		title: siteConfig.name,
