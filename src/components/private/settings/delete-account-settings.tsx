@@ -83,7 +83,7 @@ export function DeleteAccountSettings({
 				<div className="text-xl font-semibold">Delete Account</div>
 				<div className="text-sm">
 					Permanently remove your Personal Account and all of it&apos;s contents
-					from the taskthing platform. This action is irreversible, so please
+					from the Syntra platform. This action is irreversible, so please
 					continue with caution.
 				</div>
 			</div>
@@ -98,8 +98,8 @@ export function DeleteAccountSettings({
 								Delete Personal Account
 							</div>
 							<div className="text-sm">
-								taskthing will delete all of your projects, along with all of
-								your tasks, activity, and all other resources belonging to your
+								Syntra will delete all of your projects, along with all of your
+								tasks, activity, and all other resources belonging to your
 								Personal Account.
 							</div>
 							<Badge className="text-sm px-3 font-normal justify-start border-red-300 bg-red-100 dark:border-red-700/20 dark:bg-red-600/10 text-red-400">

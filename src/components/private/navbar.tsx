@@ -39,7 +39,7 @@ export async function Navbar({ user }: NavbarProps) {
 function Branding() {
 	return (
 		<NextLink href="/app" className="text-xl font-bold md:text-2xl">
-			task<span className="text-blue-500">thing</span>
+			Syntra
 		</NextLink>
 	);
 }
