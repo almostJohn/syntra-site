@@ -35,7 +35,7 @@ export default function HomePage() {
 						</PageHeaderHeading>
 						<PageHeaderDescription>
 							<span className="opacity-70">
-								taskthing provides the intuitive tools and visual workflow to
+								Syntra provides the intuitive tools and visual workflow to
 							</span>{" "}
 							<span className="opacity-100">organize, track, and complete</span>{" "}
 							<span className="opacity-60">your tasks efficiently.</span>

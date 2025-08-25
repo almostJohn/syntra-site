@@ -33,7 +33,7 @@ export function UsernameSettings({ user }: { user: { username: string } }) {
 		>
 			<div className="flex flex-col gap-4 p-6">
 				<div className="text-xl font-semibold">Username</div>
-				<div className="text-sm">This is your username within taskthing.</div>
+				<div className="text-sm">This is your username within Syntra.</div>
 				<div className="max-w-md flex">
 					<div className="inline-flex items-center justify-center p-2 rounded-l-sm border border-neutral-300 dark:border-neutral-700 bg-neutral-200 dark:bg-neutral-700 text-sm font-medium text-neutral-500">
 						@

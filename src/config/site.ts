@@ -1,11 +1,11 @@
 export const siteConfig = {
-	name: "taskthing",
+	name: "Syntra",
 	title: {
-		default: "taskthing",
-		template: "taskthing — %s",
+		default: "Syntra",
+		template: "Syntra — %s",
 	},
 	description:
-		"taskthing provides the intuitive tools and visual workflow to organize, track, and complete your tasks efficiently.",
+		"Syntra provides the intuitive tools and visual workflow to organize, track, and complete your tasks efficiently.",
 	creator: "@almostJohn",
 };
 
