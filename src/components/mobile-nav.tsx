@@ -52,7 +52,7 @@ export function MobileNav() {
 							onClick={() => setInteracted(false)}
 							className={cn(
 								buttonVariants({
-									className: "h-10 text-lg font-semibold",
+									className: "h-10 text-lg font-medium",
 									variant:
 										item.href === "/login"
 											? "outline"
