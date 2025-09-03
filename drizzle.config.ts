@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export default defineConfig({
-	schema: "./src/data/db/schema.ts",
+	schema: "./src/db/schema.ts",
 	out: "./drizzle/migrations",
 	dialect: "postgresql",
 	dbCredentials: {

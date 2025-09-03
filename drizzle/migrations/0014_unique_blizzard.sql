@@ -1,1 +1,0 @@
-ALTER TABLE "audit_logs" ADD COLUMN "description" text NOT NULL;

@@ -5,10 +5,9 @@ import {
 	unstable_ViewTransition as ViewTransition,
 } from "react";
 import { siteConfig } from "@/config/site";
-import { geist } from "@/lib/fonts";
+import { jetBrainsMono } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { Providers } from "./providers";
-import { ToastProvider } from "@/components/toast-provider";
+import { ToastProvider } from "@/context/toast-provider";
 
 export const metadata: Metadata = {
 	title: siteConfig.title,
@@ -47,13 +46,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						"bg-neutral-100 text-neutral-800 antialiased dark:bg-neutral-800 dark:text-neutral-100",
-						geist.className,
+						"bg-scheme-background text-scheme-foreground antialiased",
+						jetBrainsMono.className,
 					)}
 				>
-					<ViewTransition>
-						<Providers>{children}</Providers>
-					</ViewTransition>
+					<ViewTransition>{children}</ViewTransition>
 				</body>
 			</html>
 		</ToastProvider>
