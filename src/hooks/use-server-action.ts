@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef } from "react";
-import type { ActionResponse } from "@/lib/server-action";
+import type { ActionResponse } from "@/lib/action";
 import { useToast } from "@/components/toast-provider";
 
 export function useServerAction<T>(

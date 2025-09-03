@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuth } from "./lib/auth";
-import {
-	DISABLED_ROUTES_AFTER_SIGN_IN,
-	DISABLED_ROUTES_AFTER_SIGN_OUT,
-} from "./lib/constants";
+import { checkAuth } from "./auth";
+
+const DISABLED_ROUTES_AFTER_SIGN_IN = [
+	"/",
+	"/login",
+	"/register",
+	"/forgot-password",
+];
+const DISABLED_ROUTES_AFTER_SIGN_OUT = [
+	"/app",
+	"/app/projects",
+	"/app/account-settings",
+	"/app/notifications",
+];
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
@@ -32,9 +41,8 @@ export const config = {
 		"/",
 		"/app/:path*",
 		"/app/projects/:path*",
-		"/app/audit-logs/:path*",
-		"/app/profile/:path*",
-		"/app/settings/:path*",
+		"/app/account-settings/:path*",
+		"/app/notifications/:path*",
 		"/login",
 		"/register",
 		"/forgot-password",
