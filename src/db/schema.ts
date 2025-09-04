@@ -1,4 +1,10 @@
-import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+	pgEnum,
+	pgTable,
+	text,
+	timestamp,
+	primaryKey,
+} from "drizzle-orm/pg-core";
 
 export const taskStatusEnum = pgEnum("task_status", [
 	"incomplete",
@@ -20,6 +26,18 @@ export const taskCategoryEnum = pgEnum("task_category", [
 	"chore",
 	"docs",
 	"infra",
+	"refactor",
+	"testing",
+	"design",
+	"research",
+	"spec",
+	"marketing",
+	"sales",
+	"support",
+	"ops",
+	"finance",
+	"planning",
+	"meeting",
 ]);
 
 export const notificationStatusEnum = pgEnum("notification_status", [
@@ -27,6 +45,8 @@ export const notificationStatusEnum = pgEnum("notification_status", [
 	"read",
 	"unread",
 ]);
+
+export const teamRoleEnum = pgEnum("team_role", ["owner", "admin", "member"]);
 
 export const users = pgTable("users", {
 	id: text("id").primaryKey().notNull(),
@@ -42,6 +62,38 @@ export const users = pgTable("users", {
 		.notNull(),
 });
 
+export const teams = pgTable("teams", {
+	id: text("id").primaryKey().notNull(),
+	name: text("name").notNull(),
+	description: text("description"),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+});
+
+export const teamMembers = pgTable(
+	"team_members",
+	{
+		teamId: text("team_id")
+			.references(() => teams.id, { onDelete: "cascade" })
+			.notNull(),
+		userId: text("user_id")
+			.references(() => users.id, { onDelete: "cascade" })
+			.notNull(),
+		role: teamRoleEnum("role").default("member").notNull(),
+		joinedAt: timestamp("joined_at", { withTimezone: true })
+			.defaultNow()
+			.notNull(),
+	},
+	(t) => [primaryKey({ columns: [t.teamId, t.userId] })],
+);
+
 export const projects = pgTable("projects", {
 	id: text("id").primaryKey().notNull(),
 	name: text("name").notNull(),
@@ -49,6 +101,7 @@ export const projects = pgTable("projects", {
 	userId: text("user_id")
 		.references(() => users.id, { onDelete: "cascade" })
 		.notNull(),
+	teamId: text("team_id").references(() => teams.id, { onDelete: "cascade" }),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
@@ -70,6 +123,9 @@ export const tasks = pgTable("tasks", {
 	userId: text("user_id")
 		.references(() => users.id, { onDelete: "cascade" })
 		.notNull(),
+	assignedTo: text("assigned_to").references(() => users.id, {
+		onDelete: "set null",
+	}),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),

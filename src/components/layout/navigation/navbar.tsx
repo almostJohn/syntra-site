@@ -1,5 +1,4 @@
 import { NextLink } from "@/components/ui/next-link";
-import { NavbarRoot } from "./navbar-root";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 import { buttonVariants } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import { cn } from "@/lib";
 
 export function Navbar() {
 	return (
-		<NavbarRoot>
+		<header className="bg-scheme-background/95 supports-[backdrop-filter]:bg-scheme-background/60 sticky top-0 z-50 w-full backdrop-blur-lg">
 			<div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-0">
 				<div className="flex items-center gap-8">
 					<Branding />
@@ -16,13 +15,16 @@ export function Navbar() {
 				<NavActions />
 				<MobileNav />
 			</div>
-		</NavbarRoot>
+		</header>
 	);
 }
 
 function Branding() {
 	return (
-		<NextLink href="/" className="text-xl font-bold tracking-tight sm:text-2xl">
+		<NextLink
+			href="/"
+			className="text-2xl font-bold tracking-tight sm:text-3xl"
+		>
 			Syntra
 		</NextLink>
 	);

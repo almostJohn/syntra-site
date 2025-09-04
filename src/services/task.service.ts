@@ -10,9 +10,27 @@ export class TaskService {
 		description?: string | null;
 		status: "incomplete" | "in_progress" | "complete";
 		priority: "critical" | "high" | "medium" | "low" | "backlog";
-		category: "bug" | "feature" | "chore" | "docs" | "infra";
+		category:
+			| "bug"
+			| "feature"
+			| "chore"
+			| "docs"
+			| "infra"
+			| "refactor"
+			| "testing"
+			| "design"
+			| "research"
+			| "spec"
+			| "marketing"
+			| "sales"
+			| "support"
+			| "ops"
+			| "finance"
+			| "planning"
+			| "meeting";
 		projectId: string;
 		userId: string;
+		assignedTo?: string | null;
 	}): Promise<APIResponse<Task>> {
 		try {
 			const [rawTask] = await db
@@ -21,6 +39,7 @@ export class TaskService {
 					...data,
 					id: generateId(),
 					description: data.description?.trim() ?? "",
+					assignedTo: data.assignedTo?.trim() || null,
 				})
 				.returning();
 
@@ -140,6 +159,47 @@ export class TaskService {
 			return {
 				status: APIStatus.Success,
 				data: rawUpdatedTask,
+			};
+		} catch (error) {
+			return {
+				status: APIStatus.Error,
+				error: error instanceof Error ? error.message : "Unknown error",
+			};
+		}
+	}
+
+	static async assignToUser(
+		taskId: string,
+		projectId: string,
+		userId: string,
+		assignedTo: string | null,
+	): Promise<APIResponse<Task>> {
+		try {
+			const [updatedTask] = await db
+				.update(tasks)
+				.set({
+					assignedTo: assignedTo?.trim() || null,
+					updatedAt: new Date(),
+				})
+				.where(
+					and(
+						eq(tasks.id, taskId),
+						eq(tasks.projectId, projectId),
+						eq(tasks.userId, userId),
+					),
+				)
+				.returning();
+
+			if (!updatedTask) {
+				return {
+					status: APIStatus.NotFound,
+					error: "Task not found or you don't have permission to assign it",
+				};
+			}
+
+			return {
+				status: APIStatus.Success,
+				data: updatedTask,
 			};
 		} catch (error) {
 			return {
