@@ -5,8 +5,8 @@ export async function Analytics() {
 	const { data } = await AnalyticsService.getSize();
 
 	return (
-		<div className="mx-auto flex max-w-3xl flex-col items-center gap-6 pt-20 text-center">
-			<h3 className="from-scheme-primary to-scheme-foreground/80 mb-2 bg-gradient-to-r bg-clip-text text-base font-bold text-transparent uppercase sm:text-lg/relaxed">
+		<div className="mx-auto flex max-w-3xl flex-col items-center gap-4 pt-20 text-center sm:gap-6">
+			<h3 className="from-scheme-primary to-scheme-foreground/80 mb-2 bg-gradient-to-r bg-clip-text text-lg font-bold text-transparent uppercase sm:text-xl">
 				our impact
 			</h3>
 			{/* First 3 Grid */}
