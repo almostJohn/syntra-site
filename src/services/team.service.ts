@@ -1,30 +1,28 @@
 import { generateId } from "@/utils";
-import { db, projects } from "@/db";
-import type { Project } from "@/types/project.types";
-import { and, desc, eq } from "drizzle-orm";
+import { db, teams, users } from "@/db";
+import type { Team, TeamOwner } from "@/types/team.types";
 import { type APIResponse, APIStatus } from "@/types/api.types";
+import { and, desc, eq } from "drizzle-orm";
 
-export class ProjectService {
+export class TeamService {
 	static async create(data: {
 		name: string;
 		description?: string | null;
 		userId: string;
-		teamId?: string | null;
-	}): Promise<APIResponse<Project>> {
+	}): Promise<APIResponse<Team>> {
 		try {
-			const [rawProject] = await db
-				.insert(projects)
+			const [rawTeam] = await db
+				.insert(teams)
 				.values({
 					...data,
 					id: generateId(),
 					description: data.description?.trim() ?? "",
-					teamId: data.teamId ? data.teamId.trim() : null,
 				})
 				.returning();
 
 			return {
 				status: APIStatus.Success,
-				data: rawProject,
+				data: rawTeam,
 			};
 		} catch (error) {
 			return {
@@ -35,19 +33,19 @@ export class ProjectService {
 	}
 
 	static async getAll(
-		projectId: string,
+		teamId: string,
 		userId: string,
-	): Promise<APIResponse<Project[]>> {
+	): Promise<APIResponse<Team[]>> {
 		try {
-			const rawProjects = await db
+			const rawTeams = await db
 				.select()
-				.from(projects)
-				.where(and(eq(projects.id, projectId), eq(projects.userId, userId)))
-				.orderBy(desc(projects.createdAt));
+				.from(teams)
+				.where(and(eq(teams.id, teamId), eq(teams.userId, userId)))
+				.orderBy(desc(teams.createdAt));
 
 			return {
 				status: APIStatus.Success,
-				data: rawProjects,
+				data: rawTeams,
 			};
 		} catch (error) {
 			return {
@@ -58,26 +56,26 @@ export class ProjectService {
 	}
 
 	static async getById(
-		projectId: string,
+		teamId: string,
 		userId: string,
-	): Promise<APIResponse<Project>> {
+	): Promise<APIResponse<Team>> {
 		try {
-			const [rawProject] = await db
+			const [rawTeam] = await db
 				.select()
-				.from(projects)
-				.where(and(eq(projects.id, projectId), eq(projects.userId, userId)))
+				.from(teams)
+				.where(and(eq(teams.id, teamId), eq(teams.userId, userId)))
 				.limit(1);
 
-			if (!rawProject) {
+			if (!rawTeam) {
 				return {
 					status: APIStatus.NotFound,
-					error: "Project not found",
+					error: "Team not found",
 				};
 			}
 
 			return {
 				status: APIStatus.Success,
-				data: rawProject,
+				data: rawTeam,
 			};
 		} catch (error) {
 			return {
@@ -87,57 +85,30 @@ export class ProjectService {
 		}
 	}
 
-	static async getAllByTeam(
-		teamId: string,
-		userId: string,
-	): Promise<APIResponse<Project[]>> {
+	static async fetchTeamOwner(teamId: string): Promise<APIResponse<TeamOwner>> {
 		try {
-			const rawProjects = await db
-				.select()
-				.from(projects)
-				.where(and(eq(projects.teamId, teamId), eq(projects.userId, userId)))
-				.orderBy(desc(projects.createdAt));
-
-			return {
-				status: APIStatus.Success,
-				data: rawProjects,
-			};
-		} catch (error) {
-			return {
-				status: APIStatus.Error,
-				error: error instanceof Error ? error.message : "Unknown error",
-			};
-		}
-	}
-
-	static async getByTeam(
-		projectId: string,
-		teamId: string,
-		userId: string,
-	): Promise<APIResponse<Project>> {
-		try {
-			const [rawProject] = await db
-				.select()
-				.from(projects)
-				.where(
-					and(
-						eq(projects.id, projectId),
-						eq(projects.teamId, teamId),
-						eq(projects.userId, userId),
-					),
-				)
+			const [rawOwner] = await db
+				.select({
+					id: users.id,
+					username: users.username,
+					userTag: users.userTag,
+					displayName: users.displayName,
+				})
+				.from(teams)
+				.innerJoin(users, eq(teams.userId, users.id))
+				.where(eq(teams.id, teamId))
 				.limit(1);
 
-			if (!rawProject) {
+			if (!rawOwner) {
 				return {
 					status: APIStatus.NotFound,
-					error: "Project not found in this team",
+					error: "Team owner not found",
 				};
 			}
 
 			return {
 				status: APIStatus.Success,
-				data: rawProject,
+				data: rawOwner,
 			};
 		} catch (error) {
 			return {
@@ -148,10 +119,13 @@ export class ProjectService {
 	}
 
 	static async update(
-		projectId: string,
+		teamId: string,
 		userId: string,
-		data: { name: string; description?: string | null },
-	): Promise<APIResponse<Project>> {
+		data: {
+			name: string;
+			description?: string | null;
+		},
+	): Promise<APIResponse<Team>> {
 		try {
 			const normalRawData = {
 				...data,
@@ -173,18 +147,18 @@ export class ProjectService {
 				};
 			}
 
-			const [rawUpdatedProject] = await db
-				.update(projects)
+			const [rawUpdatedTeam] = await db
+				.update(teams)
 				.set({
-					...updatedData,
+					...data,
 					updatedAt: new Date(),
 				})
-				.where(and(eq(projects.id, projectId), eq(projects.userId, userId)))
+				.where(and(eq(teams.id, teamId), eq(teams.userId, userId)))
 				.returning();
 
 			return {
 				status: APIStatus.Success,
-				data: rawUpdatedProject,
+				data: rawUpdatedTeam,
 			};
 		} catch (error) {
 			return {
@@ -195,18 +169,18 @@ export class ProjectService {
 	}
 
 	static async delete(
-		projectId: string,
+		teamId: string,
 		userId: string,
-	): Promise<APIResponse<Project>> {
+	): Promise<APIResponse<Team>> {
 		try {
-			const [rawDeletedProject] = await db
-				.delete(projects)
-				.where(and(eq(projects.id, projectId), eq(projects.userId, userId)))
+			const [rawDeletedTeam] = await db
+				.delete(teams)
+				.where(and(eq(teams.id, teamId), eq(teams.userId, userId)))
 				.returning();
 
 			return {
 				status: APIStatus.Success,
-				data: rawDeletedProject,
+				data: rawDeletedTeam,
 			};
 		} catch (error) {
 			return {
