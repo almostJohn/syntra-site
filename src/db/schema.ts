@@ -134,6 +134,23 @@ export const tasks = pgTable("tasks", {
 		.notNull(),
 });
 
+export const comments = pgTable("comments", {
+	id: text("id").primaryKey().notNull(),
+	description: text("description").notNull(),
+	taskId: text("task_id")
+		.references(() => tasks.id, { onDelete: "cascade" })
+		.notNull(),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true })
+		.defaultNow()
+		.notNull(),
+});
+
 export const notifications = pgTable("notifications", {
 	id: text("id").primaryKey().notNull(),
 	title: text("title").notNull(),

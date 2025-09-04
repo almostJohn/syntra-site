@@ -29,6 +29,27 @@
       "when": 1756965374694,
       "tag": "0003_unique_hairball",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756976288269,
+      "tag": "0004_young_blacklash",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1756995102726,
+      "tag": "0005_clammy_roulette",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1756995164297,
+      "tag": "0006_lean_silvermane",
+      "breakpoints": true
     }
   ]
 }
