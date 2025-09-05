@@ -6,7 +6,7 @@ import { cn } from "@/lib";
 
 export function Navbar() {
 	return (
-		<header className="bg-scheme-background/95 supports-[backdrop-filter]:bg-scheme-background/60 sticky top-0 z-50 w-full backdrop-blur-lg">
+		<header className="bg-scheme-background/95 supports-[backdrop-filter]:bg-scheme-background/60 border-scheme-foreground/10 sticky top-0 z-50 w-full border-b backdrop-blur-lg">
 			<div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-0">
 				<div className="flex items-center gap-8">
 					<Branding />
@@ -21,10 +21,7 @@ export function Navbar() {
 
 function Branding() {
 	return (
-		<NextLink
-			href="/"
-			className="text-2xl font-bold tracking-tight sm:text-3xl"
-		>
+		<NextLink href="/" className="text-2xl font-bold sm:text-3xl">
 			Syntra
 		</NextLink>
 	);
@@ -38,7 +35,7 @@ function NavActions() {
 				className={cn(
 					buttonVariants({
 						variant: "ghost",
-						className: "hover:bg-scheme-primary/30",
+						className: "hover:bg-scheme-primary/30 rounded-lg",
 					}),
 				)}
 			>
@@ -49,7 +46,7 @@ function NavActions() {
 				className={cn(
 					buttonVariants({
 						className:
-							"bg-scheme-primary hover:bg-scheme-primary/90 hover:shadow-scheme-primary/60 transition-shadow hover:shadow-xl",
+							"bg-scheme-primary hover:bg-scheme-primary/90 hover:shadow-scheme-primary/60 rounded-lg transition-shadow hover:shadow-xl",
 					}),
 				)}
 			>

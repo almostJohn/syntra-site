@@ -21,8 +21,8 @@ const navItems = [
 		href: "/",
 	},
 	{
-		label: "Changelog",
-		href: "/changelog",
+		label: "Roadmap",
+		href: "/roadmap",
 	},
 ];
 
@@ -40,7 +40,7 @@ export function MobileNav() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="hover:bg-scheme-primary/30 cursor-pointer md:hidden"
+					className="hover:bg-scheme-primary/30 cursor-pointer rounded-lg md:hidden"
 				>
 					<Icons.menu className="size-6 shrink-0" />
 				</Button>
@@ -59,7 +59,7 @@ export function MobileNav() {
 									href={item.href}
 									onClick={onClose}
 									className={cn(
-										"inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors duration-200",
+										"inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200",
 										pathname === item.href
 											? "bg-scheme-primary/10"
 											: "hover:bg-scheme-primary/30",
@@ -77,7 +77,7 @@ export function MobileNav() {
 									className={cn(
 										buttonVariants({
 											variant: "ghost",
-											className: "hover:bg-scheme-primary/30 rounded-md",
+											className: "hover:bg-scheme-primary/30 rounded-lg",
 										}),
 									)}
 								>
@@ -89,7 +89,7 @@ export function MobileNav() {
 									className={cn(
 										buttonVariants({
 											className:
-												"bg-scheme-primary hover:bg-scheme-primary/90 hover:shadow-scheme-primary/60 transition-shadow hover:shadow-xl",
+												"bg-scheme-primary hover:bg-scheme-primary/90 hover:shadow-scheme-primary/60 rounded-lg transition-shadow hover:shadow-xl",
 										}),
 									)}
 								>

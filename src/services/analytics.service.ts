@@ -2,16 +2,16 @@ import { db, users, projects, comments, tasks, teams } from "@/db";
 import { count } from "drizzle-orm";
 import { type APIResponse, APIStatus } from "@/types/api.types";
 
+type AnalyticsSize = {
+	totalUsers: number;
+	totalTeams: number;
+	totalProjects: number;
+	totalTasks: number;
+	totalComments: number;
+};
+
 export class AnalyticsService {
-	static async getSize(): Promise<
-		APIResponse<{
-			totalUsers: number;
-			totalTeams: number;
-			totalProjects: number;
-			totalTasks: number;
-			totalComments: number;
-		}>
-	> {
+	static async getSize(): Promise<APIResponse<AnalyticsSize>> {
 		try {
 			const [userCount, teamCount, projectCount, taskCount, commentCount] =
 				await Promise.all([
