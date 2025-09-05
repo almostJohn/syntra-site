@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { serverActionCallback, type ActionResponse } from "@/lib";
 import { UserService } from "@/services";
 import {
@@ -94,7 +93,9 @@ export async function loginUser(
 
 		await setAuthCookie(token);
 
-		redirect("/app");
+		return {
+			successMessage: "Login successful.",
+		};
 	});
 }
 

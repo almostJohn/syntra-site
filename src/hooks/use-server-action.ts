@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef } from "react";
 import type { ActionResponse } from "@/lib/action";
-import { useToast } from "@/components/toast-provider";
+import { useToast } from "@/context/toast-provider";
 
 export function useServerAction<T>(
 	action: (prevState: ActionResponse, args: T) => Promise<ActionResponse>,
