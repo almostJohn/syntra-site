@@ -10,8 +10,8 @@ const navItems = [
 		href: "/",
 	},
 	{
-		label: "Changelog",
-		href: "/changelog",
+		label: "Roadmap",
+		href: "/roadmap",
 	},
 ];
 

@@ -5,8 +5,8 @@ import { Navbar } from "@/components/layout/navigation/navbar";
 
 export const metadata: Metadata = {
 	title: {
-		default: "taskthing",
-		template: "%s — taskthing",
+		default: "Syntra",
+		template: "%s — Syntra",
 	},
 	description: siteConfig.description,
 	appleWebApp: {
