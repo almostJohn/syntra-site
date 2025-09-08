@@ -1,65 +1,72 @@
-import { AnalyticsService } from "@/services/analytics.service";
-import { Icons } from "./icons";
+import { User, Folders, Users, MessageCircle, ListCheck } from "lucide-react";
 
-export async function Analytics() {
-	const { data } = await AnalyticsService.getSize();
+const analytics = [
+	{
+		title: "Users",
+		count: 0,
+		icon: User,
+	},
+	{
+		title: "Projects",
+		count: 0,
+		icon: Folders,
+	},
+	{
+		title: "Teams",
+		count: 0,
+		icon: Users,
+	},
+	{
+		title: "Comments",
+		count: 0,
+		icon: MessageCircle,
+	},
+	{
+		title: "Tasks",
+		count: 0,
+		icon: ListCheck,
+	},
+];
+
+export function Analytics() {
+	const SingleIcon = analytics[0].icon;
 
 	return (
 		<>
-			<div className="grid grid-cols-2 gap-6 pt-12 md:grid-cols-5">
-				<div className="text-center">
-					<div className="text-3xl font-bold text-orange-800">
-						{data?.totalUsers || 0}
+			<div className="hidden grid-cols-5 gap-6 pt-12 md:grid">
+				{analytics.map(({ title, count, icon: Icon }) => (
+					<div key={title} className="text-center">
+						<div className="mx-auto mb-2 flex justify-center">
+							<Icon className="size-5 shrink-0 text-orange-600" />
+						</div>
+						<div className="text-4xl font-bold text-orange-800">{count}</div>
+						<div className="mt-2 text-base text-orange-600">{title}</div>
 					</div>
-					<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-						<Icons.user className="size-6 shrink-0" />{" "}
-						{data?.totalUsers === 1 ? "User" : "Users"}
-					</div>
-				</div>
-				<div className="text-center">
-					<div className="text-3xl font-bold text-orange-800">
-						{data?.totalProjects || 0}
-					</div>
-					<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-						<Icons.folders className="size-6 shrink-0" />{" "}
-						{data?.totalProjects === 1 ? "Project" : "Projects"}
-					</div>
-				</div>
-				<div className="text-center">
-					<div className="text-3xl font-bold text-orange-800">
-						{data?.totalTeams || 0}
-					</div>
-					<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-						<Icons.userGroup className="size-6 shrink-0" />{" "}
-						{data?.totalTeams === 1 ? "Team" : "Teams"}
-					</div>
-				</div>
-				<div className="text-center">
-					<div className="text-3xl font-bold text-orange-800">
-						{data?.totalComments || 0}
-					</div>
-					<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-						<Icons.comments className="size-6 shrink-0" />{" "}
-						{data?.totalComments === 1 ? "Comment" : "Comments"}
-					</div>
-				</div>
-				<div className="hidden text-center md:block">
-					<div className="text-3xl font-bold text-orange-800">
-						{data?.totalTasks || 0}
-					</div>
-					<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-						<Icons.tasks className="size-6 shrink-0" />{" "}
-						{data?.totalTasks === 1 ? "Task" : "Tasks"}
-					</div>
-				</div>
+				))}
 			</div>
-			<div className="mt-6 flex flex-col items-center justify-center text-center md:hidden">
-				<div className="text-3xl font-bold text-orange-800">
-					{data?.totalTasks || 0}
+
+			<div className="flex flex-col gap-6 pt-12 md:hidden">
+				<div className="text-center">
+					<div className="mx-auto mb-2 flex justify-center">
+						<SingleIcon className="size-5 shrink-0 text-orange-600" />
+					</div>
+					<div className="text-3xl font-bold text-orange-800">
+						{analytics[0].count}
+					</div>
+					<div className="mt-2 text-base text-orange-600">
+						{analytics[0].title}
+					</div>
 				</div>
-				<div className="mt-1 flex items-center justify-center gap-1 text-sm text-orange-600">
-					<Icons.tasks className="size-6 shrink-0" />{" "}
-					{data?.totalTasks === 1 ? "Task" : "Tasks"}
+				<div className="grid grid-cols-2 gap-6">
+					{analytics.slice(1, 5).map(({ title, count, icon: Icon }) => (
+						<div key={title} className="text-center">
+							<div className="mx-auto mb-2 flex justify-center">
+								<Icon className="size-5 shrink-0 text-orange-600" />
+							</div>
+							<div className="text-4xl font-bold text-orange-800">{count}</div>
+							<div className="mt-2 text-base text-orange-600">{title}</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</>

@@ -1,13 +1,13 @@
-import { cn } from "@/lib";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 
-export function Main({
+export function Container({
 	className,
 	children,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className={cn("min-h-screen", className)} {...props}>
+		<div className={cn("mx-auto max-w-7xl px-6 sm:px-4", className)} {...props}>
 			{children}
 		</div>
 	);
