@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
+import { JetBrains_Mono } from "next/font/google";
 import {
 	type PropsWithChildren,
 	unstable_ViewTransition as ViewTransition,
 } from "react";
 import { siteConfig } from "@/config/site";
-import { jetBrainsMono } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/context/toast-provider";
 
@@ -39,6 +39,11 @@ export const metadata: Metadata = {
 	},
 	creator: siteConfig.creator,
 };
+
+const jetBrainsMono = JetBrains_Mono({
+	subsets: ["latin"],
+	variable: "--font-jetbrains-mono",
+});
 
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (

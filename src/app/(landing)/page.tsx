@@ -1,18 +1,19 @@
-import { Main as MainLayout } from "@/components/layout/page/main";
+import { ArrowUpRight } from "lucide-react";
+import { MainLayout } from "@/components/main-layout";
 import {
 	PageHeader,
 	PageHeaderBody,
 	PageHeaderHeading,
 	PageHeaderDescription,
 	PageActions,
-} from "@/components/layout/page/page-header";
-import { SectionList } from "@/components/layout/page/section-list";
-import { NextLink } from "@/components/ui/next-link";
-import { cn } from "@/lib";
-import { buttonVariants } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+} from "@/components/page-header";
+import { SectionList } from "@/components/section-list";
 import { Features } from "@/components/features";
 import { Analytics } from "@/components/analytics";
+import { Announcement } from "@/components/announcement";
+import { NextLink } from "@/components/ui/next-link";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
 	title: "Home",
@@ -24,6 +25,7 @@ export default function HomePage() {
 			{/* Hero Section */}
 			<PageHeader>
 				<PageHeaderBody>
+					<Announcement />
 					<PageHeaderHeading>
 						Transform Your{" "}
 						<span className="from-scheme-primary to-scheme-foreground/80 bg-gradient-to-r bg-clip-text text-transparent">
@@ -47,30 +49,30 @@ export default function HomePage() {
 							)}
 						>
 							Get Started{" "}
-							<Icons.arrowRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1" />
+							<ArrowUpRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 						</NextLink>
 						<NextLink
-							href="/roadmap"
+							href="#features"
 							className={cn(
 								buttonVariants({
 									variant: "outline",
 									size: "lg",
 									className:
-										"border-scheme-primary text-scheme-primary hover:bg-scheme-primary rounded-lg bg-transparent px-6 py-2 text-lg transition-all hover:text-white",
+										"hover:bg-scheme-primary border-scheme-primary rounded-lg bg-transparent px-6 py-2 text-lg hover:text-white",
 								}),
 							)}
 						>
-							Roadmap
+							View Features
 						</NextLink>
 					</PageActions>
 					<Analytics />
 				</PageHeaderBody>
 			</PageHeader>
 
-			{/* Features */}
+			{/* Features Section */}
 			<SectionList
 				id="features"
-				title="What's Different About Syntra"
+				title="What's Different About Syntra?"
 				description="Work smarter together with tools that don't get in the way."
 			>
 				<Features />

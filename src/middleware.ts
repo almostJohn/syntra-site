@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAuth } from "./auth";
 
 const DISABLED_ROUTES_AFTER_SIGN_IN = [
 	"/",
@@ -16,21 +15,18 @@ const DISABLED_ROUTES_AFTER_SIGN_OUT = [
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-
-	const isAuthenticated = await checkAuth();
+	const token = request.cookies.get(process.env.APP_COOKIE_NAME!)?.value;
+	const isAuthenticated = Boolean(token);
 
 	if (
+		!isAuthenticated &&
 		DISABLED_ROUTES_AFTER_SIGN_OUT.some((route) => pathname.startsWith(route))
 	) {
-		if (!isAuthenticated) {
-			return NextResponse.redirect(new URL("/login", request.url));
-		}
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
-	if (DISABLED_ROUTES_AFTER_SIGN_IN.includes(pathname)) {
-		if (isAuthenticated) {
-			return NextResponse.redirect(new URL("/app", request.url));
-		}
+	if (isAuthenticated && DISABLED_ROUTES_AFTER_SIGN_IN.includes(pathname)) {
+		return NextResponse.redirect(new URL("/app", request.url));
 	}
 
 	return NextResponse.next();

@@ -2,10 +2,10 @@ export const siteConfig = {
 	name: "Syntra",
 	title: {
 		default: "Syntra",
-		template: "Syntra — %s",
+		template: "%s | Syntra",
 	},
 	description:
-		"Syntra provides the intuitive tools and visual workflow to organize, track, and complete your tasks efficiently.",
+		"Visualize, manage, and prioritize tasks effortlessly with our intuitive kanban-style workflow system. Stay organized and boost productivity like never before.",
 	creator: "@almostJohn",
 };
 

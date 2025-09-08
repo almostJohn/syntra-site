@@ -1,13 +1,11 @@
 import type { PropsWithChildren } from "react";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/auth/get-current-user";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
 	title: {
 		default: "App",
-		template: "%s — App",
+		template: "%s | App",
 	},
 	description: siteConfig.description,
 	appleWebApp: {
@@ -30,12 +28,6 @@ export const metadata: Metadata = {
 };
 
 export default async function AppPageLayout({ children }: PropsWithChildren) {
-	const user = await getCurrentUser();
-
-	if (!user) {
-		redirect("/login");
-	}
-
 	return (
 		<main className="relative flex min-h-screen flex-col">{children}</main>
 	);

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
+import { Navbar } from "@/components/navbar";
 import { siteConfig } from "@/config/site";
-import { Navbar } from "@/components/layout/navigation/navbar";
 
 export const metadata: Metadata = {
 	title: {

@@ -1,40 +1,42 @@
-import { Icons } from "./icons";
+import { BarChart3, Tags, Flag } from "lucide-react";
 
-const features = [
+const featuresList = [
 	{
 		title: "Status Tracking",
-		icon: Icons.barChart,
 		description:
 			"Monitor your project progress with live updates. See exactly where each task stands and identify bottlenecks instantly.",
+		icon: BarChart3,
 	},
 	{
 		title: "Categories",
-		icon: Icons.tag,
 		description:
 			"Organize tasks by categories, departments, or custom labels. Keep your workflow structured and easily navigable.",
+		icon: Tags,
 	},
 	{
 		title: "Priority Levels",
-		icon: Icons.flag,
 		description:
 			"Set priority levels and focus on what matters most. Never miss critical deadlines with intelligent task prioritization.",
+		icon: Flag,
 	},
 ];
 
 export function Features() {
 	return (
 		<div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-			{features.map(({ title, icon: Icon, description }) => (
+			{featuresList.map(({ title, description, icon: Icon }, i) => (
 				<div
-					key={title}
-					className="group hover:shadow-scheme-primary flex flex-col rounded-lg bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-2xl"
+					key={i}
+					className="group hover:shadow-scheme-primary flex flex-col rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-2xl"
 				>
 					<div className="space-y-4">
-						<div className="group-hover:bg-scheme-primary bg-scheme-primary/20 inline-flex items-center justify-center rounded-full p-2 group-hover:text-white">
-							<Icon className="size-10 shrink-0" />
+						<div className="group-hover:bg-scheme-primary bg-scheme-primary/20 inline-flex items-center justify-center rounded-full p-4 group-hover:text-white">
+							<Icon className="size-8 shrink-0" />
 						</div>
 						<h3 className="mt-3 text-xl font-bold text-orange-800">{title}</h3>
-						<p className="leading-relaxed text-orange-700">{description}</p>
+						<p className="text-base leading-relaxed text-orange-700">
+							{description}
+						</p>
 					</div>
 				</div>
 			))}
