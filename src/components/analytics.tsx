@@ -35,36 +35,34 @@ export function Analytics() {
 		<>
 			<div className="hidden grid-cols-5 gap-6 pt-12 md:grid">
 				{analytics.map(({ title, count, icon: Icon }) => (
-					<div key={title} className="text-center">
-						<div className="mx-auto mb-2 flex justify-center">
-							<Icon className="size-5 shrink-0 text-orange-600" />
-						</div>
+					<div key={title} className="flex flex-col gap-2 text-center">
 						<div className="text-4xl font-bold text-orange-800">{count}</div>
-						<div className="mt-2 text-base text-orange-600">{title}</div>
+						<div className="flex items-center justify-center gap-3">
+							<Icon className="size-6 shrink-0 text-orange-600" />
+							<span>{title}</span>
+						</div>
 					</div>
 				))}
 			</div>
 
 			<div className="flex flex-col gap-6 pt-12 md:hidden">
-				<div className="text-center">
-					<div className="mx-auto mb-2 flex justify-center">
-						<SingleIcon className="size-5 shrink-0 text-orange-600" />
-					</div>
-					<div className="text-3xl font-bold text-orange-800">
+				<div className="flex flex-col gap-2 text-center">
+					<div className="text-4xl font-bold text-orange-800">
 						{analytics[0].count}
 					</div>
-					<div className="mt-2 text-base text-orange-600">
-						{analytics[0].title}
+					<div className="flex items-center justify-center gap-3">
+						<SingleIcon className="size-6 shrink-0 text-orange-600" />
+						<span>{analytics[0].title}</span>
 					</div>
 				</div>
 				<div className="grid grid-cols-2 gap-6">
 					{analytics.slice(1, 5).map(({ title, count, icon: Icon }) => (
-						<div key={title} className="text-center">
-							<div className="mx-auto mb-2 flex justify-center">
-								<Icon className="size-5 shrink-0 text-orange-600" />
-							</div>
+						<div key={title} className="flex flex-col gap-2 text-center">
 							<div className="text-4xl font-bold text-orange-800">{count}</div>
-							<div className="mt-2 text-base text-orange-600">{title}</div>
+							<div className="flex items-center justify-center gap-3">
+								<Icon className="size-6 shrink-0 text-orange-600" />
+								<span>{title}</span>
+							</div>
 						</div>
 					))}
 				</div>

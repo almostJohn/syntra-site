@@ -3,20 +3,17 @@ import { BarChart3, Tags, Flag } from "lucide-react";
 const featuresList = [
 	{
 		title: "Status Tracking",
-		description:
-			"Monitor your project progress with live updates. See exactly where each task stands and identify bottlenecks instantly.",
+		description: "Monitor your project progress with live updates.",
 		icon: BarChart3,
 	},
 	{
 		title: "Categories",
-		description:
-			"Organize tasks by categories, departments, or custom labels. Keep your workflow structured and easily navigable.",
+		description: "Organize tasks by categories, departments, or custom labels.",
 		icon: Tags,
 	},
 	{
 		title: "Priority Levels",
-		description:
-			"Set priority levels and focus on what matters most. Never miss critical deadlines with intelligent task prioritization.",
+		description: "Set priority levels and focus on what matters most.",
 		icon: Flag,
 	},
 ];
