@@ -10,7 +10,6 @@ import {
 import { SectionList } from "@/components/section-list";
 import { Features } from "@/components/features";
 import { Analytics } from "@/components/analytics";
-import { Announcement } from "@/components/announcement";
 import { NextLink } from "@/components/ui/next-link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,7 +24,6 @@ export default function HomePage() {
 			{/* Hero Section */}
 			<PageHeader>
 				<PageHeaderBody>
-					<Announcement />
 					<PageHeaderHeading>
 						Transform Your{" "}
 						<span className="from-scheme-primary to-scheme-foreground/80 bg-gradient-to-r bg-clip-text text-transparent">
