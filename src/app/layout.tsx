@@ -51,7 +51,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						"bg-scheme-background text-scheme-foreground antialiased",
+						`bg-neutral-50 text-neutral-900 antialiased`,
 						jetBrainsMono.className,
 					)}
 				>
