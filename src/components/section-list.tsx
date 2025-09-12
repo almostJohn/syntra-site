@@ -25,10 +25,10 @@ export function SectionList({
 		>
 			<div className="space-y-8">
 				<div className="mx-auto max-w-4xl space-y-4 text-center">
-					<h1 className="from-scheme-primary to-scheme-foreground/80 bg-gradient-to-r bg-clip-text text-center text-4xl font-bold text-balance text-transparent lg:text-6xl">
+					<h1 className="bg-gradient-to-r from-blue-600 to-blue-400/90 bg-clip-text text-center text-4xl font-bold text-balance text-transparent lg:text-6xl">
 						{title}
 					</h1>
-					<p className="text-scheme-foreground/50 mx-auto max-w-2xl text-center text-xl leading-relaxed text-pretty">
+					<p className="mx-auto max-w-2xl pt-2 text-center text-xl leading-relaxed text-pretty text-neutral-500">
 						{description}
 					</p>
 				</div>

@@ -9,7 +9,6 @@ import {
 } from "@/components/page-header";
 import { SectionList } from "@/components/section-list";
 import { Features } from "@/components/features";
-import { Analytics } from "@/components/analytics";
 import { NextLink } from "@/components/ui/next-link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,7 +25,7 @@ export default function HomePage() {
 				<PageHeaderBody>
 					<PageHeaderHeading>
 						Transform Your{" "}
-						<span className="from-scheme-primary to-scheme-foreground/80 bg-gradient-to-r bg-clip-text text-transparent">
+						<span className="bg-gradient-to-r from-blue-600 to-blue-400/90 bg-clip-text text-transparent">
 							Workflow
 						</span>
 					</PageHeaderHeading>
@@ -42,12 +41,12 @@ export default function HomePage() {
 								buttonVariants({
 									size: "lg",
 									className:
-										"hover:shadow-scheme-primary/60 bg-scheme-primary hover:bg-scheme-primary/90 group rounded-lg px-6 py-2 text-lg text-white transition-shadow hover:shadow-xl",
+										"group rounded-lg bg-blue-600 px-6 py-2 text-lg text-white transition-shadow hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/40",
 								}),
 							)}
 						>
 							Get Started{" "}
-							<ArrowUpRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+							<ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 						</NextLink>
 						<NextLink
 							href="#features"
@@ -56,14 +55,13 @@ export default function HomePage() {
 									variant: "outline",
 									size: "lg",
 									className:
-										"hover:bg-scheme-primary border-scheme-primary rounded-lg bg-transparent px-6 py-2 text-lg hover:text-white",
+										"rounded-lg border-blue-600 bg-transparent px-6 py-2 text-lg text-blue-600 hover:bg-blue-600 hover:text-white",
 								}),
 							)}
 						>
 							View Features
 						</NextLink>
 					</PageActions>
-					<Analytics />
 				</PageHeaderBody>
 			</PageHeader>
 
