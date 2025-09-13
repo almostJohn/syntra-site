@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function HomePageLayout({ children }: PropsWithChildren) {
 		<main className="relative flex min-h-screen flex-col">
 			<Navbar />
 			{children}
+			<Footer />
 		</main>
 	);
 }

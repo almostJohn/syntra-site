@@ -17,23 +17,18 @@ export function SectionList({
 	return (
 		<section
 			id={id}
-			className={cn(
-				"container mx-auto max-w-7xl px-6 py-16 sm:px-4 lg:py-24",
-				className,
-			)}
+			className={cn("mx-auto max-w-7xl px-6 py-20 sm:px-4 lg:py-32", className)}
 			{...props}
 		>
-			<div className="space-y-8">
-				<div className="mx-auto max-w-4xl space-y-4 text-center">
-					<h1 className="bg-gradient-to-r from-blue-600 to-blue-400/90 bg-clip-text text-center text-4xl font-bold text-balance text-transparent lg:text-6xl">
-						{title}
-					</h1>
-					<p className="mx-auto max-w-2xl pt-2 text-center text-xl leading-relaxed text-pretty text-neutral-500">
-						{description}
-					</p>
-				</div>
-				{children}
+			<div className="mb-16 text-center">
+				<h1 className="mb-4 text-3xl font-bold text-balance md:text-4xl lg:text-5xl">
+					{title}
+				</h1>
+				<p className="text-muted-foreground mx-auto max-w-2xl text-center text-xl text-pretty">
+					{description}
+				</p>
 			</div>
+			{children}
 		</section>
 	);
 }

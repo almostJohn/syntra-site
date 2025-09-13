@@ -1,69 +1,60 @@
 "use client";
 
 import { useState } from "react";
-import { Menu } from "lucide-react";
+
 import {
-	Drawer,
-	DrawerContent,
-	DrawerTrigger,
-	DrawerTitle,
-	DrawerDescription,
-} from "./ui/drawer";
+	Sheet,
+	SheetContent,
+	SheetTrigger,
+	SheetTitle,
+	SheetDescription,
+} from "./ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { NextLink } from "./ui/next-link";
 import { cn } from "@/lib/utils";
+import { Icons } from "./icons";
 
 export function MobileNav() {
 	const [interacted, setInteracted] = useState(false);
 
-	function handleClose() {
-		setInteracted((prev) => !prev);
-	}
-
 	return (
-		<Drawer open={interacted} onOpenChange={setInteracted}>
-			<DrawerTrigger asChild>
+		<Sheet open={interacted} onOpenChange={setInteracted}>
+			<SheetTrigger asChild>
 				<Button
 					variant="ghost"
 					size="icon"
-					className="hover:bg-scheme-primary/30 cursor-pointer rounded-lg p-2 md:hidden"
+					className="cursor-pointer rounded px-2 transition-all duration-300 hover:bg-blue-600/10 hover:text-blue-600/90 md:hidden"
 				>
-					<Menu className="size-6 shrink-0" />
+					<Icons.menu className="size-6 shrink-0" />
 				</Button>
-			</DrawerTrigger>
-			<DrawerContent>
+			</SheetTrigger>
+			<SheetContent side="right">
 				<VisuallyHidden>
-					<DrawerTitle>Menu Title</DrawerTitle>
-					<DrawerDescription>Menu Description</DrawerDescription>
+					<SheetTitle>MenuTitle</SheetTitle>
+					<SheetDescription>MenuDescription</SheetDescription>
 				</VisuallyHidden>
-				<div className="flex flex-col gap-4 p-8">
+				<div className="mt-4 flex flex-col gap-2 p-8">
 					<NextLink
 						href="/login"
-						onClick={handleClose}
 						className={cn(
-							buttonVariants({
-								variant: "ghost",
-								className: "hover:bg-scheme-primary/30 text-lg font-semibold",
-							}),
+							"inline-flex items-center justify-center rounded bg-transparent px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 hover:bg-blue-600/10 hover:text-blue-600/90",
 						)}
+						onClick={() => setInteracted(false)}
 					>
 						Login
 					</NextLink>
 					<NextLink
 						href="/register"
-						onClick={handleClose}
 						className={cn(
-							buttonVariants({
-								className:
-									"bg-scheme-primary hover:bg-scheme-primary/90 hover:shadow-scheme-primary/60 text-lg font-semibold text-white transition-shadow hover:shadow-xl",
-							}),
+							"inline-flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-all duration-300 hover:bg-blue-700",
 						)}
+						onClick={() => setInteracted(false)}
 					>
-						Register
+						Sign Up
 					</NextLink>
 				</div>
-			</DrawerContent>
-		</Drawer>
+			</SheetContent>
+		</Sheet>
 	);
 }

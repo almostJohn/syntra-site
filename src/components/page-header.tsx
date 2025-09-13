@@ -8,10 +8,7 @@ export function PageHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<section
-			className={cn(
-				"container mx-auto max-w-6xl px-6 py-16 sm:px-4 lg:py-24",
-				className,
-			)}
+			className={cn("relative overflow-hidden py-20 lg:py-32", className)}
 			{...props}
 		>
 			{children}
@@ -26,7 +23,7 @@ export function PageHeaderBody({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("mx-auto max-w-4xl space-y-8 text-center", className)}
+			className={cn("mx-auto max-w-4xl px-6 text-center sm:px-4", className)}
 			{...props}
 		>
 			{children}
@@ -41,7 +38,7 @@ export function PageHeaderHeading({
 	return (
 		<h1
 			className={cn(
-				"mb-4 text-4xl font-bold text-balance lg:text-6xl",
+				"mb-8 text-4xl font-bold text-balance md:text-6xl lg:text-7xl",
 				className,
 			)}
 			{...props}
@@ -56,7 +53,7 @@ export function PageHeaderDescription({
 	return (
 		<p
 			className={cn(
-				"mx-auto max-w-2xl text-xl leading-relaxed text-pretty text-neutral-500",
+				"text-muted-foreground mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-pretty",
 				className,
 			)}
 			{...props}

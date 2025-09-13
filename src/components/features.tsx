@@ -20,18 +20,18 @@ const featuresList = [
 
 export function Features() {
 	return (
-		<div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+		<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{featuresList.map(({ title, description, icon: Icon }, i) => (
 				<div
 					key={i}
-					className="group hover:shadow-scheme-primary flex flex-col rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-2xl"
+					className="bg-background group flex flex-col rounded-md border p-6 shadow-sm transition-all duration-200 hover:shadow-xl hover:shadow-blue-600/30"
 				>
 					<div className="space-y-4">
-						<div className="group-hover:bg-scheme-primary bg-scheme-primary/20 inline-flex items-center justify-center rounded-full p-4 group-hover:text-white">
+						<div className="inline-flex items-center justify-center rounded-full bg-blue-600/10 p-4 text-blue-600 group-hover:bg-blue-600 group-hover:text-white">
 							<Icon className="size-8 shrink-0" />
 						</div>
-						<h3 className="mt-3 text-xl font-bold text-orange-800">{title}</h3>
-						<p className="text-base leading-relaxed text-orange-700">
+						<h3 className="mt-3 text-xl font-bold text-blue-800">{title}</h3>
+						<p className="text-base leading-relaxed text-blue-700">
 							{description}
 						</p>
 					</div>

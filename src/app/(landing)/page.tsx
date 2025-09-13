@@ -1,17 +1,18 @@
 import { ArrowUpRight } from "lucide-react";
 import { MainLayout } from "@/components/main-layout";
 import {
+	PageActions,
 	PageHeader,
 	PageHeaderBody,
-	PageHeaderHeading,
 	PageHeaderDescription,
-	PageActions,
+	PageHeaderHeading,
 } from "@/components/page-header";
+import { NextLink } from "@/components/ui/next-link";
+import { cn } from "@/lib/utils";
+import { Announcement } from "@/components/announcement";
 import { SectionList } from "@/components/section-list";
 import { Features } from "@/components/features";
-import { NextLink } from "@/components/ui/next-link";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { CTASection } from "@/components/cta-section";
 
 export const metadata = {
 	title: "Home",
@@ -23,43 +24,25 @@ export default function HomePage() {
 			{/* Hero Section */}
 			<PageHeader>
 				<PageHeaderBody>
+					<Announcement />
 					<PageHeaderHeading>
-						Transform Your{" "}
-						<span className="bg-gradient-to-r from-blue-600 to-blue-400/90 bg-clip-text text-transparent">
-							Workflow
-						</span>
+						Build Something
+						<span className="block text-blue-600">Amazing Today</span>
 					</PageHeaderHeading>
 					<PageHeaderDescription>
 						Visualize, manage, and prioritize tasks effortlessly with our
 						intuitive kanban-style workflow system. Stay organized and boost
 						productivity like never before.
 					</PageHeaderDescription>
-					<PageActions className="animate-slide opacity-0">
+					<PageActions>
 						<NextLink
 							href="/login"
 							className={cn(
-								buttonVariants({
-									size: "lg",
-									className:
-										"group rounded-lg bg-blue-600 px-6 py-2 text-lg text-white transition-shadow hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/40",
-								}),
+								"group inline-flex items-center justify-center gap-2 rounded bg-blue-600 px-6 py-2 text-lg font-semibold whitespace-nowrap text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/30",
 							)}
 						>
-							Get Started{" "}
-							<ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-						</NextLink>
-						<NextLink
-							href="#features"
-							className={cn(
-								buttonVariants({
-									variant: "outline",
-									size: "lg",
-									className:
-										"rounded-lg border-blue-600 bg-transparent px-6 py-2 text-lg text-blue-600 hover:bg-blue-600 hover:text-white",
-								}),
-							)}
-						>
-							View Features
+							Get Started For Free{" "}
+							<ArrowUpRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 						</NextLink>
 					</PageActions>
 				</PageHeaderBody>
@@ -68,11 +51,14 @@ export default function HomePage() {
 			{/* Features Section */}
 			<SectionList
 				id="features"
-				title="What's Different About Syntra?"
+				title="Everything You Need to Succeed"
 				description="Work smarter together with tools that don't get in the way."
 			>
 				<Features />
 			</SectionList>
+
+			{/* CTA Section */}
+			<CTASection />
 		</MainLayout>
 	);
 }
