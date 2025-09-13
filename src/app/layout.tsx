@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
 import {
 	type PropsWithChildren,
 	unstable_ViewTransition as ViewTransition,
 } from "react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { appFont } from "@/lib/fonts";
 import { ToastProvider } from "@/context/toast-provider";
 
 export const metadata: Metadata = {
@@ -40,19 +40,14 @@ export const metadata: Metadata = {
 	creator: siteConfig.creator,
 };
 
-const jetBrainsMono = JetBrains_Mono({
-	subsets: ["latin"],
-	variable: "--font-jetbrains-mono",
-});
-
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<ToastProvider>
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						`bg-neutral-50 text-neutral-900 antialiased`,
-						jetBrainsMono.className,
+						`bg-background text-foreground antialiased selection:bg-blue-600/10 selection:text-blue-600/90`,
+						appFont.className,
 					)}
 				>
 					<ViewTransition>{children}</ViewTransition>
