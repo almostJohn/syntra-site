@@ -65,7 +65,7 @@ export const users = pgTable("users", {
 export const teams = pgTable("teams", {
 	id: text("id").primaryKey().notNull(),
 	name: text("name").notNull(),
-	description: text("description"),
+	description: text("description"), // description should be optional
 	userId: text("user_id")
 		.references(() => users.id, { onDelete: "cascade" })
 		.notNull(),
@@ -112,7 +112,8 @@ export const projects = pgTable("projects", {
 
 export const tasks = pgTable("tasks", {
 	id: text("id").primaryKey().notNull(),
-	name: text("name").notNull(),
+	title: text("title").notNull(),
+	subtitle: text("subtitle"), // subtitle should be optional
 	description: text("description"), // description should be optional
 	status: taskStatusEnum("status").default("incomplete").notNull(),
 	priority: taskPriorityEnum("priority").notNull(),
@@ -154,7 +155,7 @@ export const comments = pgTable("comments", {
 export const notifications = pgTable("notifications", {
 	id: text("id").primaryKey().notNull(),
 	title: text("title").notNull(),
-	message: text("message").notNull(),
+	description: text("description").notNull(),
 	status: notificationStatusEnum("status").default("unread").notNull(),
 	userId: text("user_id")
 		.references(() => users.id, { onDelete: "cascade" })

@@ -30,8 +30,8 @@ export function Features() {
 						<div className="inline-flex items-center justify-center rounded-full bg-blue-600/10 p-4 text-blue-600 group-hover:bg-blue-600 group-hover:text-white">
 							<Icon className="size-8 shrink-0" />
 						</div>
-						<h3 className="mt-3 text-xl font-bold text-blue-800">{title}</h3>
-						<p className="text-base leading-relaxed text-blue-700">
+						<h3 className="mt-3 text-xl font-bold">{title}</h3>
+						<p className="text-muted-foreground text-base leading-relaxed">
 							{description}
 						</p>
 					</div>
