@@ -23,7 +23,7 @@ export const DISABLED_ROUTES_AFTER_SIGNED_IN = [
 	"/login",
 	"/register",
 	"/forgot-password",
-] as const;
+];
 
 export const DISABLED_ROUTES_AFTER_SIGNED_OUT = [
 	"/app",
@@ -31,4 +31,4 @@ export const DISABLED_ROUTES_AFTER_SIGNED_OUT = [
 	"/app/teams",
 	"/app/account-settings",
 	"/app/notifications",
-] as const;
+];
