@@ -70,14 +70,14 @@ function ToastComponent({
 	return (
 		<div
 			className={cn(
-				"bg-scheme-background text-scheme-foreground relative mb-1 flex items-center gap-3 rounded-lg px-6 py-3 shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
+				"bg-background relative mb-1 flex items-center gap-3 rounded-md border px-6 py-3 shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
 				isVisible && !isLeaving
 					? "translate-y-0 scale-100 opacity-100"
 					: "translate-y-2 scale-95 opacity-0",
 			)}
 		>
 			{toast.type === "success" && (
-				<Check className="size-6 shrink-0 text-emerald-600" />
+				<Check className="size-6 shrink-0 text-green-600" />
 			)}
 			{toast.type === "error" && <X className="size-6 shrink-0 text-red-600" />}
 			<div className="min-w-0 flex-1">

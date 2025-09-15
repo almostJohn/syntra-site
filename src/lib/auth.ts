@@ -42,7 +42,7 @@ export const auth = {
 			(await cookies()).set(env.APP_COOKIE_NAME, token, {
 				httpOnly: true,
 				sameSite: "lax",
-				secure: env.NODE_ENV === "production",
+				secure: env.NODE_ENV === "production" ? true : false,
 				path: "/",
 				maxAge: MAX_TRUST_ACCOUNT_AGE,
 			});
@@ -77,9 +77,13 @@ export const auth = {
 
 	async check(request?: NextRequest): Promise<boolean> {
 		try {
-			const token = request
-				? request.cookies.get(env.APP_COOKIE_NAME)?.value
-				: (await cookies()).get(env.APP_COOKIE_NAME)?.value;
+			let token: string | undefined;
+
+			if (request) {
+				token = request.cookies.get(env.APP_COOKIE_NAME)?.value;
+			} else {
+				token = (await cookies()).get(env.APP_COOKIE_NAME)?.value;
+			}
 
 			if (!token) {
 				return false;
