@@ -7,18 +7,18 @@ export const metadata = {
 
 export default function LoginPage() {
 	return (
-		<MainLayout className="flex items-center justify-center px-6 sm:px-4">
-			<div className="w-full max-w-md">
-				<div className="flex flex-col rounded-md border bg-white shadow-2xl">
-					<div className="flex flex-col gap-2 p-6 text-center">
-						<h3 className="text-2xl font-bold">Welcome Back!</h3>
-						<p className="text-muted-foreground">
+		<MainLayout>
+			<div className="flex h-screen w-screen flex-col items-center justify-center px-8 sm:px-6">
+				<div className="flex w-full max-w-md flex-col justify-center gap-6">
+					<div className="flex flex-col gap-2 text-center">
+						<h3 className="text-2xl font-semibold tracking-tight">
+							Welcome back
+						</h3>
+						<p className="text-muted-foreground text-sm">
 							Log in to continue to your account.
 						</p>
 					</div>
-					<div className="mt-auto p-6 pt-0">
-						<LoginForm />
-					</div>
+					<LoginForm />
 				</div>
 			</div>
 		</MainLayout>
