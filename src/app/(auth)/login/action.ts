@@ -26,8 +26,7 @@ export async function loginUser(
 			return {
 				errorMessage: "Username and password are required.",
 				errors: {
-					username: "Username is a required field.",
-					password: "Password is a required field.",
+					fields: "Username and password are required.",
 				},
 			};
 		}
@@ -41,8 +40,7 @@ export async function loginUser(
 			return {
 				errorMessage: "Invalid username or password.",
 				errors: {
-					username: "Invalid username.",
-					password: "Invalid password.",
+					fields: "Invalid username or password.",
 				},
 				values: {
 					username,
@@ -60,8 +58,7 @@ export async function loginUser(
 			return {
 				errorMessage: "Invalid username or password.",
 				errors: {
-					username: "Invalid username.",
-					password: "Invalid password.",
+					fields: "Invalid username or password.",
 				},
 				values: {
 					username,
@@ -75,8 +72,7 @@ export async function loginUser(
 			return {
 				errorMessage: "Invalid username or password.",
 				errors: {
-					username: "Invalid username.",
-					password: "Invalid password.",
+					fields: "Invalid username or password.",
 				},
 				values: {
 					username,
