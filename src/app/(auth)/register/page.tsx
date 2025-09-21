@@ -7,15 +7,15 @@ export const metadata = {
 
 export default function RegisterPage() {
 	return (
-		<MainLayout className="flex flex-col items-center justify-center">
+		<MainLayout className="flex items-center justify-center p-4 sm:p-0">
 			<div className="w-full max-w-md">
-				<div className="bg-card flex flex-col rounded-xl border p-6 shadow-2xl shadow-blue-600/30">
-					<div className="mb-8 flex flex-col justify-center text-center">
-						<h3 className="text-3xl font-bold tracking-tight text-blue-600">
-							Create Account
-						</h3>
-						<p className="text-muted-foreground mt-2 text-base">
-							Enter your information to get started.
+				<div className="flex flex-col">
+					<div className="mb-8">
+						<h1 className="mb-2 text-center text-4xl font-bold tracking-tight text-blue-600">
+							Sign Up
+						</h1>
+						<p className="text-muted-foreground mx-auto max-w-sm text-center text-pretty">
+							Fill out your information to get started.
 						</p>
 					</div>
 					<RegisterForm />

@@ -5,7 +5,7 @@ import { useCheckbox } from "@/hooks/use-checkbox";
 import { registerUser } from "./action";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { TextField } from "@/components/text-field";
+import { InputField } from "@/components/input-field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import {
@@ -44,10 +44,9 @@ export function RegisterForm() {
 	const { checked, onChange } = useCheckbox();
 
 	return (
-		<form action={formAction} className="flex flex-col gap-4">
-			<div className="flex flex-col gap-3">
-				{/* Display Name Section */}
-				<TextField
+		<form action={formAction} className="space-y-4">
+			<div className="grid gap-2">
+				<InputField
 					type="text"
 					id="displayName"
 					name="displayName"
@@ -56,14 +55,12 @@ export function RegisterForm() {
 					minLength={DISPLAY_NAME_MIN_LENGTH}
 					maxLength={DISPLAY_NAME_MAX_LENGTH}
 					disabled={isPending}
-					placeholder="John Doe or johndoe12"
+					placeholder="Display Name (eg:, John, John Doe)"
 					required
 					error={!!state.errors?.displayName}
 					errorMessage={state.errors?.displayName}
 				/>
-
-				{/* Username Section */}
-				<TextField
+				<InputField
 					type="text"
 					id="username"
 					name="username"
@@ -77,9 +74,7 @@ export function RegisterForm() {
 					error={!!state.errors?.username}
 					errorMessage={state.errors?.username}
 				/>
-
-				{/* Password Section */}
-				<TextField
+				<InputField
 					type="password"
 					id="password"
 					name="password"
@@ -92,9 +87,7 @@ export function RegisterForm() {
 					error={!!state.errors?.password}
 					errorMessage={state.errors?.password}
 				/>
-
-				{/* Confirm Password Section */}
-				<TextField
+				<InputField
 					type="password"
 					id="confirmPassword"
 					name="confirmPassword"
@@ -108,10 +101,8 @@ export function RegisterForm() {
 					errorMessage={state.errors?.confirmPassword}
 				/>
 			</div>
-
-			<div className="flex flex-col gap-2">
-				{/* Accept Terms and Privacy */}
-				<div className="flex items-center gap-2">
+			<div className="grid gap-2">
+				<div className="mb-1 flex items-center gap-2">
 					<Checkbox
 						id="acceptTermsAndPrivacy"
 						checked={checked}
@@ -138,8 +129,6 @@ export function RegisterForm() {
 						</p>
 					</Label>
 				</div>
-
-				{/* Submit button */}
 				<Button
 					type="submit"
 					disabled={isPending || !checked}
@@ -151,17 +140,12 @@ export function RegisterForm() {
 						"Sign Up"
 					)}
 				</Button>
-
-				{/* Redirect back to login */}
-				<p className="text-muted-foreground mt-2 text-center text-sm">
-					Already have an account?{" "}
-					<NextLink
-						href="/login"
-						className="font-medium text-blue-600 hover:underline"
-					>
-						Sign In
-					</NextLink>
-				</p>
+				<NextLink
+					href="/login"
+					className="mt-1 text-center text-sm font-medium text-blue-600 hover:underline"
+				>
+					Already have an account? Sign In
+				</NextLink>
 			</div>
 		</form>
 	);
