@@ -6,8 +6,9 @@ import { Label } from "./ui/label";
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 
-type TextFieldProps = {
+type InputFieldProps = {
 	id: string;
+	className?: string;
 	name: string;
 	label: string;
 	type?: "text" | "password" | "number" | "email";
@@ -21,8 +22,9 @@ type TextFieldProps = {
 	errorMessage?: string;
 };
 
-export function TextField({
+export function InputField({
 	id,
+	className,
 	name,
 	label,
 	type = "text",
@@ -34,14 +36,14 @@ export function TextField({
 	required,
 	error,
 	errorMessage,
-}: TextFieldProps) {
+}: InputFieldProps) {
 	const { show, toggle } = useShowPassword();
 
 	const isPassword = type === "password";
 
 	return (
 		<div className="flex flex-col gap-1.5">
-			<Label htmlFor={id}>
+			<Label htmlFor={id} className={cn("sr-only", className)}>
 				{label} <span className="text-red-600">*</span>
 			</Label>
 			<div className="relative">
