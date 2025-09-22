@@ -102,16 +102,16 @@ export function RegisterForm() {
 				/>
 			</div>
 			<div className="grid gap-2">
-				<div className="mb-1 flex items-center gap-2">
+				<div className="mb-1 flex items-center gap-3">
 					<Checkbox
 						id="acceptTermsAndPrivacy"
 						checked={checked}
 						onCheckedChange={onChange}
-						className="rounded data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
+						className="size-5 rounded data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
 					/>
 					<Label htmlFor="acceptTermsAndPrivacy">
 						<p className="text-muted-foreground text-sm">
-							I have read and agree the{" "}
+							By signing up, you agree to our{" "}
 							<NextLink
 								href="#"
 								className="font-medium text-blue-600 hover:underline"
