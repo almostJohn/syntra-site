@@ -13,8 +13,3 @@ export function getFormValue<T extends string = string>(
 
 	return typeof value === "string" ? (value.trim() as T) : null;
 }
-
-export function generateTag(): string {
-	const random = Math.floor(Math.random() * 10_000);
-	return random.toString().padStart(4, "0");
-}

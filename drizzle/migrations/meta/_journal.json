@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1756826244781,
-      "tag": "0000_heavy_ken_ellis",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1756959562064,
-      "tag": "0001_medical_blur",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1756961452203,
-      "tag": "0002_tense_sabretooth",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1756965374694,
-      "tag": "0003_unique_hairball",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1756976288269,
-      "tag": "0004_young_blacklash",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1756995102726,
-      "tag": "0005_clammy_roulette",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1756995164297,
-      "tag": "0006_lean_silvermane",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1757767616366,
-      "tag": "0007_dry_jackpot",
+      "when": 1758944606193,
+      "tag": "0000_talented_zodiak",
       "breakpoints": true
     }
   ]

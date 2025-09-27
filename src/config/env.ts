@@ -16,9 +16,6 @@ const envSchema = z.object({
 	// Database credentials for seeding
 	APP_LOCAL_USERNAME: z.string().min(1, "APP_LOCAL_USERNAME is required"),
 	APP_LOCAL_PASSWORD: z.string().min(1, "APP_LOCAL_PASSWORD is required"),
-	APP_LOCAL_DISPLAY_NAME: z
-		.string()
-		.min(1, "APP_LOCAL_DISPLAY_NAME is required"),
 });
 
 const _env = envSchema.safeParse(process.env);
