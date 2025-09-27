@@ -2,7 +2,6 @@ import "dotenv/config.js";
 import { db } from "@/db/sql";
 import { users } from "@/db/schema";
 import { generateUUID, hashString } from "@/lib/crypto";
-import { generateTag } from "@/lib/utils";
 import { eq } from "drizzle-orm";
 
 (async () => {
@@ -11,7 +10,6 @@ import { eq } from "drizzle-orm";
 
 		const username = process.env.APP_LOCAL_USERNAME!;
 		const password = process.env.APP_LOCAL_PASSWORD!;
-		const displayName = process.env.APP_LOCAL_DISPLAY_NAME!;
 
 		const [existingUser] = await db
 			.select()
@@ -29,8 +27,6 @@ import { eq } from "drizzle-orm";
 		await db.insert(users).values({
 			id: generateUUID(),
 			username,
-			userTag: generateTag(),
-			displayName,
 			password: hashedPassword,
 		});
 

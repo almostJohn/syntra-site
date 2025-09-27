@@ -6,7 +6,7 @@ import {
 } from "react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { appFont } from "@/lib/fonts";
+import { jetBrainsMono } from "@/lib/fonts";
 import { ToastProvider } from "@/context/toast-provider";
 
 export const metadata: Metadata = {
@@ -46,8 +46,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						`bg-background text-foreground antialiased selection:bg-blue-600/10 selection:text-blue-600/90`,
-						appFont.className,
+						`bg-neutral-900 text-neutral-100 antialiased`,
+						jetBrainsMono.className,
 					)}
 				>
 					<ViewTransition>{children}</ViewTransition>
