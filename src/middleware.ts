@@ -32,11 +32,8 @@ export const config = {
 		"/",
 		"/app/:path*",
 		"/app/projects/:path*",
-		"/app/teams/:path*",
-		"/app/account-settings/:path*",
-		"/app/notifications/:path*",
+		"/app/settings/:path*",
 		"/login",
 		"/register",
-		"/forgot-password",
 	],
 };

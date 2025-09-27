@@ -1,5 +1,5 @@
 {
-  "id": "120fc2c5-b5e5-46fe-a4c0-fc5d0beacb0d",
+  "id": "071a12ec-77e6-4bb9-9f52-25ab8b67d690",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,14 +14,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "message": {
-          "name": "message",
+        "content": {
+          "name": "content",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -93,12 +87,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "user_id": {
           "name": "user_id",
           "type": "text",
@@ -152,14 +140,20 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
+        "subtitle": {
+          "name": "subtitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -170,7 +164,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'incomplete'"
+          "default": "'todo'"
         },
         "priority": {
           "name": "priority",
@@ -196,7 +190,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -264,18 +258,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "user_tag": {
-          "name": "user_tag",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "display_name": {
-          "name": "display_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "password": {
           "name": "password",
           "type": "text",
@@ -320,6 +302,7 @@
       "schema": "public",
       "values": [
         "archived",
+        "unarchived",
         "read",
         "unread"
       ]
@@ -328,11 +311,10 @@
       "name": "task_category",
       "schema": "public",
       "values": [
-        "bug",
         "feature",
-        "chore",
+        "bug",
         "docs",
-        "infra"
+        "refactor"
       ]
     },
     "public.task_priority": {
@@ -342,15 +324,15 @@
         "critical",
         "high",
         "medium",
-        "low",
-        "backlog"
+        "low"
       ]
     },
     "public.task_status": {
       "name": "task_status",
       "schema": "public",
       "values": [
-        "incomplete",
+        "backlog",
+        "todo",
         "in_progress",
         "complete"
       ]

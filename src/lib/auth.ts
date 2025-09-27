@@ -2,18 +2,16 @@ import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { env } from "@/config/env";
 import { MAX_TRUST_ACCOUNT_AGE } from "./constants";
+import type { NextRequest } from "next/server";
 import { db } from "@/db/sql";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import type { NextRequest } from "next/server";
 
 const secret = new TextEncoder().encode(env.APP_SECRET_KEY);
 
-type AuthPayload = {
+type Auth = {
 	userId: string;
 	username: string;
-	userTag: string;
-	displayName: string;
 };
 
 type AuthResponse = {
@@ -24,14 +22,12 @@ type AuthResponse = {
 type CurrentUser = {
 	id: string;
 	username: string;
-	userTag: string;
-	displayName: string;
 	createdAt: Date;
 	updatedAt: Date;
 };
 
 export const auth = {
-	async signIn(payload: AuthPayload): Promise<AuthResponse> {
+	async signIn(payload: Auth): Promise<AuthResponse> {
 		try {
 			const token = await new SignJWT(payload)
 				.setProtectedHeader({ alg: "HS256" })
@@ -39,10 +35,11 @@ export const auth = {
 				.setIssuedAt()
 				.sign(secret);
 
-			(await cookies()).set(env.APP_COOKIE_NAME, token, {
+			const cookieStore = await cookies();
+			cookieStore.set(env.APP_COOKIE_NAME, token, {
 				httpOnly: true,
 				sameSite: "lax",
-				secure: env.NODE_ENV === "production" ? true : false,
+				secure: env.NODE_ENV === "production",
 				path: "/",
 				maxAge: MAX_TRUST_ACCOUNT_AGE,
 			});
@@ -61,7 +58,8 @@ export const auth = {
 
 	async signOut(): Promise<AuthResponse> {
 		try {
-			(await cookies()).delete(env.APP_COOKIE_NAME);
+			const cookieStore = await cookies();
+			cookieStore.delete(env.APP_COOKIE_NAME);
 
 			return {
 				success: true,
@@ -79,17 +77,19 @@ export const auth = {
 		try {
 			let token: string | undefined;
 
+			const cookieStore = await cookies();
+
 			if (request) {
 				token = request.cookies.get(env.APP_COOKIE_NAME)?.value;
 			} else {
-				token = (await cookies()).get(env.APP_COOKIE_NAME)?.value;
+				token = cookieStore.get(env.APP_COOKIE_NAME)?.value;
 			}
 
 			if (!token) {
 				return false;
 			}
 
-			await jwtVerify<AuthPayload>(token, secret);
+			await jwtVerify<Auth>(token, secret);
 
 			return true;
 		} catch {
@@ -99,35 +99,35 @@ export const auth = {
 
 	async getCurrentUser(): Promise<CurrentUser | null> {
 		try {
-			const token = (await cookies()).get(env.APP_COOKIE_NAME)?.value;
+			const cookieStore = await cookies();
+
+			const token = cookieStore.get(env.APP_COOKIE_NAME)?.value;
 
 			if (!token) {
 				return null;
 			}
 
-			const { payload } = await jwtVerify<AuthPayload>(token, secret);
+			const { payload } = await jwtVerify<Auth>(token, secret);
 
 			if (!payload) {
 				return null;
 			}
 
-			const [rawUser] = await db
+			const [user] = await db
 				.select()
 				.from(users)
 				.where(eq(users.id, payload.userId))
 				.limit(1);
 
-			if (!rawUser) {
+			if (!user) {
 				return null;
 			}
 
 			return {
-				id: rawUser.id,
-				username: rawUser.username,
-				userTag: rawUser.userTag,
-				displayName: rawUser.displayName,
-				createdAt: rawUser.createdAt,
-				updatedAt: rawUser.updatedAt,
+				id: user.id,
+				username: user.username,
+				createdAt: user.createdAt,
+				updatedAt: user.updatedAt,
 			};
 		} catch {
 			return null;
