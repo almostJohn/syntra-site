@@ -1,11 +1,11 @@
 export const siteConfig = {
-	name: "Syntra",
+	name: "syntra",
 	title: {
-		default: "Syntra",
-		template: "%s | Syntra",
+		default: "syntra",
+		template: "%s — syntra",
 	},
 	description:
-		"Visualize, manage, and prioritize tasks effortlessly with our intuitive kanban-style workflow system. Stay organized and boost productivity like never before.",
+		"A personal kanban-style task management system built for individual productivity. Simple, focused, and designed exclusively for my own use.",
 	creator: "@almostJohn",
 } as const;
 

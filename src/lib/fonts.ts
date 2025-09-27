@@ -1,7 +1,7 @@
-import { Sora } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 
-export const appFont = Sora({
+export const jetBrainsMono = JetBrains_Mono({
 	subsets: ["latin"],
-	variable: "--font-sora",
+	variable: "--font-jetbrains-mono",
 	display: "swap",
 });

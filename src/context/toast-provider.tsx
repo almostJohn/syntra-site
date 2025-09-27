@@ -77,14 +77,14 @@ function ToastComponent({
 			)}
 		>
 			{toast.type === "success" && (
-				<Check className="size-6 shrink-0 text-green-600" />
+				<Check className="size-6 shrink-0 text-emerald-600" />
 			)}
 			{toast.type === "error" && <X className="size-6 shrink-0 text-red-600" />}
-			<div className="min-w-0 flex-1">
-				{toast.description && (
-					<div className="text-sm">{toast.description}</div>
-				)}
-			</div>
+			{toast.description && (
+				<div className="min-w-0 flex-1 text-sm">
+					<p>{toast.description}</p>
+				</div>
+			)}
 			<Button
 				type="button"
 				variant="ghost"

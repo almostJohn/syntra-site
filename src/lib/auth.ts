@@ -3,9 +3,7 @@ import { cookies } from "next/headers";
 import { env } from "@/config/env";
 import { MAX_TRUST_ACCOUNT_AGE } from "./constants";
 import type { NextRequest } from "next/server";
-import { db } from "@/db/sql";
-import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { DataQuery } from "./data";
 
 const secret = new TextEncoder().encode(env.APP_SECRET_KEY);
 
@@ -113,11 +111,7 @@ export const auth = {
 				return null;
 			}
 
-			const [user] = await db
-				.select()
-				.from(users)
-				.where(eq(users.id, payload.userId))
-				.limit(1);
+			const user = await DataQuery.getUserById(payload.userId);
 
 			if (!user) {
 				return null;
