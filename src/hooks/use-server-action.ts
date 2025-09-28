@@ -1,12 +1,15 @@
 import { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useActionState } from "react";
-import type { ActionResponse } from "@/lib/action";
+import type { ActionResponse, Errors, Values } from "@/lib/action";
 import { useToast } from "@/context/toast-provider";
 
-export function useServerAction<T>(
-	action: (prevState: ActionResponse, args: T) => Promise<ActionResponse>,
-	initialState: ActionResponse,
+export function useServerAction<T, E = Errors, V = Values>(
+	action: (
+		prevState: ActionResponse<E, V>,
+		args: T,
+	) => Promise<ActionResponse<E, V>>,
+	initialState: ActionResponse<E, V>,
 	options?: { redirectTo?: Route },
 ) {
 	const router = useRouter();
@@ -33,8 +36,9 @@ export function useServerAction<T>(
 	return { state, formAction, isPending };
 }
 
-export function toAction<T extends unknown[], R extends ActionResponse>(
-	fn: (...args: T) => Promise<R>,
-) {
+export function toAction<
+	T extends unknown[],
+	R extends ActionResponse<Errors, Values>,
+>(fn: (...args: T) => Promise<R>) {
 	return async (_prevState: R, args: T): Promise<R> => fn(...args);
 }

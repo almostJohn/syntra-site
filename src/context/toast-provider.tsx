@@ -70,7 +70,7 @@ function ToastComponent({
 	return (
 		<div
 			className={cn(
-				"bg-background relative mb-1 flex items-center gap-3 rounded-md border px-6 py-3 shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
+				"relative mb-1 flex items-center gap-3 rounded-md border border-neutral-800 bg-neutral-900 px-6 py-3 text-neutral-100 shadow-sm backdrop-blur-sm transition-all duration-200 ease-out",
 				isVisible && !isLeaving
 					? "translate-y-0 scale-100 opacity-100"
 					: "translate-y-2 scale-95 opacity-0",

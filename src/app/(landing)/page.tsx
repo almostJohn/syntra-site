@@ -1,7 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Star } from "lucide-react";
-import Link from "next/link";
+import { NextLink } from "@/components/ui/next-link";
 
 export const metadata = {
 	title: "home",
@@ -28,7 +28,7 @@ export default function HomePage() {
 					</p>
 				</div>
 				<div className="mx-auto mt-3 flex w-full max-w-2xl flex-col gap-4 px-8 sm:flex-row md:w-auto md:px-0">
-					<Link
+					<NextLink
 						href="/login"
 						className={cn(
 							buttonVariants({
@@ -39,7 +39,7 @@ export default function HomePage() {
 					>
 						open board{" "}
 						<ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-					</Link>
+					</NextLink>
 					<a
 						href="https://github.com/almostJohn/syntra-site"
 						rel="noreferrer"
@@ -51,8 +51,8 @@ export default function HomePage() {
 							}),
 						)}
 					>
-						star on github
 						<Star className="size-4 shrink-0" />
+						star on github
 					</a>
 				</div>
 			</div>
