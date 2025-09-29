@@ -7,7 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "eslint",
-		"seed": "tsx --env-file=.env.development src/scripts/seed.ts",
+		"seed:dev": "tsx --env-file=.env.development src/scripts/seed.ts",
+		"seed:prod": "tsx --env-file=.env.production src/scripts/seed.ts",
 		"drizzle:generate": "drizzle-kit generate",
 		"drizzle:push": "drizzle-kit push",
 		"migrate": "npm run drizzle:generate && npm run drizzle:push"
