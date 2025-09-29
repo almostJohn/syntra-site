@@ -8,8 +8,8 @@ import { eq } from "drizzle-orm";
 	try {
 		console.log("[seed] Started seeding...");
 
-		const username = process.env.APP_LOCAL_USERNAME!;
-		const password = process.env.APP_LOCAL_PASSWORD!;
+		const username = process.env.APP_SEED_USERNAME!;
+		const password = process.env.APP_SEED_PASSWORD!;
 
 		const [existingUser] = await db
 			.select()

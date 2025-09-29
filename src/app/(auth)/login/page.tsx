@@ -1,7 +1,8 @@
+import { NextLink } from "@/components/ui/next-link";
 import { Form as LoginForm } from "./form";
 
 export const metadata = {
-	title: "Login",
+	title: "login",
 };
 
 export default function LoginPage() {
@@ -16,6 +17,14 @@ export default function LoginPage() {
 						</p>
 					</div>
 					<LoginForm />
+					<div className="flex items-center justify-center text-center">
+						<NextLink
+							href="/register"
+							className="text-sm font-medium underline underline-offset-4"
+						>
+							Need an account? Sign Up
+						</NextLink>
+					</div>
 				</div>
 			</div>
 		</div>
