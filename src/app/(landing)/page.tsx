@@ -16,7 +16,7 @@ export default function HomePage() {
 						syntra <span className="underline">v1</span>
 					</h1>
 					<div className="mx-auto flex justify-center">
-						<div className="inline-flex rounded-none border border-neutral-700 bg-neutral-800 px-3 py-1 text-sm font-semibold">
+						<div className="inline-flex rounded-sm border border-neutral-700 bg-neutral-800 px-3 py-1 text-sm font-semibold">
 							Personal Workspace
 						</div>
 					</div>
@@ -33,7 +33,7 @@ export default function HomePage() {
 						className={cn(
 							buttonVariants({
 								className:
-									"group h-9 w-full rounded-none bg-neutral-100 px-6 py-2 text-neutral-900 hover:bg-neutral-100/80 md:w-auto",
+									"group w-full rounded-sm bg-neutral-100 px-6 py-2 text-neutral-900 hover:bg-neutral-100/80 md:w-auto",
 							}),
 						)}
 					>
@@ -47,7 +47,7 @@ export default function HomePage() {
 						className={cn(
 							buttonVariants({
 								className:
-									"group h-9 w-full rounded-none border border-neutral-100 bg-transparent px-6 py-2 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 md:w-auto",
+									"group w-full rounded-sm border border-neutral-100 bg-transparent px-6 py-2 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 md:w-auto",
 							}),
 						)}
 					>
