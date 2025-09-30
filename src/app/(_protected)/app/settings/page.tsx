@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 
-export default async function AppPage() {
+export default async function SettingsPage() {
 	const user = await auth.getCurrentUser();
 
 	if (!user) {
@@ -10,12 +10,14 @@ export default async function AppPage() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{/* App Page Header */}
+			{/* Settings Page Header */}
 			<div className="flex items-center justify-between">
 				<div className="grid gap-1">
-					<h1 className="text-lg font-semibold tracking-tight">Projects</h1>
+					<h1 className="text-lg font-semibold tracking-tight">
+						Account Settings
+					</h1>
 					<p className="text-muted-foreground text-sm">
-						Stay on top of your projects and manage them all in one place.
+						Manage your account preferences.
 					</p>
 				</div>
 			</div>
