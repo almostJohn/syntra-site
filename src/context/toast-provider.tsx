@@ -10,7 +10,8 @@ import {
 } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { X, Check } from "lucide-react";
+import { X } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 export type Toast = {
 	id: string;
@@ -77,9 +78,11 @@ function ToastComponent({
 			)}
 		>
 			{toast.type === "success" && (
-				<Check className="size-6 shrink-0 text-emerald-600" />
+				<Icons.success className="size-6 shrink-0 text-emerald-600" />
 			)}
-			{toast.type === "error" && <X className="size-6 shrink-0 text-red-600" />}
+			{toast.type === "error" && (
+				<Icons.error className="size-6 shrink-0 text-red-600" />
+			)}
 			{toast.description && (
 				<div className="min-w-0 flex-1 text-sm">
 					<p>{toast.description}</p>
@@ -89,7 +92,7 @@ function ToastComponent({
 				type="button"
 				variant="ghost"
 				size="icon"
-				className="cursor-pointer"
+				className="size-8 cursor-pointer rounded-sm px-2"
 				onClick={handleRemove}
 			>
 				<X className="size-6 shrink-0" />
