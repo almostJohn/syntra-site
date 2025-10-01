@@ -50,7 +50,8 @@ export function NotificationsDropdown({
 			<DropdownMenuTrigger asChild>
 				<Button
 					size="icon"
-					className="relative hidden size-9 cursor-pointer rounded-sm border border-neutral-700 bg-transparent px-2 hover:bg-neutral-800 md:flex"
+					variant="ghost"
+					className="relative hidden size-9 cursor-pointer rounded-sm px-2 hover:bg-neutral-800 hover:text-neutral-100 md:flex"
 				>
 					<Bell className="size-5 shrink-0" />
 					{unreadNotifications.length > 0 && (

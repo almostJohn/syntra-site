@@ -40,4 +40,57 @@ export const Icons = {
 			</svg>
 		);
 	},
+	apps: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<g fill="none">
+					<path
+						fillRule="evenodd"
+						clipRule="evenodd"
+						d="M3 6a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6zm0 10a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2zM13 6a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3V6zm5 8a1 1 0 1 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2v-2z"
+						fill="currentColor"
+					/>
+				</g>
+			</svg>
+		);
+	},
+	settings: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="currentColor"
+					fillRule="evenodd"
+					d="M9.024 2.783A1 1 0 0 1 10 2h4a1 1 0 0 1 .976.783l.44 1.981q.6.285 1.14.66l1.938-.61a1 1 0 0 1 1.166.454l2 3.464a1 1 0 0 1-.19 1.237l-1.497 1.373a8 8 0 0 1 0 1.316l1.497 1.373a1 1 0 0 1 .19 1.237l-2 3.464a1 1 0 0 1-1.166.454l-1.937-.61q-.54.375-1.14.66l-.44 1.98A1 1 0 0 1 14 22h-4a1 1 0 0 1-.976-.783l-.44-1.981q-.6-.285-1.14-.66l-1.938.61a1 1 0 0 1-1.166-.454l-2-3.464a1 1 0 0 1 .19-1.237l1.497-1.373a8 8 0 0 1 0-1.316L2.53 9.97a1 1 0 0 1-.19-1.237l2-3.464a1 1 0 0 1 1.166-.454l1.937.61q.54-.375 1.14-.66l.44-1.98zM12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+					clipRule="evenodd"
+				/>
+			</svg>
+		);
+	},
+	logout: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="1.5"
+					d="M15.5 8.04c-.041-1.16-.178-1.885-.636-2.453c-.653-.812-1.77-1.066-4.004-1.576l-1-.228c-3.395-.774-5.092-1.161-6.226-.27C2.5 4.405 2.5 6.126 2.5 9.568v4.864c0 3.442 0 5.164 1.134 6.055s2.83.504 6.225-.27l1.002-.228c2.233-.51 3.35-.764 4.003-1.576c.458-.567.595-1.293.636-2.453m3-6.948s3 2.21 3 3s-3 3-3 3m2.5-3H8.5"
+				/>
+			</svg>
+		);
+	},
+	menu: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeWidth="2"
+					d="M5 9h14M5 15h14"
+				/>
+			</svg>
+		);
+	},
 };
