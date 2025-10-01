@@ -14,6 +14,7 @@ import { formatNameToInitials } from "@/lib/formatting";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { NextLink } from "@/components/ui/next-link";
+import { Icons } from "@/components/icons";
 
 type User = {
 	id: string;
@@ -45,10 +46,10 @@ export function UserDropdown({ user }: UserDropdownProps) {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="hidden size-9 cursor-pointer rounded-sm px-2 hover:bg-transparent hover:text-white md:flex"
+					className="hidden size-9 cursor-pointer rounded-full px-2 hover:bg-transparent hover:text-white md:flex"
 				>
-					<Avatar className="size-9 rounded-sm border border-neutral-700">
-						<AvatarFallback className="rounded-sm bg-neutral-800 text-lg">
+					<Avatar className="size-9 border border-neutral-700">
+						<AvatarFallback className="bg-neutral-800 text-neutral-100">
 							{formatNameToInitials(user.username)}
 						</AvatarFallback>
 					</Avatar>
@@ -70,19 +71,21 @@ export function UserDropdown({ user }: UserDropdownProps) {
 					<NextLink
 						href="/app"
 						className={cn(
-							"inline-flex w-full items-center px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
+							"inline-flex w-full items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
 						)}
 						onClick={onClose}
 					>
+						<Icons.apps className="size-4 shrink-0" />
 						Projects
 					</NextLink>
 					<NextLink
 						href="/app/settings"
 						className={cn(
-							"inline-flex w-full items-center px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
+							"inline-flex w-full items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
 						)}
 						onClick={onClose}
 					>
+						<Icons.settings className="size-4 shrink-0" />
 						Settings
 					</NextLink>
 				</div>
@@ -106,7 +109,10 @@ export function UserDropdown({ user }: UserDropdownProps) {
 									Logging out...
 								</>
 							) : (
-								<>Log out</>
+								<>
+									<Icons.logout className="size-4 shrink-0 transition-colors group-hover:text-red-500" />
+									Log out
+								</>
 							)}
 						</button>
 					</form>
