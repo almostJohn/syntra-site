@@ -2,7 +2,6 @@ import { NextLink } from "@/components/ui/next-link";
 import { Icons } from "@/components/icons";
 import { UserDropdown } from "./user-dropdown.app";
 import { NotificationsDropdown } from "./notifications-dropdown.app";
-import { MobileNav } from "./mobile-nav.app";
 import { DataQuery } from "@/lib/data";
 
 type User = {
@@ -27,7 +26,6 @@ export async function Navbar({ user }: NavbarProps) {
 				<div className="flex items-center justify-end gap-3">
 					<NotificationsDropdown notifications={notifications} />
 					<UserDropdown user={user} />
-					<MobileNav />
 				</div>
 			</div>
 		</header>

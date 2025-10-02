@@ -74,8 +74,8 @@ export const Icons = {
 					stroke="currentColor"
 					strokeLinecap="round"
 					strokeLinejoin="round"
-					strokeWidth="1.5"
-					d="M15.5 8.04c-.041-1.16-.178-1.885-.636-2.453c-.653-.812-1.77-1.066-4.004-1.576l-1-.228c-3.395-.774-5.092-1.161-6.226-.27C2.5 4.405 2.5 6.126 2.5 9.568v4.864c0 3.442 0 5.164 1.134 6.055s2.83.504 6.225-.27l1.002-.228c2.233-.51 3.35-.764 4.003-1.576c.458-.567.595-1.293.636-2.453m3-6.948s3 2.21 3 3s-3 3-3 3m2.5-3H8.5"
+					strokeWidth="2"
+					d="m19 12l-4-4m4 4l-4 4m4-4H9m5 9a9 9 0 1 1 0-18"
 				/>
 			</svg>
 		);
@@ -90,6 +90,25 @@ export const Icons = {
 					strokeWidth="2"
 					d="M5 9h14M5 15h14"
 				/>
+			</svg>
+		);
+	},
+	bell: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<g fill="none">
+					<path
+						fill="currentColor"
+						d="M6 11c0-4.8 4-6 6-6c4.8 0 6 4 6 6v4l2 2H4l2-2z"
+					/>
+					<path
+						stroke="currentColor"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
+						d="M12 5c-2 0-6 1.2-6 6v4l-2 2h16l-2-2v-4c0-2-1.2-6-6-6m0 0V3M9 18c0 1 .6 3 3 3s3-2 3-3"
+					/>
+				</g>
 			</svg>
 		);
 	},
