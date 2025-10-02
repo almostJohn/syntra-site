@@ -52,7 +52,7 @@ export function NotificationsDropdown({
 				<Button
 					size="icon"
 					variant="ghost"
-					className="relative hidden size-9 cursor-pointer rounded-sm px-2 hover:bg-neutral-800 hover:text-neutral-100 md:flex"
+					className="relative hidden size-9 cursor-pointer rounded-full border border-neutral-700 px-2 hover:bg-neutral-800 hover:text-neutral-100 md:flex"
 				>
 					<Icons.bell className="size-5 shrink-0" />
 					{unreadNotifications.length > 0 && (
