@@ -9,7 +9,8 @@ import {
 	DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Bell, Loader2 } from "lucide-react";
+import { Icons } from "@/components/icons";
+import { Loader2 } from "lucide-react";
 import type { Notification } from "@/lib/data.types";
 import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
@@ -53,7 +54,7 @@ export function NotificationsDropdown({
 					variant="ghost"
 					className="relative hidden size-9 cursor-pointer rounded-sm px-2 hover:bg-neutral-800 hover:text-neutral-100 md:flex"
 				>
-					<Bell className="size-5 shrink-0" />
+					<Icons.bell className="size-5 shrink-0" />
 					{unreadNotifications.length > 0 && (
 						<span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-red-500 text-center text-xs font-medium text-white">
 							{unreadNotifications.length}
@@ -62,10 +63,10 @@ export function NotificationsDropdown({
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
-				className="flex max-h-[400px] w-96 flex-col overflow-hidden rounded-sm border border-neutral-700 bg-neutral-800 p-0 text-neutral-100"
+				className="flex h-full w-96 flex-col overflow-hidden rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-lg"
 				align="end"
 			>
-				<div className="flex flex-shrink-0 items-center justify-between border-b border-neutral-700 p-4">
+				<div className="flex shrink-0 items-center justify-between border-b border-neutral-800 p-4">
 					<h3 className="text-sm font-medium">Notifications</h3>
 					{unreadNotifications.length > 0 && (
 						<form
@@ -77,7 +78,7 @@ export function NotificationsDropdown({
 							<Button
 								size="sm"
 								variant="ghost"
-								className="h-8 cursor-pointer rounded-sm px-2 hover:bg-neutral-700 hover:text-neutral-100"
+								className="h-8 cursor-pointer rounded-sm px-2 hover:bg-neutral-800 hover:text-neutral-100"
 								disabled={isPending}
 							>
 								{isPending ? (
@@ -89,7 +90,7 @@ export function NotificationsDropdown({
 						</form>
 					)}
 				</div>
-				<ScrollArea className="flex-1 overflow-auto">
+				<ScrollArea className="h-[400px]">
 					{notifications.length === 0 && (
 						<div className="mx-auto flex items-center justify-center py-24 text-center">
 							<p className="text-muted-foreground text-sm">
@@ -99,11 +100,11 @@ export function NotificationsDropdown({
 					)}
 					{unreadNotifications.length > 0 && (
 						<div className="flex flex-col">
-							<div className="flex items-center gap-2 bg-neutral-700 px-4 py-2 text-neutral-500">
+							<div className="text-muted-foreground flex items-center gap-2 bg-neutral-800 px-4 py-2">
 								<p className="text-sm font-medium">Unread</p>
 								<em className="text-sm">({unreadNotifications.length})</em>
 							</div>
-							<div className="flex flex-col gap-2">
+							<div className="flex flex-col">
 								{unreadNotifications.map((notification) => (
 									<NotificationItem
 										key={notification.id}
@@ -116,11 +117,11 @@ export function NotificationsDropdown({
 					)}
 					{readNotifications.length > 0 && (
 						<div className="flex flex-col">
-							<div className="flex items-center gap-2 bg-neutral-700 px-4 py-2 text-neutral-500">
+							<div className="text-muted-foreground flex items-center gap-2 bg-neutral-800 px-4 py-2">
 								<p className="text-sm font-medium">Read</p>
 								<em className="text-sm">({readNotifications.length})</em>
 							</div>
-							<div className="flex flex-col gap-2">
+							<div className="flex flex-col">
 								{readNotifications.map((notification) => (
 									<NotificationItem
 										key={notification.id}
@@ -146,9 +147,9 @@ function NotificationItem({
 }) {
 	return (
 		<NextLink
-			href="#"
+			href="/app/notifications"
 			className={cn(
-				"inline-flex items-center gap-3 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
+				"inline-flex items-center gap-4 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-800",
 			)}
 			onClick={onClose}
 		>

@@ -13,7 +13,6 @@ import { useState } from "react";
 import { formatNameToInitials } from "@/lib/formatting";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { NextLink } from "@/components/ui/next-link";
 import { Icons } from "@/components/icons";
 
 type User = {
@@ -46,7 +45,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="hidden size-9 cursor-pointer rounded-full px-2 hover:bg-transparent hover:text-white md:flex"
+					className="size-9 cursor-pointer rounded-full px-2 hover:bg-transparent hover:text-white"
 				>
 					<Avatar className="size-9 border border-neutral-700">
 						<AvatarFallback className="bg-neutral-800 text-neutral-100">
@@ -57,65 +56,41 @@ export function UserDropdown({ user }: UserDropdownProps) {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				align="end"
-				className="flex w-52 flex-col rounded-sm border border-neutral-700 bg-neutral-800 p-0 text-neutral-100"
+				className="flex w-44 flex-col rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-lg"
 			>
-				<div className="flex items-center gap-3 border-b border-neutral-700 p-3">
-					<Avatar className="size-8 rounded-sm border border-neutral-600">
-						<AvatarFallback className="rounded-sm bg-neutral-700">
-							{formatNameToInitials(user.username)}
-						</AvatarFallback>
-					</Avatar>
-					<h3 className="font-semibold">@{user.username}</h3>
+				<div className="pt-2 pb-4">
+					<p className="mx-auto max-w-xs text-center text-sm">
+						Logged in as <strong>{user.username}</strong>
+					</p>
 				</div>
-				<div className="flex flex-col">
-					<NextLink
-						href="/app"
-						className={cn(
-							"inline-flex w-full items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
-						)}
-						onClick={onClose}
-					>
-						<Icons.apps className="size-4 shrink-0" />
-						Projects
-					</NextLink>
-					<NextLink
-						href="/app/settings"
-						className={cn(
-							"inline-flex w-full items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-700",
-						)}
-						onClick={onClose}
-					>
-						<Icons.settings className="size-4 shrink-0" />
-						Settings
-					</NextLink>
-				</div>
-				<div className="mt-auto border-t border-neutral-700">
-					<form
-						action={() => {
-							formAction(undefined);
-							onClose();
-						}}
-					>
-						<button
-							type="submit"
-							className={cn(
-								"group inline-flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-red-500/10 hover:text-red-500 disabled:pointer-events-none disabled:opacity-50",
-							)}
-							disabled={isPending}
+				<div className="mt-auto pb-3">
+					<div className="mx-auto flex justify-center">
+						<form
+							action={() => {
+								formAction(undefined);
+								onClose();
+							}}
 						>
-							{isPending ? (
-								<>
-									<Loader2 className="size-4 shrink-0 animate-spin" />
-									Logging out...
-								</>
-							) : (
-								<>
-									<Icons.logout className="size-4 shrink-0 transition-colors group-hover:text-red-500" />
-									Log out
-								</>
-							)}
-						</button>
-					</form>
+							<button
+								type="submit"
+								className={cn(
+									"group inline-flex cursor-pointer items-center gap-2 rounded-sm bg-red-500/10 px-3 py-2 text-sm font-medium whitespace-nowrap text-red-500 transition-colors duration-200 hover:bg-red-600/10 disabled:pointer-events-none disabled:opacity-50",
+								)}
+								disabled={isPending}
+							>
+								{isPending ? (
+									<>
+										<Loader2 className="size-4 shrink-0 animate-spin" />
+									</>
+								) : (
+									<>
+										<Icons.logout className="size-4 shrink-0" />
+										Log out
+									</>
+								)}
+							</button>
+						</form>
+					</div>
 				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>

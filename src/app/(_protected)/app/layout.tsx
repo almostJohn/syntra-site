@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Navbar } from "../_components/navbar.app";
 import { Sidenav } from "../_components/sidenav.app";
+import { BottomNav } from "../_components/bottom-nav.app";
 
 export const metadata: Metadata = {
 	title: {
@@ -47,6 +48,7 @@ export default async function AppPageLayout({ children }: PropsWithChildren) {
 				<ScrollArea className="flex min-h-full flex-1 flex-col">
 					<div className="w-full px-4 py-6 sm:px-6 md:px-8">{children}</div>
 				</ScrollArea>
+				<BottomNav userId={user.id} />
 			</div>
 		</main>
 	);
