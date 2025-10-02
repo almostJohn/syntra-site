@@ -2,18 +2,17 @@
 
 import { useServerAction } from "@/hooks/use-server-action";
 import { logout } from "../actions/logout";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu as DropdownMenuWrapper } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { formatNameToInitials } from "@/lib/formatting";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { Icons } from "@/components/icons";
+import {
+	DropdownMenuButton,
+	DropdownMenu as DropdownMenuContent,
+} from "./shared/dropdown-menu";
 
 type User = {
 	id: string;
@@ -40,27 +39,22 @@ export function UserDropdown({ user }: UserDropdownProps) {
 	}
 
 	return (
-		<DropdownMenu open={interacted} onOpenChange={setInteracted}>
-			<DropdownMenuTrigger asChild>
-				<Button
-					variant="ghost"
-					size="icon"
-					className="size-9 cursor-pointer rounded-full px-2 hover:bg-transparent hover:text-white"
-				>
-					<Avatar className="size-9 border border-neutral-700">
-						<AvatarFallback className="bg-neutral-800 text-neutral-100">
-							{formatNameToInitials(user.username)}
-						</AvatarFallback>
-					</Avatar>
-				</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent
-				align="end"
-				className="flex w-44 flex-col rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-lg"
+		<DropdownMenuWrapper open={interacted} onOpenChange={setInteracted}>
+			<DropdownMenuButton
+				buttonSize="icon"
+				buttonType="ghost"
+				className="rounded-full"
 			>
+				<Avatar className="size-9 rounded-full border border-neutral-700">
+					<AvatarFallback className="bg-neutral-800 text-neutral-100">
+						{formatNameToInitials(user.username)}
+					</AvatarFallback>
+				</Avatar>
+			</DropdownMenuButton>
+			<DropdownMenuContent align="end" className="w-44">
 				<div className="pt-2 pb-4">
 					<p className="mx-auto max-w-xs text-center text-sm">
-						Logged in as <strong>{user.username}</strong>
+						Logged in as <strong>@{user.username}</strong>
 					</p>
 				</div>
 				<div className="mt-auto pb-3">
@@ -74,7 +68,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 							<button
 								type="submit"
 								className={cn(
-									"group inline-flex cursor-pointer items-center gap-2 rounded-sm bg-red-500/10 px-3 py-2 text-sm font-medium whitespace-nowrap text-red-500 transition-colors duration-200 hover:bg-red-600/10 disabled:pointer-events-none disabled:opacity-50",
+									"group inline-flex cursor-pointer items-center gap-2 rounded-sm bg-red-500/10 px-3 py-2 text-sm font-medium whitespace-nowrap text-red-500 transition-colors duration-200 hover:bg-red-500/80 hover:text-white disabled:pointer-events-none disabled:opacity-50",
 								)}
 								disabled={isPending}
 							>
@@ -93,6 +87,6 @@ export function UserDropdown({ user }: UserDropdownProps) {
 					</div>
 				</div>
 			</DropdownMenuContent>
-		</DropdownMenu>
+		</DropdownMenuWrapper>
 	);
 }

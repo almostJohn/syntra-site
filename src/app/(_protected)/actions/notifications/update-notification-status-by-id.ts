@@ -3,11 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { serverActionCallback, type ActionResponse } from "@/lib/action";
 import { db } from "@/db/sql";
+import { eq, and } from "drizzle-orm";
 import { notifications } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 
-export async function updateNotificationStatus(
+export async function updateNotificationStatusById(
+	notificationId: string,
 	status: "archived" | "unarchived" | "read" | "unread",
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
@@ -25,13 +26,18 @@ export async function updateNotificationStatus(
 				status,
 				updatedAt: new Date(),
 			})
-			.where(eq(notifications.userId, user.id));
+			.where(
+				and(
+					eq(notifications.id, notificationId),
+					eq(notifications.userId, user.id),
+				),
+			);
 
 		revalidatePath("/app");
-		revalidatePath("/notifications");
+		revalidatePath("/app/notifications");
 
 		return {
-			successMessage: "Notifications status successfully updated.",
+			successMessage: "Notification status successfully updated.",
 		};
 	});
 }
