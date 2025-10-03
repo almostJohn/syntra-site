@@ -9,12 +9,10 @@ import type { Notification } from "@/lib/data.types";
 import { NextLink } from "@/components/ui/next-link";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-	DropdownMenuButton,
-	DropdownMenu as DropdownMenuContent,
-} from "./shared/dropdown-menu";
+import { DropdownButton, Dropdown } from "./shared/dropdown";
 import { Check, Inbox, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/formatting";
 
 type NotificationsDropdownProps = {
 	notifications: Notification[];
@@ -49,7 +47,7 @@ export function NotificationsDropdown({
 
 	return (
 		<DropdownMenuWrapper open={interacted} onOpenChange={setInteracted}>
-			<DropdownMenuButton
+			<DropdownButton
 				buttonSize="icon"
 				buttonType="ghost"
 				className="relative hidden rounded-full md:flex"
@@ -60,8 +58,8 @@ export function NotificationsDropdown({
 						{unreadNotifications.length}
 					</span>
 				)}
-			</DropdownMenuButton>
-			<DropdownMenuContent
+			</DropdownButton>
+			<Dropdown
 				className="flex h-full w-98 flex-col overflow-hidden rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-lg"
 				align="end"
 			>
@@ -155,7 +153,7 @@ export function NotificationsDropdown({
 							</div>
 						))}
 				</ScrollArea>
-			</DropdownMenuContent>
+			</Dropdown>
 		</DropdownMenuWrapper>
 	);
 }
@@ -175,11 +173,16 @@ function NotificationItem({
 	return (
 		<>
 			{notification.status === "unread" && (
-				<div className="inline-flex items-center gap-4 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-800">
+				<div className="inline-flex items-center gap-4 p-4 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-800">
 					<div className="size-1.5 shrink-0 animate-pulse rounded-full bg-emerald-500" />
-					<p className="text-muted-foreground text-sm whitespace-pre-wrap">
-						{notification.content}
-					</p>
+					<div className="flex flex-col gap-2">
+						<p className="text-sm whitespace-pre-wrap text-neutral-100/80">
+							{notification.content}
+						</p>
+						<span className="text-muted-foreground text-xs">
+							{formatDate(new Date(notification.createdAt), "short")}
+						</span>
+					</div>
 					<form
 						action={() => {
 							formAction([notification.id, "read"]);
@@ -204,14 +207,19 @@ function NotificationItem({
 				<NextLink
 					href="/app/notifications"
 					className={cn(
-						"inline-flex items-center gap-4 px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-800",
+						"inline-flex items-center gap-4 p-4 text-sm font-medium whitespace-nowrap transition-colors duration-200 hover:bg-neutral-800",
 					)}
 					onClick={onClose}
 				>
 					<div className="size-1.5 shrink-0 animate-pulse rounded-full bg-neutral-600" />
-					<p className="text-muted-foreground text-sm whitespace-pre-wrap">
-						{notification.content}
-					</p>
+					<div className="flex flex-col gap-2">
+						<p className="text-sm whitespace-pre-wrap text-neutral-100/80">
+							{notification.content}
+						</p>
+						<span className="text-muted-foreground text-xs">
+							{formatDate(new Date(notification.createdAt), "short")}
+						</span>
+					</div>
 				</NextLink>
 			)}
 		</>

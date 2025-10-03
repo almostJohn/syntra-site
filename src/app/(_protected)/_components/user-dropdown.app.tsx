@@ -9,10 +9,7 @@ import { formatNameToInitials } from "@/lib/formatting";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { Icons } from "@/components/icons";
-import {
-	DropdownMenuButton,
-	DropdownMenu as DropdownMenuContent,
-} from "./shared/dropdown-menu";
+import { DropdownButton, Dropdown } from "./shared/dropdown";
 
 type User = {
 	id: string;
@@ -40,7 +37,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 
 	return (
 		<DropdownMenuWrapper open={interacted} onOpenChange={setInteracted}>
-			<DropdownMenuButton
+			<DropdownButton
 				buttonSize="icon"
 				buttonType="ghost"
 				className="rounded-full"
@@ -50,8 +47,8 @@ export function UserDropdown({ user }: UserDropdownProps) {
 						{formatNameToInitials(user.username)}
 					</AvatarFallback>
 				</Avatar>
-			</DropdownMenuButton>
-			<DropdownMenuContent align="end" className="w-44">
+			</DropdownButton>
+			<Dropdown align="end" className="w-44">
 				<div className="pt-2 pb-4">
 					<p className="mx-auto max-w-xs text-center text-sm">
 						Logged in as <strong>@{user.username}</strong>
@@ -86,7 +83,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 						</form>
 					</div>
 				</div>
-			</DropdownMenuContent>
+			</Dropdown>
 		</DropdownMenuWrapper>
 	);
 }

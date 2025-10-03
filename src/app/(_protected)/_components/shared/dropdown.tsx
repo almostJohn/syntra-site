@@ -5,27 +5,27 @@ import {
 import { cn } from "@/lib/utils";
 import type { PropsWithChildren } from "react";
 
-type DropdownMenuButtonProps = PropsWithChildren & {
+type DropdownButtonProps = PropsWithChildren & {
 	buttonLabel?: string;
 	buttonType?: "default" | "success" | "ghost" | "danger";
 	buttonSize?: "default" | "icon" | "sm";
 	className?: string;
 };
 
-export function DropdownMenuButton({
+export function DropdownButton({
 	buttonLabel,
 	buttonType,
 	buttonSize,
 	className,
 	children,
-}: DropdownMenuButtonProps) {
+}: DropdownButtonProps) {
 	return (
 		<DropdownMenuTrigger asChild>
 			<button
 				type="button"
 				aria-label="Dropdown Menu Button"
 				className={cn(
-					"inline-flex cursor-pointer items-center justify-center rounded-sm whitespace-nowrap transition-colors",
+					"inline-flex cursor-pointer items-center justify-center gap-2 rounded-sm whitespace-nowrap transition-colors",
 					buttonType === "default" &&
 						"bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80",
 					buttonType === "success" &&
@@ -46,16 +46,12 @@ export function DropdownMenuButton({
 	);
 }
 
-type DropdownMenuProps = PropsWithChildren & {
+type DropdownProps = PropsWithChildren & {
 	className?: string;
 	align?: "center" | "start" | "end";
 };
 
-export function DropdownMenu({
-	className,
-	align,
-	children,
-}: DropdownMenuProps) {
+export function Dropdown({ className, align, children }: DropdownProps) {
 	return (
 		<DropdownMenuContent
 			align={align}
