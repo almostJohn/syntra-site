@@ -1,7 +1,10 @@
 import { tryCatch } from "./try-catch";
 
 export type Errors = Record<string, string>;
-export type Values = Record<string, string>;
+export type Values = Record<
+	string,
+	string | number | boolean | File | null | undefined
+>;
 
 export type ActionResponse<E = Errors, V = Values> = {
 	successMessage?: string;

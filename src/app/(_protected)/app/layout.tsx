@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { auth } from "@/lib/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Navbar } from "../_components/navbar.app";
-import { Sidenav } from "../_components/sidenav.app";
-import { BottomNav } from "../_components/bottom-nav.app";
+import { Navbar } from "../_components/navbar";
+import { SideNav } from "../_components/side-nav";
+import { BottomNav } from "../_components/bottom-nav";
 
 export const metadata: Metadata = {
 	title: {
@@ -41,14 +41,16 @@ export default async function AppPageLayout({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<main className="flex min-h-screen flex-col">
+		<main className="flex h-screen flex-col">
 			<Navbar user={user} />
 			<div className="flex flex-1 overflow-hidden">
-				<Sidenav />
-				<ScrollArea className="flex min-h-full flex-1 flex-col">
-					<div className="w-full px-4 py-6 sm:px-6 md:px-8">{children}</div>
+				<SideNav />
+				<ScrollArea className="flex flex-1 flex-col">
+					<div className="w-full px-4 pt-6 pb-26 sm:px-6 md:px-8 md:pb-6">
+						{children}
+					</div>
 				</ScrollArea>
-				<BottomNav userId={user.id} />
+				<BottomNav user={user} />
 			</div>
 		</main>
 	);

@@ -9,6 +9,9 @@ export const DISPLAY_NAME_MIN_LENGTH = 2;
 export const PASSWORD_MAX_LENGTH = 32;
 export const PASSWORD_MIN_LENGTH = 8;
 
+export const AVATAR_MAX_UPLOAD_SIZE = 2 * 1_024 * 1_024;
+export const AVATAR_AVAILABLE_IMAGE_TYPES = ["image/jpeg", "image/png"];
+
 export const NAME_MAX_LENGTH = 50;
 export const NAME_MIN_LENGTH = 2;
 

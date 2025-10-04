@@ -8,6 +8,13 @@
       "when": 1758944606193,
       "tag": "0000_talented_zodiak",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1759493198683,
+      "tag": "0001_romantic_beast",
+      "breakpoints": true
     }
   ]
 }

@@ -20,6 +20,7 @@ type AuthResponse = {
 type CurrentUser = {
 	id: string;
 	username: string;
+	avatar: string;
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -120,6 +121,7 @@ export const auth = {
 			return {
 				id: user.id,
 				username: user.username,
+				avatar: user.avatar ?? "",
 				createdAt: user.createdAt,
 				updatedAt: user.updatedAt,
 			};

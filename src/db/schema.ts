@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, integer } from "drizzle-orm/pg-core";
 
 export const taskStatusEnum = pgEnum("task_status", [
 	"backlog",
@@ -32,6 +32,8 @@ export const users = pgTable("users", {
 	id: text("id").primaryKey().notNull(),
 	username: text("username").unique().notNull(),
 	password: text("password").notNull(),
+	avatar: text("avatar"),
+	avatarSize: integer("avatar_size"),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),
