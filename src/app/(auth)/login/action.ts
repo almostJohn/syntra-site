@@ -1,6 +1,6 @@
 "use server";
 
-import { getFormValue } from "@/lib/utils";
+import { getFormString } from "@/lib/utils";
 import {
 	USERNAME_MAX_LENGTH,
 	USERNAME_MIN_LENGTH,
@@ -27,8 +27,8 @@ export async function login(
 ): Promise<ActionResponse<LoginErrors, LoginValues>> {
 	return serverActionCallback(
 		async (): Promise<ActionResponse<LoginErrors, LoginValues>> => {
-			const username = getFormValue(formData, "username");
-			const password = getFormValue(formData, "password");
+			const username = getFormString(formData, "username");
+			const password = getFormString(formData, "password");
 
 			if (!username || !password) {
 				return {

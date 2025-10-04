@@ -18,7 +18,7 @@ const navItems = [
 	},
 ];
 
-export function Sidenav() {
+export function SideNav() {
 	const pathname = usePathname();
 
 	return (
@@ -32,7 +32,7 @@ export function Sidenav() {
 							"inline-flex h-10 w-full items-center gap-2 rounded-sm px-6 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-200",
 							pathname === href
 								? "border border-neutral-700 bg-neutral-800"
-								: "hover:bg-neutral-800",
+								: "text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100",
 						)}
 						title={label}
 						aria-label={label}

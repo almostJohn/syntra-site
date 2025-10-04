@@ -28,23 +28,15 @@ export default function RegisterPage() {
 						href="/"
 						className={cn(
 							buttonVariants({
-								className:
-									"group rounded-sm border border-neutral-100 bg-transparent px-6 py-2 hover:bg-neutral-100 hover:text-neutral-900",
+								className: "group",
+								variant: "outline",
 							}),
 						)}
 					>
 						<ArrowLeft className="size-4 shrink-0 transition-transform group-hover:-translate-x-1" />{" "}
 						Back
 					</NextLink>
-					<NextLink
-						href="/login"
-						className={cn(
-							buttonVariants({
-								className:
-									"rounded-sm bg-neutral-100 px-6 py-2 text-neutral-900 hover:bg-neutral-100/80",
-							}),
-						)}
-					>
+					<NextLink href="/login" className={cn(buttonVariants())}>
 						Login
 					</NextLink>
 				</div>

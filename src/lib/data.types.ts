@@ -2,6 +2,8 @@ export type User = {
 	id: string;
 	username: string;
 	password: string;
+	avatar: string | null;
+	avatarSize: number | null;
 	createdAt: Date;
 	updatedAt: Date;
 };

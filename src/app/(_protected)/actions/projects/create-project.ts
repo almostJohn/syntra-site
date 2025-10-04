@@ -9,7 +9,7 @@ import { generateUUID } from "@/lib/crypto";
 import { NAME_MAX_LENGTH, NAME_MIN_LENGTH } from "@/lib/constants";
 import {
 	createNotificationMessage,
-	getFormValue,
+	getFormString,
 	sanitizeString,
 } from "@/lib/utils";
 
@@ -35,7 +35,7 @@ export async function createProject(
 				};
 			}
 
-			const rawName = getFormValue(formData, "name") ?? "";
+			const rawName = getFormString(formData, "name") ?? "";
 
 			const name = sanitizeString(rawName);
 

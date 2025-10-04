@@ -52,9 +52,9 @@ export function Form() {
 						required
 						autoComplete="off"
 						className={cn(
-							"rounded-sm border border-neutral-100 bg-transparent focus-visible:ring-[3px] focus-visible:ring-neutral-700",
+							"rounded-sm border border-neutral-700 bg-transparent focus-visible:border-neutral-600 focus-visible:ring-[3px] focus-visible:ring-neutral-700",
 							state.errors?.username &&
-								"border-red-600/80 ring-[3px] ring-red-600/30",
+								"border-red-500/80 ring-[3px] ring-red-500/30",
 						)}
 					/>
 				</div>
@@ -73,17 +73,13 @@ export function Form() {
 						required
 						autoComplete="off"
 						className={cn(
-							"rounded-sm border border-neutral-100 bg-transparent focus-visible:ring-[3px] focus-visible:ring-neutral-700",
+							"rounded-sm border border-neutral-700 bg-transparent focus-visible:border-neutral-600 focus-visible:ring-[3px] focus-visible:ring-neutral-700",
 							state.errors?.password &&
-								"border-red-600/80 ring-[3px] ring-red-600/30",
+								"border-red-500/80 ring-[3px] ring-red-500/30",
 						)}
 					/>
 				</div>
-				<Button
-					type="submit"
-					disabled={isPending}
-					className="h-9 cursor-pointer rounded-sm bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80"
-				>
+				<Button type="submit" disabled={isPending}>
 					{isPending ? (
 						<Loader2 className="size-4 shrink-0 animate-spin" />
 					) : (

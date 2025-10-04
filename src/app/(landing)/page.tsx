@@ -32,8 +32,7 @@ export default function HomePage() {
 						href="/login"
 						className={cn(
 							buttonVariants({
-								className:
-									"group w-full rounded-sm bg-neutral-100 px-6 py-2 text-neutral-900 hover:bg-neutral-100/80 md:w-auto",
+								className: "group",
 							}),
 						)}
 					>
@@ -46,8 +45,8 @@ export default function HomePage() {
 						target="_blank"
 						className={cn(
 							buttonVariants({
-								className:
-									"group w-full rounded-sm border border-neutral-100 bg-transparent px-6 py-2 text-neutral-100 hover:bg-neutral-100 hover:text-neutral-900 md:w-auto",
+								className: "group",
+								variant: "outline",
 							}),
 						)}
 					>
