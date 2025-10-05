@@ -58,7 +58,11 @@ export function NotificationDropdown({
 	return (
 		<DropdownMenu open={interacted} onOpenChange={setInteracted}>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="icon" className="relative hidden md:flex">
+				<Button
+					variant="ghost"
+					size="icon"
+					className="relative hidden size-8 rounded-full px-2 md:flex"
+				>
 					<Icons.bell className="size-6 shrink-0" />
 					{unreadNotifications.length > 0 && (
 						<span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-red-500 text-center text-xs font-medium text-white">

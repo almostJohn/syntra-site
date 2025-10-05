@@ -46,13 +46,13 @@ export function UserDropdown({ user }: UserDropdownProps) {
 					size="icon"
 					className="rounded-full hover:bg-transparent"
 				>
-					<Avatar className="size-10 rounded-full border border-neutral-700">
+					<Avatar className="rounded-full border border-neutral-700">
 						<AvatarImage
 							src={getAvatarURL(user.avatar)}
 							alt={`avatar-${user.username}`}
 							className="rounded-full"
 						/>
-						<AvatarFallback className="size-10 bg-neutral-800 text-neutral-100">
+						<AvatarFallback className="bg-neutral-800 text-neutral-100">
 							{formatNameToInitials(user.username)}
 						</AvatarFallback>
 					</Avatar>
