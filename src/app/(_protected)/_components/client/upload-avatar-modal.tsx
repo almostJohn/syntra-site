@@ -33,7 +33,7 @@ const initialState = {
 type User = {
 	id: string;
 	username: string;
-	avatar: string;
+	avatar: string | null;
 };
 
 type UploadAvatarModalProps = {
@@ -54,13 +54,13 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 	return (
 		<AlertDialog open={interacted} onOpenChange={setInteracted}>
 			<AlertDialogTrigger className="group cursor-pointer">
-				<Avatar className="size-23 rounded-full border border-neutral-700">
+				<Avatar className="size-14 rounded-full border border-neutral-700">
 					<AvatarImage
-						src={getAvatarURL(user.avatar)}
+						src={getAvatarURL(user.avatar ?? "")}
 						alt="avatar-image"
 						className="rounded-full"
 					/>
-					<AvatarFallback className="bg-neutral-800 text-3xl font-semibold text-neutral-100">
+					<AvatarFallback className="bg-neutral-800 text-2xl font-semibold text-neutral-100">
 						{formatNameToInitials(user.username)}
 					</AvatarFallback>
 				</Avatar>
@@ -78,9 +78,7 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 				>
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-2 p-6">
-							<h2 className="text-lg font-semibold uppercase">
-								upload your avatar
-							</h2>
+							<h2 className="text-lg font-semibold uppercase">upload avatar</h2>
 							<div className="mx-auto mt-3 mb-2 flex justify-center">
 								<Avatar className="size-26 rounded-full border border-neutral-700">
 									<AvatarImage

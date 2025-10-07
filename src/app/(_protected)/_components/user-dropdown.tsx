@@ -44,15 +44,15 @@ export function UserDropdown({ user }: UserDropdownProps) {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="rounded-full hover:bg-transparent"
+					className="size-9 rounded-full hover:bg-transparent"
 				>
-					<Avatar className="rounded-full border border-neutral-700">
+					<Avatar className="size-9 rounded-full border border-neutral-700">
 						<AvatarImage
 							src={getAvatarURL(user.avatar)}
 							alt={`avatar-${user.username}`}
 							className="rounded-full"
 						/>
-						<AvatarFallback className="bg-neutral-800 text-neutral-100">
+						<AvatarFallback className="size-9 bg-neutral-800 text-neutral-100">
 							{formatNameToInitials(user.username)}
 						</AvatarFallback>
 					</Avatar>

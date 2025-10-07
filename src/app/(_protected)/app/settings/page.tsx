@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { AvatarSettings } from "../../_components/avatar-settings.app";
+import { ProfileSection } from "../../_components/settings/profile-section";
+import { ChangeUsernameSection } from "../../_components/settings/change-username-section";
 
 export default async function SettingsPage() {
 	const user = await auth.getCurrentUser();
@@ -11,15 +12,15 @@ export default async function SettingsPage() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{/* Settings Page Header */}
 			<div className="grid gap-1">
-				<h1 className="text-lg font-semibold tracking-tight">Settings</h1>
-				<p className="text-muted-foreground text-sm">
-					Manage your account preferences.
+				<h1 className="text-2xl/8 font-semibold sm:text-xl/8">Settings</h1>
+				<p className="text-muted-foreground text-base/6 sm:text-sm/6">
+					Manage your account information.
 				</p>
 			</div>
-			<div className="mt-2 grid gap-3">
-				<AvatarSettings user={user} />
+			<div className="flex flex-col gap-2">
+				<ProfileSection user={user} />
+				<ChangeUsernameSection user={user} />
 			</div>
 		</div>
 	);
