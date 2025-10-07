@@ -6,7 +6,7 @@ import {
 } from "react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { geistMono } from "@/lib/fonts";
+import { inter } from "@/lib/fonts";
 import { ToastProvider } from "@/context/toast-provider";
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 				<body
 					className={cn(
 						`bg-neutral-900 text-neutral-100 antialiased`,
-						geistMono.className,
+						inter.className,
 					)}
 				>
 					<ViewTransition>{children}</ViewTransition>
