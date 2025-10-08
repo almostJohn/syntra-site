@@ -6,7 +6,6 @@ import {
 	serverActionCallback,
 	type ActionResponse,
 	type Values,
-	type Errors,
 } from "@/lib/action";
 import { auth } from "@/lib/auth";
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/constants";
@@ -15,12 +14,18 @@ import { createNotificationMessage, getFormString } from "@/lib/utils";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+type PasswordErrors = {
+	oldPassword?: string;
+	newPassword?: string;
+	confirmNewPassword?: string;
+};
+
 export async function updatePassword(
-	_prevState: ActionResponse<Errors, Values>,
+	_prevState: ActionResponse<PasswordErrors, Values>,
 	formData: FormData,
-): Promise<ActionResponse<Errors, Values>> {
+): Promise<ActionResponse<PasswordErrors, Values>> {
 	return serverActionCallback(
-		async (): Promise<ActionResponse<Errors, Values>> => {
+		async (): Promise<ActionResponse<PasswordErrors, Values>> => {
 			const user = await auth.getCurrentUser();
 
 			if (!user) {
@@ -29,16 +34,18 @@ export async function updatePassword(
 				};
 			}
 
-			const oldPassword = getFormString(formData, "old-password");
-			const newPassword = getFormString(formData, "new-password");
-			const confirmNewPassword = getFormString(
-				formData,
-				"confirm-new-password",
-			);
+			const oldPassword = getFormString(formData, "oldPassword");
+			const newPassword = getFormString(formData, "newPassword");
+			const confirmNewPassword = getFormString(formData, "confirmNewPassword");
 
 			if (!oldPassword || !newPassword || !confirmNewPassword) {
 				return {
 					errorMessage: "All fields are required.",
+					errors: {
+						oldPassword: "Old password is a required field.",
+						newPassword: "New password is a required field.",
+						confirmNewPassword: "Confirm new password is a required field.",
+					},
 				};
 			}
 
@@ -51,6 +58,11 @@ export async function updatePassword(
 			) {
 				return {
 					errorMessage: `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`,
+					errors: {
+						oldPassword: `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`,
+						newPassword: `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`,
+						confirmNewPassword: `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`,
+					},
 				};
 			}
 
@@ -61,6 +73,11 @@ export async function updatePassword(
 			) {
 				return {
 					errorMessage: `Password must not exceed ${PASSWORD_MAX_LENGTH} characters.`,
+					errors: {
+						oldPassword: `Password must not exceed ${PASSWORD_MAX_LENGTH} characters.`,
+						newPassword: `Password must not exceed ${PASSWORD_MAX_LENGTH} characters.`,
+						confirmNewPassword: `Password must not exceed ${PASSWORD_MAX_LENGTH} characters.`,
+					},
 				};
 			}
 
@@ -68,18 +85,36 @@ export async function updatePassword(
 				return {
 					errorMessage:
 						"Password must contain at least one uppercase letter, one lowercase letter, and one number.",
+					errors: {
+						oldPassword:
+							"Password must contain at least one uppercase letter, one lowercase letter, and one number.",
+						newPassword:
+							"Password must contain at least one uppercase letter, one lowercase letter, and one number.",
+						confirmNewPassword:
+							"Password must contain at least one uppercase letter, one lowercase letter, and one number.",
+					},
 				};
 			}
 
 			if (oldPassword === newPassword) {
 				return {
 					errorMessage: "New password must be different from the old password.",
+					errors: {
+						oldPassword:
+							"New password must be different from the old password.",
+						newPassword:
+							"New password must be different from the old password.",
+					},
 				};
 			}
 
 			if (newPassword !== confirmNewPassword) {
 				return {
 					errorMessage: "Passwords do not match.",
+					errors: {
+						newPassword: "Passwords do not match.",
+						confirmNewPassword: "Passwords do not match.",
+					},
 				};
 			}
 
@@ -97,6 +132,9 @@ export async function updatePassword(
 			if (!isOldPasswordMatch) {
 				return {
 					errorMessage: "Old password does not match.",
+					errors: {
+						oldPassword: "Old password does not match.",
+					},
 				};
 			}
 

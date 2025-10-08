@@ -54,7 +54,7 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 	return (
 		<AlertDialog open={interacted} onOpenChange={setInteracted}>
 			<AlertDialogTrigger className="group cursor-pointer">
-				<Avatar className="size-14 rounded-full border border-neutral-700">
+				<Avatar className="size-18 rounded-full border border-neutral-700">
 					<AvatarImage
 						src={getAvatarURL(user.avatar ?? "")}
 						alt="avatar-image"
@@ -131,7 +131,7 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 									<Button type="submit" disabled={isPending} className="w-full">
 										{isPending ? (
 											<>
-												<Loader2 className="size-4 shrink-0 animate-spin" />{" "}
+												<Loader2 className="size-5 shrink-0 animate-spin" />{" "}
 												Uploading...
 											</>
 										) : (
