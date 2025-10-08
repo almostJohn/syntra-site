@@ -148,3 +148,11 @@
 .before\:animate-glow::before {
 	animation: glow 2s linear infinite;
 }
+
+.input-default-class {
+	@apply rounded-sm border border-neutral-700 focus-visible:border-neutral-600 focus-visible:ring-[3px] focus-visible:ring-neutral-700;
+}
+
+.input-default-error-class {
+	@apply border-red-500/80 ring-[3px] ring-red-500/30;
+}
