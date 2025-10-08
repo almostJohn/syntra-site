@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { ProfileSection } from "../../_components/settings/profile-section";
-import { ChangeUsernameSection } from "../../_components/settings/change-username-section";
+import { UsernameSection } from "../../_components/settings/username-section";
+import { PasswordSection } from "../../_components/settings/password-section";
 
 export default async function SettingsPage() {
 	const user = await auth.getCurrentUser();
@@ -20,7 +21,8 @@ export default async function SettingsPage() {
 			</div>
 			<div className="flex flex-col gap-2">
 				<ProfileSection user={user} />
-				<ChangeUsernameSection user={user} />
+				<UsernameSection user={user} />
+				<PasswordSection />
 			</div>
 		</div>
 	);

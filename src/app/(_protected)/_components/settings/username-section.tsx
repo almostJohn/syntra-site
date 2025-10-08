@@ -6,11 +6,11 @@ type User = {
 	username: string;
 };
 
-type ChangeUsernameSectionProps = {
+type UsernameSectionProps = {
 	user: User;
 };
 
-export function ChangeUsernameSection({ user }: ChangeUsernameSectionProps) {
+export function UsernameSection({ user }: UsernameSectionProps) {
 	return (
 		<div className="grid gap-2">
 			<h2 className="border-b border-neutral-800 text-base/7 font-semibold sm:text-sm/6">
