@@ -9,6 +9,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
+import { Form } from "@/components/ui/form";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -70,11 +71,12 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 					<AlertDialogTitle>Hidden Title</AlertDialogTitle>
 					<AlertDialogDescription>Hidden Description</AlertDialogDescription>
 				</VisuallyHidden>
-				<form
+				<Form
 					action={(formData) => {
 						formAction(formData);
 						onClose();
 					}}
+					className="gap-0"
 				>
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-2 p-6">
@@ -142,7 +144,7 @@ export function UploadAvatarModal({ user }: UploadAvatarModalProps) {
 							</div>
 						</div>
 					</div>
-				</form>
+				</Form>
 			</AlertDialogContent>
 		</AlertDialog>
 	);
