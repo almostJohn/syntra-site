@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { UploadAvatarModal } from "../../_components/client/upload-avatar-modal";
 import { UpdateUsernameForm } from "../../_components/client/update-username.form";
 import { UpdatePasswordForm } from "../../_components/client/update-password.form";
-import { Button } from "@/components/ui/button";
+import { DeleteUserForm } from "../../_components/client/delete-user.form";
 
 export default async function SettingsPage() {
 	const user = await auth.getCurrentUser();
@@ -44,8 +44,8 @@ export default async function SettingsPage() {
 				</section>
 				<UpdateUsernameForm user={user} />
 				<UpdatePasswordForm />
-				<section className="flex flex-col rounded-md border border-red-500/80">
-					<div className="flex flex-col gap-4 rounded-t-md border-b border-red-500/80 bg-neutral-800 p-6">
+				<section className="flex flex-col rounded-md border border-red-500/30">
+					<div className="flex flex-col gap-4 rounded-t-md border-b border-red-500/30 bg-neutral-800 p-6">
 						<h2 className="text-lg font-semibold">Delete Account</h2>
 						<p className="text-sm">
 							Permanently delete your Personal Account and all its associated
@@ -53,14 +53,9 @@ export default async function SettingsPage() {
 							so please continue with caution.
 						</p>
 					</div>
-					<div className="mt-auto rounded-b-md bg-red-500/30 p-6">
+					<div className="mt-auto rounded-b-md bg-red-500/10 p-6">
 						<div className="flex items-center justify-center md:justify-end">
-							<Button
-								variant="destructive"
-								className="bg-red-500 px-4 text-white hover:bg-red-400/80"
-							>
-								Delete Personal Account
-							</Button>
+							<DeleteUserForm user={user} />
 						</div>
 					</div>
 				</section>
