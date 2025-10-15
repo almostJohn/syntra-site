@@ -103,7 +103,7 @@ export function CreateProjectForm() {
 						</span>
 					)}
 				</FormControl>
-				<div className="flex flex-col-reverse gap-2 md:flex-row md:items-center">
+				<div className="mt-2 flex flex-col-reverse gap-2 md:flex-row md:items-center">
 					<div className="w-full">
 						<Button
 							type="button"
