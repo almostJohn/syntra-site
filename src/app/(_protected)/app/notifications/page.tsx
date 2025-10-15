@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { TypographicalComponents } from "@/components/typographical-components";
 
 export default async function NotificationsPage() {
 	const user = await auth.getCurrentUser();
@@ -10,15 +11,12 @@ export default async function NotificationsPage() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{/* Notifications Page Header */}
 			<div className="flex items-center">
 				<div className="grid gap-1">
-					<h1 className="text-lg font-semibold tracking-tight">
-						Notifications
-					</h1>
-					<p className="text-muted-foreground text-sm">
+					<TypographicalComponents.h1>Notifications</TypographicalComponents.h1>
+					<TypographicalComponents.p>
 						Stay informed with real-time updates and important notifications.
-					</p>
+					</TypographicalComponents.p>
 				</div>
 			</div>
 		</div>
