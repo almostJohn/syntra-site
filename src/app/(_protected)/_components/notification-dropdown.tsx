@@ -147,7 +147,7 @@ export function NotificationDropdown({
 										</div>
 										<form
 											action={() => {
-												formAction([notification.id, "read"]); // always mark as read here
+												formAction([notification.id, "unread", "read"]); // always mark as read here
 												onClose();
 											}}
 										>

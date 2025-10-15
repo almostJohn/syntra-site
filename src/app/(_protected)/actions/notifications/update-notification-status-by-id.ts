@@ -11,8 +11,8 @@ type Status = "archived" | "unarchived" | "read" | "unread";
 
 export async function updateNotificationStatusById(
 	notificationId: string,
-	status: Status,
-	statusToUpdate: Status,
+	oldStatus: Status,
+	newStatus: Status,
 ): Promise<ActionResponse> {
 	return serverActionCallback(async (): Promise<ActionResponse> => {
 		const user = await auth.getCurrentUser();
@@ -26,12 +26,12 @@ export async function updateNotificationStatusById(
 		await db
 			.update(notifications)
 			.set({
-				status: statusToUpdate,
+				status: newStatus,
 				updatedAt: new Date(),
 			})
 			.where(
 				and(
-					eq(notifications.status, status),
+					eq(notifications.status, oldStatus),
 					eq(notifications.id, notificationId),
 					eq(notifications.userId, user.id),
 				),

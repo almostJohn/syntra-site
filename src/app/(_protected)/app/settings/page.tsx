@@ -4,6 +4,7 @@ import { UploadAvatarModal } from "../../_components/client/upload-avatar-modal"
 import { UpdateUsernameForm } from "../../_components/client/update-username.form";
 import { UpdatePasswordForm } from "../../_components/client/update-password.form";
 import { DeleteUserForm } from "../../_components/client/delete-user.form";
+import { TypographicalComponents } from "@/components/typographical-components";
 
 export default async function SettingsPage() {
 	const user = await auth.getCurrentUser();
@@ -15,10 +16,10 @@ export default async function SettingsPage() {
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="grid gap-1">
-				<h1 className="text-2xl/8 font-semibold sm:text-xl/8">Settings</h1>
-				<p className="text-muted-foreground text-base/6 sm:text-sm/6">
+				<TypographicalComponents.h1>Settings</TypographicalComponents.h1>
+				<TypographicalComponents.p>
 					Manage your account information.
-				</p>
+				</TypographicalComponents.p>
 			</div>
 			<div className="mt-2 flex flex-col gap-6">
 				<section className="flex flex-col rounded-md border border-neutral-700">
