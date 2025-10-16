@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { CreateProjectForm } from "../_components/client/create-project.form";
 import { TypographicalComponents } from "@/components/typographical-components";
+import { Projects } from "../_components/projects";
 
 export default async function AppPage() {
 	const user = await auth.getCurrentUser();
@@ -21,6 +22,7 @@ export default async function AppPage() {
 				</div>
 				<CreateProjectForm />
 			</div>
+			<Projects user={user} />
 		</div>
 	);
 }
