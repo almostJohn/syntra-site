@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { UploadAvatarModal } from "../../_components/client/upload-avatar-modal";
+import { UploadAvatarForm } from "../../_components/client/upload-avatar.form";
 import { UpdateUsernameForm } from "../../_components/client/update-username.form";
 import { UpdatePasswordForm } from "../../_components/client/update-password.form";
 import { DeleteUserForm } from "../../_components/client/delete-user.form";
@@ -34,7 +34,7 @@ export default async function SettingsPage() {
 							</div>
 						</div>
 						<div>
-							<UploadAvatarModal user={user} />
+							<UploadAvatarForm user={user} />
 						</div>
 					</div>
 					<div className="mt-auto rounded-b-md bg-neutral-900 p-6">
