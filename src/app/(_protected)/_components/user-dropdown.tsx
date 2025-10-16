@@ -77,10 +77,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
 					>
 						<Button type="submit" variant="destructive" disabled={isPending}>
 							{isPending ? (
-								<>
-									<Loader2 className="size-4 shrink-0 animate-spin" />
-									Logging out...
-								</>
+								<Loader2 className="size-4 shrink-0 animate-spin" />
 							) : (
 								<>
 									<Icons.logout className="size-4 shrink-0" />
