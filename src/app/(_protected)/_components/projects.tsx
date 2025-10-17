@@ -6,6 +6,7 @@ import {
 	EmptyHeader,
 	EmptyHeaderIconPlaceholder,
 } from "@/components/ui/empty";
+import { ProjectList } from "./project-list";
 
 type User = {
 	id: string;
@@ -33,5 +34,5 @@ export async function Projects({ user }: ProjectsProps) {
 		);
 	}
 
-	return null;
+	return <ProjectList projects={projects} />;
 }
