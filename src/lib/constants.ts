@@ -19,6 +19,8 @@ export const TITLE_MAX_LENGTH = 150;
 export const TITLE_MIN_LENGTH = 2;
 export const SUBTITLE_MAX_LENGTH = 250;
 export const SUBTITLE_MIN_LENGTH = 2;
+export const CONTENT_MAX_LENGTH = 400;
+export const CONTENT_MIN_LENGTH = 2;
 
 export const DISABLED_ROUTES_AFTER_SIGNED_IN = ["/", "/login", "/register"];
 

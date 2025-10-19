@@ -18,7 +18,7 @@ export function ProjectCard({ project, isGrid }: ProjectCardProps) {
 		<>
 			{!isGrid ? (
 				<NextLink
-					href="/app/projects"
+					href={`/app/projects/${project.id}`}
 					className="flex w-full items-center justify-between rounded-sm px-3 py-1 transition-colors duration-200 hover:bg-neutral-800"
 				>
 					<div className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export function ProjectCard({ project, isGrid }: ProjectCardProps) {
 				</NextLink>
 			) : (
 				<NextLink
-					href="/app/projects"
+					href={`/app/projects/${project.id}`}
 					className="flex flex-col items-center justify-center gap-4 rounded-sm p-4 transition-colors duration-200 hover:bg-neutral-800"
 				>
 					<div className="mx-auto flex justify-center">

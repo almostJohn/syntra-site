@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { auth } from "@/lib/auth";
 import { CreateProjectForm } from "../_components/client/create-project.form";
 import { TypographicalComponents } from "@/components/typographical-components";
 import { Projects } from "../_components/projects";
+import { Loader2 } from "lucide-react";
 
 export default async function AppPage() {
 	const user = await auth.getCurrentUser();
@@ -22,7 +24,22 @@ export default async function AppPage() {
 				</div>
 				<CreateProjectForm />
 			</div>
-			<Projects user={user} />
+			<Suspense fallback={<Loading />}>
+				<Projects user={user} />
+			</Suspense>
+		</div>
+	);
+}
+
+function Loading() {
+	return (
+		<div className="mx-auto flex flex-col items-center justify-center gap-4 py-24 text-center">
+			<div className="mx-auto flex justify-center">
+				<Loader2 className="size-12 shrink-0 animate-spin" />
+			</div>
+			<p className="text-center text-sm text-neutral-500">
+				Loading projects...
+			</p>
 		</div>
 	);
 }
