@@ -90,7 +90,7 @@ export function DeleteUserForm({ user }: DeleteUserFormProps) {
 							Personal Account.
 						</p>
 						<div className="mt-2 inline-flex items-center gap-3 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-500">
-							<div className="flex size-8 items-center justify-center rounded-full bg-red-500 text-white">
+							<div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-red-500 text-white">
 								<TriangleAlert className="size-5 shrink-0" />
 							</div>
 							<p>This action is irreversible. Please be certain.</p>
@@ -148,7 +148,7 @@ export function DeleteUserForm({ user }: DeleteUserFormProps) {
 						<div className="flex w-full items-center">
 							<Button
 								type="button"
-								variant="outline"
+								variant="secondary"
 								className="w-full"
 								onClick={onClose}
 							>

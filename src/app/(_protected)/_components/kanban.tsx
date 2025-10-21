@@ -34,7 +34,7 @@ export async function Kanban({ userId, projectId }: KanbanProps) {
 					complete={completeTasks.length}
 				/>
 			)}
-			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<div className="grid gap-8">
 				<TaskBoard
 					title="Backlog"
 					color="bg-blue-500"
