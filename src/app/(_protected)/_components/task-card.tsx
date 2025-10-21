@@ -1,16 +1,7 @@
-"use client";
-
-import { useState } from "react";
 import type { Task } from "@/lib/data.types";
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogDescription,
-} from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/formatting";
+import { Calendar } from "lucide-react";
 
 type TaskCardProps = {
 	task: Task;
@@ -75,7 +66,7 @@ const TaskBadge = ({
 	return (
 		<span
 			className={cn(
-				"inline-flex cursor-pointer items-center justify-center rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+				"inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-0.5 text-xs font-medium whitespace-nowrap",
 				style,
 				className,
 			)}
@@ -86,62 +77,32 @@ const TaskBadge = ({
 };
 
 export function TaskCard({ task, projectId }: TaskCardProps) {
-	const [interacted, setInteracted] = useState(false);
-
-	function handleModalInteraction() {
-		setInteracted((prev) => !prev);
-	}
-
 	return (
-		<>
-			<div className="group flex cursor-pointer items-center justify-between rounded-md px-4 py-2 transition-all hover:bg-neutral-800">
-				<div className="flex items-center gap-3">
-					<button
-						type="button"
-						onClick={handleModalInteraction}
-						className="cursor-pointer text-base leading-tight font-semibold underline-offset-4 hover:underline"
-					>
-						{task.title}
-					</button>
+		<div className="flex flex-col rounded-sm border border-neutral-800 p-4 shadow-lg">
+			<div className="mb-3">
+				<TaskBadge status={task.status} />
+			</div>
+			<div className="mb-3 flex flex-col gap-2">
+				<h3 className="line-clamp-2 font-semibold">{task.title}</h3>
+				{task.subtitle && (
+					<h4 className="line-clamp-2 text-sm font-medium">{task.subtitle}</h4>
+				)}
+				{task.content && (
+					<p className="text-sm text-pretty whitespace-pre-wrap text-neutral-400">
+						{task.content}
+					</p>
+				)}
+				<div className="flex flex-wrap gap-1.5">
 					<TaskBadge priority={task.priority} />
 					<TaskBadge category={task.category} />
 				</div>
 			</div>
-
-			<Dialog open={interacted} onOpenChange={setInteracted}>
-				<DialogContent className="w-full rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-xl sm:max-w-2xl">
-					<VisuallyHidden>
-						<DialogTitle>Hidden Title</DialogTitle>
-						<DialogDescription>Hidden Description</DialogDescription>
-					</VisuallyHidden>
-					<div className="flex flex-col gap-4 p-6">
-						<div className="flex items-center justify-start">
-							<TaskBadge status={task.status} />
-						</div>
-						<h2 className="text-lg leading-tight font-semibold">
-							{task.title}
-						</h2>
-						<div className="flex items-center gap-3">
-							<TaskBadge priority={task.priority} />
-							<TaskBadge category={task.category} />
-						</div>
-						{task.subtitle && task.content && (
-							<div className="grid gap-2">
-								<h3 className="text-base/8 font-medium">{task.subtitle}</h3>
-								<p className="text-muted-foreground text-sm whitespace-pre-wrap">
-									{task.content}
-								</p>
-							</div>
-						)}
-						<div className="mt-auto flex items-center gap-2">
-							<p className="text-xs">{formatDate(task.createdAt, "long")}</p>
-							<p className="text-xs">
-								({formatDate(task.createdAt, "relative")})
-							</p>
-						</div>
-					</div>
-				</DialogContent>
-			</Dialog>
-		</>
+			<div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-3">
+				<div className="flex items-center gap-1 text-xs text-neutral-500">
+					<Calendar className="size-3.5 shrink-0" />
+					{formatDate(new Date(task.createdAt), "short")}
+				</div>
+			</div>
+		</div>
 	);
 }

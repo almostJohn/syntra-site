@@ -62,9 +62,9 @@ const CreateTaskModal = ({
 	return (
 		<AlertDialog open={interacted} onOpenChange={setInteracted}>
 			<AlertDialogTrigger asChild>
-				<Button className="group w-full rounded-full">
-					<Plus className="size-6 shrink-0 transition-transform group-hover:rotate-180" />{" "}
-					Add New Task
+				<Button className="w-full justify-start" variant="ghost">
+					<Plus className="size-4 shrink-0" />
+					Add Task
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent className="w-full rounded-sm border border-neutral-800 bg-neutral-900 p-0 text-neutral-100 shadow-xl sm:max-w-xl">
@@ -116,13 +116,13 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 						minLength={TITLE_MIN_LENGTH}
 						maxLength={TITLE_MAX_LENGTH}
 						autoComplete="off"
-						placeholder="Title (eg:, chat area ui)"
 						required
 						className={cn(
 							"input-default-class",
 							state.errors?.title &&
 								"border-red-500/80 ring-[3px] ring-red-500/30",
 						)}
+						disabled={isPending}
 					/>
 					{state.errors?.title && (
 						<span className="text-sm font-medium text-red-500">
@@ -131,7 +131,9 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 					)}
 				</FormControl>
 				<FormControl>
-					<Label htmlFor="subtitle">Subtitle (optional)</Label>
+					<Label htmlFor="subtitle">
+						Subtitle <span className="text-neutral-500">(optional)</span>
+					</Label>
 					<Input
 						type="text"
 						id="subtitle"
@@ -139,12 +141,12 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 						minLength={SUBTITLE_MIN_LENGTH}
 						maxLength={SUBTITLE_MAX_LENGTH}
 						autoComplete="off"
-						placeholder="Subtitle (eg:, chat area bubbles ui)"
 						className={cn(
 							"input-default-class",
 							state.errors?.subtitle &&
 								"border-red-500/80 ring-[3px] ring-red-500/30",
 						)}
+						disabled={isPending}
 					/>
 					{state.errors?.subtitle && (
 						<span className="text-sm font-medium text-red-500">
@@ -153,19 +155,21 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 					)}
 				</FormControl>
 				<FormControl>
-					<Label htmlFor="content">Content (optional)</Label>
+					<Label htmlFor="content">
+						Content <span className="text-neutral-500">(optional)</span>
+					</Label>
 					<Textarea
 						id="content"
 						name="content"
 						minLength={CONTENT_MIN_LENGTH}
 						maxLength={CONTENT_MAX_LENGTH}
 						autoComplete="off"
-						placeholder="Content (eg:, fixing chat area ui)"
 						className={cn(
 							"input-default-class",
 							state.errors?.content &&
 								"border-red-500/80 ring-[3px] ring-red-500/30",
 						)}
+						disabled={isPending}
 					/>
 					{state.errors?.content && (
 						<span className="text-sm font-medium text-red-500">
@@ -186,7 +190,7 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 						}}
 					>
 						<SelectTrigger className="input-default-class w-full">
-							<SelectValue id="priority" placeholder="Priority" />
+							<SelectValue id="priority" placeholder="Select a priority" />
 						</SelectTrigger>
 						<SelectContent className="rounded-sm border border-neutral-800 bg-neutral-900 text-neutral-100 shadow-xl">
 							<SelectItem value="critical">Critical</SelectItem>
@@ -215,7 +219,7 @@ export function CreateTaskForm({ projectId, status }: CreateTaskFormProps) {
 						}}
 					>
 						<SelectTrigger className="input-default-class w-full">
-							<SelectValue id="category" placeholder="Category" />
+							<SelectValue id="category" placeholder="Select a category" />
 						</SelectTrigger>
 						<SelectContent className="rounded-sm border border-neutral-800 bg-neutral-900 text-neutral-100 shadow-xl">
 							<SelectItem value="feature">Feature</SelectItem>
