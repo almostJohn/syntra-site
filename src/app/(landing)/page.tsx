@@ -2,27 +2,24 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Star } from "lucide-react";
 import { NextLink } from "@/components/ui/next-link";
-
-export const metadata = {
-	title: "home",
-};
+import { Icons } from "@/components/icons";
 
 export default function HomePage() {
 	return (
 		<div className="mx-auto flex min-h-screen max-w-4xl items-center justify-center">
 			<div className="flex flex-col gap-6 text-center">
 				<div className="flex flex-col gap-2">
-					<h1 className="mb-1 text-center text-3xl font-bold md:text-4xl">
-						syntra <span className="underline">v1</span>
-					</h1>
-					<div className="mx-auto flex justify-center">
-						<div className="inline-flex rounded-sm border border-neutral-700 bg-neutral-800 px-3 py-1 text-sm font-semibold">
-							Personal Workspace
-						</div>
+					<div className="mb-2 flex items-center justify-center gap-1.5 text-center">
+						<Icons.todo className="size-12 shrink-0" />
+						<h1 className="text-center text-3xl font-bold md:text-4xl">
+							Syntra
+						</h1>
 					</div>
-					<p className="mx-auto mt-6 max-w-2xl px-2 text-center text-xl text-pretty text-neutral-500">
-						<em className="text-neutral-100">Organizing my workflow.</em> A
-						personal kanban-style task management system built for individual
+					<em className="text-center text-base font-medium text-neutral-900">
+						&quot;Organizing my workflow.&quot;
+					</em>
+					<p className="mx-auto max-w-2xl px-4 text-center text-xl text-pretty text-neutral-500">
+						A personal kanban-style task management system built for individual
 						productivity. Simple, focused, and designed exclusively for my own
 						use.
 					</p>
@@ -36,7 +33,7 @@ export default function HomePage() {
 							}),
 						)}
 					>
-						open board{" "}
+						Open Board{" "}
 						<ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 					</NextLink>
 					<a
@@ -51,7 +48,7 @@ export default function HomePage() {
 						)}
 					>
 						<Star className="size-4 shrink-0" />
-						star on github
+						Star on GitHub
 					</a>
 				</div>
 			</div>

@@ -5,8 +5,12 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata = {
-	title: "create an account",
+	title: "Register",
 };
+
+const REGISTER_TITLE = "Create an account" as const;
+const REGISTER_DESCRIPTION =
+	"User registration for this instance is currently disabled." as const;
 
 export default function RegisterPage() {
 	return (
@@ -17,10 +21,10 @@ export default function RegisterPage() {
 						<Icons.todo className="size-38 shrink-0" />
 					</div>
 					<h1 className="text-2xl font-semibold tracking-tight">
-						Create an account
+						{REGISTER_TITLE}
 					</h1>
 					<p className="text-muted-foreground text-sm">
-						User registration for this instance is currently disabled.
+						{REGISTER_DESCRIPTION}
 					</p>
 				</div>
 				<div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-center">

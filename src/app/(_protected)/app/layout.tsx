@@ -4,14 +4,14 @@ import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { auth } from "@/lib/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Navbar } from "../_components/navbar";
-import { SideNav } from "../_components/side-nav";
-import { BottomNav } from "../_components/bottom-nav";
+import { Navbar } from "@/components/custom/navbar";
+import { SideNav } from "@/components/custom/side-nav";
+import { BottomNav } from "@/components/custom/bottom-nav";
 
 export const metadata: Metadata = {
 	title: {
-		default: "app",
-		template: "%s — app",
+		default: "App (Dashboard)",
+		template: "%s — App",
 	},
 	description: siteConfig.description,
 	appleWebApp: {
@@ -34,15 +34,15 @@ export const metadata: Metadata = {
 };
 
 export default async function AppPageLayout({ children }: PropsWithChildren) {
-	const user = await auth.getCurrentUser();
+	const currentUser = await auth.getCurrentUser();
 
-	if (!user) {
+	if (!currentUser) {
 		redirect("/login");
 	}
 
 	return (
 		<main className="flex h-screen flex-col">
-			<Navbar user={user} />
+			<Navbar user={currentUser} />
 			<div className="flex flex-1 overflow-hidden">
 				<SideNav />
 				<ScrollArea className="flex flex-1 flex-col">
@@ -50,7 +50,7 @@ export default async function AppPageLayout({ children }: PropsWithChildren) {
 						{children}
 					</div>
 				</ScrollArea>
-				<BottomNav user={user} />
+				<BottomNav userId={currentUser.id} />
 			</div>
 		</main>
 	);

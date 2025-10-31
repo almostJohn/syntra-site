@@ -110,19 +110,37 @@ export const Icons = {
 	bell: (props: IconProps) => {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-				<g fill="none">
-					<path
-						fill="currentColor"
-						d="M6 11c0-4.8 4-6 6-6c4.8 0 6 4 6 6v4l2 2H4l2-2z"
+				<path
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="2"
+					d="M12 5c-2 0-6 1.2-6 6v4l-2 2h5m3-12c4.8 0 6 4 6 6v4l2 2h-5M12 5V3M9 17v1c0 1 .6 3 3 3s3-2 3-3v-1m-6 0h6"
+				/>
+			</svg>
+		);
+	},
+	loading: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeWidth="2"
+					d="M12 6.99998C9.1747 6.99987 6.99997 9.24998 7 12C7.00003 14.55 9.02119 17 12 17C14.7712 17 17 14.75 17 12"
+				>
+					<animateTransform
+						attributeName="transform"
+						attributeType="XML"
+						dur="560ms"
+						from="0,12,12"
+						repeatCount="indefinite"
+						to="360,12,12"
+						type="rotate"
 					/>
-					<path
-						stroke="currentColor"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth="2"
-						d="M12 5c-2 0-6 1.2-6 6v4l-2 2h16l-2-2v-4c0-2-1.2-6-6-6m0 0V3M9 18c0 1 .6 3 3 3s3-2 3-3"
-					/>
-				</g>
+				</path>
 			</svg>
 		);
 	},

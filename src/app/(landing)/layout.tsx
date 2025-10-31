@@ -3,10 +3,7 @@ import type { PropsWithChildren } from "react";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-	title: {
-		default: "Syntra",
-		template: "%s — Syntra",
-	},
+	title: "Home",
 	description: siteConfig.description,
 	appleWebApp: {
 		title: siteConfig.name,

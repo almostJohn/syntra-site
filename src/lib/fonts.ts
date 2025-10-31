@@ -1,7 +1,7 @@
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 
-export const inter = Inter({
+export const geist = Geist({
 	subsets: ["latin"],
-	variable: "--font-inter",
 	display: "swap",
+	variable: "--font-geist",
 });

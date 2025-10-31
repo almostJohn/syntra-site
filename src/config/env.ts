@@ -12,10 +12,6 @@ const envSchema = z.object({
 
 	// Database url
 	DATABASE_URL: z.string().url(),
-
-	// Database credentials for seeding
-	APP_SEED_USERNAME: z.string().min(1, "APP_SEED_USERNAME is required"),
-	APP_SEED_PASSWORD: z.string().min(1, "APP_SEED_PASSWORD is required"),
 });
 
 const _env = envSchema.safeParse(process.env);
