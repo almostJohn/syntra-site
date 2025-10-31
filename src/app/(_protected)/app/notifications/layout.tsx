@@ -4,8 +4,8 @@ import type { PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
 	title: {
-		default: "notifications",
-		template: "%s — app",
+		default: "Notifications (Dashboard)",
+		template: "%s — App",
 	},
 	description: siteConfig.description,
 	appleWebApp: {

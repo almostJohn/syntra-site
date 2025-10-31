@@ -1,9 +1,8 @@
 import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
-import { DataQuery } from "@/lib/data";
-import { TypographicalComponents } from "@/components/typographical-components";
-import { Kanban } from "@/app/(_protected)/_components/kanban";
+import { getProjectById } from "@/data/get-project.data";
+import { H1 } from "@/components/ui/heading";
 
 export async function generateMetadata({
 	params,
@@ -17,7 +16,7 @@ export async function generateMetadata({
 		redirect("/login");
 	}
 
-	const project = await DataQuery.getProjectById(projectId, user.id);
+	const project = await getProjectById(projectId, user.id);
 
 	return {
 		title: project?.name ?? "untitled",
@@ -36,7 +35,7 @@ export default async function ProjectIdPage({
 		redirect("/login");
 	}
 
-	const project = await DataQuery.getProjectById(projectId, user.id);
+	const project = await getProjectById(projectId, user.id);
 
 	if (!project) {
 		notFound();
@@ -44,8 +43,7 @@ export default async function ProjectIdPage({
 
 	return (
 		<div className="flex flex-col gap-4">
-			<TypographicalComponents.h1>{project.name}</TypographicalComponents.h1>
-			<Kanban userId={user.id} projectId={project.id} />
+			<H1>{project.name}</H1>
 		</div>
 	);
 }

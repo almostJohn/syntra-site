@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { env } from "@/config/env";
 import { MAX_TRUST_ACCOUNT_AGE } from "./constants";
 import type { NextRequest } from "next/server";
-import { DataQuery } from "./data";
+import { getUserById } from "@/data/get-user.data";
 
 const secret = new TextEncoder().encode(env.APP_SECRET_KEY);
 
@@ -112,7 +112,7 @@ export const auth = {
 				return null;
 			}
 
-			const user = await DataQuery.getUserById(payload.userId);
+			const user = await getUserById(payload.userId);
 
 			if (!user) {
 				return null;

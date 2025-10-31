@@ -150,7 +150,7 @@
 }
 
 .input-default-class {
-	@apply rounded-sm border border-neutral-700 focus-visible:border-neutral-600 focus-visible:ring-[3px] focus-visible:ring-neutral-700;
+	@apply rounded-lg border border-neutral-300 focus-visible:border-neutral-400 focus-visible:ring-[3px] focus-visible:ring-neutral-300;
 }
 
 .input-default-error-class {

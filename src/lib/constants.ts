@@ -22,6 +22,11 @@ export const SUBTITLE_MIN_LENGTH = 2;
 export const CONTENT_MAX_LENGTH = 400;
 export const CONTENT_MIN_LENGTH = 2;
 
+export const ErrorResponses = {
+	generic: "Something went wrong. Please try again.",
+	unauthorized: "You are not authorized to perform this action.",
+} as const;
+
 export const DISABLED_ROUTES_AFTER_SIGNED_IN = ["/", "/login", "/register"];
 
 export const DISABLED_ROUTES_AFTER_SIGNED_OUT = [

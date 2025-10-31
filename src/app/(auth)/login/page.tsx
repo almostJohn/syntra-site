@@ -1,10 +1,14 @@
 import { NextLink } from "@/components/ui/next-link";
-import { Form as LoginForm } from "./form";
 import { Icons } from "@/components/icons";
+import { LoginForm } from "@/components/custom/forms/login-form";
 
 export const metadata = {
-	title: "login",
+	title: "Login",
 };
+
+const LOGIN_TITLE = "Welcome back" as const;
+const LOGIN_DESCRIPTION =
+	"Enter your credentials to login into your account." as const;
 
 export default function LoginPage() {
 	return (
@@ -15,21 +19,19 @@ export default function LoginPage() {
 						<Icons.todo className="size-38 shrink-0" />
 					</div>
 					<h1 className="text-2xl font-semibold tracking-tight">
-						Welcome back
+						{LOGIN_TITLE}
 					</h1>
-					<p className="text-muted-foreground text-sm">
-						Enter your credentials to login into your account.
-					</p>
+					<p className="text-muted-foreground text-sm">{LOGIN_DESCRIPTION}</p>
 				</div>
+				<LoginForm />
 				<div className="grid gap-6">
-					<LoginForm />
 					<p className="text-muted-foreground px-8 text-center text-sm">
 						Need an account?{" "}
 						<NextLink
 							href="/register"
-							className="underline underline-offset-4 hover:text-neutral-100"
+							className="font-medium text-blue-600 underline underline-offset-4"
 						>
-							Sign Up
+							Register
 						</NextLink>
 					</p>
 				</div>

@@ -30,7 +30,7 @@ export function EmptyHeader({
 	);
 }
 
-export function EmptyHeaderIconPlaceholder({
+export function EmptyIconPlaceholder({
 	className,
 	children,
 	...props
@@ -38,7 +38,7 @@ export function EmptyHeaderIconPlaceholder({
 	return (
 		<div
 			className={cn(
-				"inline-flex size-15 items-center justify-center rounded-full bg-neutral-800",
+				"inline-flex size-16 items-center justify-center rounded-full border border-neutral-300 bg-neutral-200",
 				className,
 			)}
 			{...props}

@@ -6,7 +6,7 @@ import {
 } from "react";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { inter } from "@/lib/fonts";
+import { geist } from "@/lib/fonts";
 import { ToastProvider } from "@/context/toast-provider";
 
 export const metadata: Metadata = {
@@ -46,8 +46,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			<html lang="en" suppressHydrationWarning>
 				<body
 					className={cn(
-						`bg-neutral-900 text-neutral-100 antialiased`,
-						inter.className,
+						`bg-neutral-100 text-neutral-900 antialiased`,
+						geist.className,
 					)}
 				>
 					<ViewTransition>{children}</ViewTransition>
