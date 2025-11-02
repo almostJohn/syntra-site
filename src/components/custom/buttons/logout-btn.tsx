@@ -25,7 +25,6 @@ export function LogoutBtn() {
 		<Button
 			disabled={isPending}
 			variant="destructive"
-			size="sm"
 			onClick={handleSubmit}
 			className="rounded-lg"
 		>
