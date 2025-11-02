@@ -16,7 +16,7 @@ export async function Projects({ userId }: { userId: string }) {
 			<Empty>
 				<EmptyHeader>
 					<EmptyIconPlaceholder>
-						<Icons.sparkles className="size-14 shrink-0" />
+						<Icons.sparkles className="size-8 shrink-0" />
 					</EmptyIconPlaceholder>
 				</EmptyHeader>
 				<EmptyContent>

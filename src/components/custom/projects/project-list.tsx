@@ -13,6 +13,13 @@ import {
 	SelectTrigger,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import {
+	Empty,
+	EmptyContent,
+	EmptyHeader,
+	EmptyIconPlaceholder,
+} from "@/components/ui/empty";
+import { Icons } from "@/components/icons";
 
 type Project = {
 	id: string;
@@ -141,21 +148,36 @@ export function ProjectList({ projects }: ProjectListProps) {
 					</div>
 				</div>
 			</div>
-			<div
-				className={
-					viewMode === "grid"
-						? "grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-8 lg:grid-cols-5"
-						: "grid gap-4"
-				}
-			>
-				{filteredAndSortedProjects.map((project) =>
-					viewMode === "grid" ? (
-						<ProjectCard key={project.id} project={project} isGrid />
-					) : (
-						<ProjectCard key={project.id} project={project} />
-					),
-				)}
-			</div>
+			{filteredAndSortedProjects.length === 0 ? (
+				<Empty>
+					<EmptyHeader>
+						<EmptyIconPlaceholder>
+							<Icons.sparkles className="size-8 shrink-0" />
+						</EmptyIconPlaceholder>
+					</EmptyHeader>
+					<EmptyContent>
+						No projects found. Adjust your search query for correct matches.
+					</EmptyContent>
+				</Empty>
+			) : (
+				<>
+					<div
+						className={
+							viewMode === "grid"
+								? "grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-8 lg:grid-cols-5"
+								: "grid gap-4"
+						}
+					>
+						{filteredAndSortedProjects.map((project) =>
+							viewMode === "grid" ? (
+								<ProjectCard key={project.id} project={project} isGrid />
+							) : (
+								<ProjectCard key={project.id} project={project} />
+							),
+						)}
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
