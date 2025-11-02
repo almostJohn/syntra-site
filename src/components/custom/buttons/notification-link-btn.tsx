@@ -1,6 +1,6 @@
 import { NextLink } from "@/components/ui/next-link";
 import type { Notification } from "@/data/get-notification.data";
-import { Icons } from "@/components/icons";
+import { Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -31,7 +31,7 @@ export function NotificationLinkBtn({
 					: `You have ${unreadNotifications.length} unread ${unreadNotifications.length === 1 ? "notification" : "notifications"}`
 			}
 		>
-			<Icons.bell className="size-6 shrink-0" />
+			<Bell className="size-6 shrink-0" />
 			{unreadNotifications.length > 0 && (
 				<span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
 					{unreadNotifications.length}
