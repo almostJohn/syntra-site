@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { NextLink } from "../ui/next-link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../icons";
-import { Bell } from "lucide-react";
 
 export function BottomNavMenu({
 	unreadNotifications,
@@ -61,7 +60,7 @@ export function BottomNavMenu({
 				}
 			>
 				<div className="relative">
-					<Bell className="size-6 shrink-0" />
+					<Icons.bell className="size-6 shrink-0" />
 					{unreadNotifications > 0 && (
 						<span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-red-500 text-center text-xs font-medium text-white">
 							{unreadNotifications}

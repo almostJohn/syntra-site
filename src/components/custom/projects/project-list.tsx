@@ -17,7 +17,7 @@ import {
 	Empty,
 	EmptyContent,
 	EmptyHeader,
-	EmptyIconPlaceholder,
+	EmptyHeading,
 } from "@/components/ui/empty";
 import { Icons } from "@/components/icons";
 
@@ -151,13 +151,12 @@ export function ProjectList({ projects }: ProjectListProps) {
 			{filteredAndSortedProjects.length === 0 ? (
 				<Empty>
 					<EmptyHeader>
-						<EmptyIconPlaceholder>
-							<Icons.sparkles className="size-8 shrink-0" />
-						</EmptyIconPlaceholder>
+						<Icons.sparkles className="size-14 shrink-0" />
 					</EmptyHeader>
-					<EmptyContent>
-						No projects found. Adjust your search query for correct matches.
-					</EmptyContent>
+					<div className="grid gap-1">
+						<EmptyHeading>No Projects Found.</EmptyHeading>
+						<EmptyContent>Try adjusting your search query.</EmptyContent>
+					</div>
 				</Empty>
 			) : (
 				<>

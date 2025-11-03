@@ -3,7 +3,7 @@ import { Icons } from "@/components/icons";
 import {
 	Empty,
 	EmptyHeader,
-	EmptyIconPlaceholder,
+	EmptyHeading,
 	EmptyContent,
 } from "@/components/ui/empty";
 import { ProjectList } from "./project-list";
@@ -15,13 +15,12 @@ export async function Projects({ userId }: { userId: string }) {
 		return (
 			<Empty>
 				<EmptyHeader>
-					<EmptyIconPlaceholder>
-						<Icons.sparkles className="size-8 shrink-0" />
-					</EmptyIconPlaceholder>
+					<Icons.sparkles className="size-14 shrink-0" />
 				</EmptyHeader>
-				<EmptyContent>
-					No projects found. Create one to get started.
-				</EmptyContent>
+				<div className="grid gap-1">
+					<EmptyHeading>No Projects Found</EmptyHeading>
+					<EmptyContent>Create one to get started.</EmptyContent>
+				</div>
 			</Empty>
 		);
 	}

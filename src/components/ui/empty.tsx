@@ -48,6 +48,13 @@ export function EmptyIconPlaceholder({
 	);
 }
 
+export function EmptyHeading({
+	className,
+	...props
+}: React.ComponentProps<"h1">) {
+	return <h1 className={cn("text-center font-medium", className)} {...props} />;
+}
+
 export function EmptyContent({
 	className,
 	...props
