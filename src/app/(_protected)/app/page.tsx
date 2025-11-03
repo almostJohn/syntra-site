@@ -5,6 +5,7 @@ import { H1 } from "@/components/ui/heading";
 import { P } from "@/components/ui/paragraph";
 import { Projects } from "@/components/custom/projects/projects";
 import { Icons } from "@/components/icons";
+import { CreateProjectModal } from "@/components/custom/modals/create-project-modal";
 
 export default async function AppPage() {
 	const currentUser = await auth.getCurrentUser();
@@ -20,6 +21,7 @@ export default async function AppPage() {
 					<H1>Projects</H1>
 					<P>Stay on top of your projects and manage them all in one place.</P>
 				</div>
+				<CreateProjectModal />
 			</div>
 			<Suspense fallback={<Loading />}>
 				<Projects userId={currentUser.id} />

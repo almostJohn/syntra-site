@@ -22,7 +22,7 @@ function ScrollArea({
 			>
 				{children}
 			</ScrollAreaPrimitive.Viewport>
-			<ScrollBar thumbClassName="bg-neutral-700" />
+			<ScrollBar thumbClassName="bg-neutral-300" />
 			<ScrollAreaPrimitive.Corner />
 		</ScrollAreaPrimitive.Root>
 	);
