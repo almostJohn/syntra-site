@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { H1 } from "@/components/ui/heading";
 import { P } from "@/components/ui/paragraph";
+import { Notifications } from "@/components/custom/notifications/notifications";
 
 export default async function NotificationsPage() {
 	const currentUser = await auth.getCurrentUser();
@@ -20,6 +21,7 @@ export default async function NotificationsPage() {
 					</P>
 				</div>
 			</div>
+			<Notifications />
 		</div>
 	);
 }

@@ -8,12 +8,12 @@ type Project = {
 	createdAt: Date;
 };
 
-type ProjectCardProps = {
+type ProjectItemProps = {
 	project: Project;
 	isGrid?: boolean;
 };
 
-export function ProjectCard({ project, isGrid }: ProjectCardProps) {
+export function ProjectItem({ project, isGrid }: ProjectItemProps) {
 	return (
 		<>
 			{!isGrid ? (

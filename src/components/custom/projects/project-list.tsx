@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ProjectCard } from "./project-card";
+import { ProjectItem } from "./project-item";
 import { Input } from "@/components/ui/input";
 import { Grid2X2, List, Search } from "lucide-react";
 import {
@@ -169,9 +169,9 @@ export function ProjectList({ projects }: ProjectListProps) {
 					>
 						{filteredAndSortedProjects.map((project) =>
 							viewMode === "grid" ? (
-								<ProjectCard key={project.id} project={project} isGrid />
+								<ProjectItem key={project.id} project={project} isGrid />
 							) : (
-								<ProjectCard key={project.id} project={project} />
+								<ProjectItem key={project.id} project={project} />
 							),
 						)}
 					</div>
