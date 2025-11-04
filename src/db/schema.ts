@@ -23,7 +23,6 @@ export const taskCategoryEnum = pgEnum("task_category", [
 
 export const notificationStatusEnum = pgEnum("notification_status", [
 	"archived",
-	"unarchived",
 	"read",
 	"unread",
 ]);

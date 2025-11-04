@@ -15,6 +15,13 @@
       "when": 1759493198683,
       "tag": "0001_romantic_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762265437182,
+      "tag": "0002_nice_titania",
+      "breakpoints": true
     }
   ]
 }

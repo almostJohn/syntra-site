@@ -34,9 +34,7 @@ export function CreateProjectForm({ handleClose }: CreateProjectFormProps) {
 				}
 			}}
 		>
-			<h2 className="text-center text-2xl font-semibold capitalize md:text-left md:normal-case">
-				Create your project
-			</h2>
+			<h2 className="text-left text-2xl font-semibold">Create your project</h2>
 			<FormField>
 				<FormLabel htmlFor="name">
 					Name <span className="text-red-500">*</span>
