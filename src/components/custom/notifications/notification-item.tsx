@@ -70,7 +70,6 @@ export function NotificationItem({
 							<>
 								<MarkAsUnreadBtn notificationId={notificationWithAuthor.id} />
 								<MarkAsReadBtn notificationId={notificationWithAuthor.id} />
-								<MarkAsArchivedBtn notificationId={notificationWithAuthor.id} />
 							</>
 						)}
 					</div>
@@ -92,7 +91,6 @@ export function NotificationItem({
 						<>
 							<MarkAsUnreadBtn notificationId={notificationWithAuthor.id} />
 							<MarkAsReadBtn notificationId={notificationWithAuthor.id} />
-							<MarkAsArchivedBtn notificationId={notificationWithAuthor.id} />
 						</>
 					)}
 				</div>
