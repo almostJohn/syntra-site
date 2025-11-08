@@ -1,17 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useControlledForm } from "@/hooks/use-controlled-form";
 import { markAsArchived } from "@/server-actions/notifications/mark-as-archived";
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
 import { useToast } from "@/context/toast-provider";
-import { Check } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 export function MarkAsArchivedBtn({
 	notificationId,
 }: {
 	notificationId: string;
 }) {
+	const router = useRouter();
 	const { addToast } = useToast();
 	const { handleSubmit, isPending } = useControlledForm({
 		initialValues: {},
@@ -23,6 +24,8 @@ export function MarkAsArchivedBtn({
 				addToast({ type: "error", description: errorMessage });
 			}
 
+			router.refresh();
+
 			addToast({ type: "success", description: successMessage });
 		},
 	});
@@ -31,7 +34,7 @@ export function MarkAsArchivedBtn({
 		<Button
 			variant="ghost"
 			size="icon"
-			className="size-8 rounded-lg px-2"
+			className="size-8 rounded-lg bg-blue-500/10 px-2 shadow-md hover:bg-blue-500/20"
 			disabled={isPending}
 			onClick={handleSubmit}
 			title="Mark As Archived"
@@ -39,7 +42,7 @@ export function MarkAsArchivedBtn({
 			{isPending ? (
 				<Icons.loading className="size-6 shrink-0" />
 			) : (
-				<Check className="size-6 shrink-0" />
+				<Icons.archive className="size-6 shrink-0 text-neutral-700" />
 			)}
 		</Button>
 	);

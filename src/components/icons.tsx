@@ -144,4 +144,52 @@ export const Icons = {
 			</svg>
 		);
 	},
+	archive: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="currentColor"
+					d="m12 18l4-4l-1.4-1.4l-1.6 1.6V10h-2v4.2l-1.6-1.6L8 14zM5 8v11h14V8zm0 13q-.825 0-1.412-.587T3 19V6.525q0-.35.113-.675t.337-.6L4.7 3.725q.275-.35.687-.538T6.25 3h11.5q.45 0 .863.188t.687.537l1.25 1.525q.225.275.338.6t.112.675V19q0 .825-.587 1.413T19 21zm.4-15h13.2l-.85-1H6.25zm6.6 7.5"
+				/>
+			</svg>
+		);
+	},
+	unread: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="currentColor"
+					d="M4 17q-.825 0-1.412-.587T2 15V7.15q0-.375.213-.737T2.8 5.85L10.5 2l7.55 3.85q.3.15.513.475T18.85 7h-2.925L10.5 4.25L4 7.475zm3 4q-.825 0-1.412-.587T5 19v-9q0-.825.588-1.412T7 8h13q.825 0 1.413.588T22 10v9q0 .825-.587 1.413T20 21zm6.5-5.65L7 12v7h13v-7zm0-2L20 10H7zM20 10H7z"
+				/>
+			</svg>
+		);
+	},
+	read: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<path
+					fill="currentColor"
+					d="m15.95 22l-4.25-4.25l1.4-1.4l2.85 2.85l5.65-5.65l1.4 1.4zM12 11l8-5H4zm0 2L4 8v10h5.15l2 2H4q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v4.35l-2 2V8zm0 0"
+				/>
+			</svg>
+		);
+	},
+	inbox: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<g fill="currentColor">
+					<path d="M5 13h3a2 2 0 0 1 2 2h4a2 2 0 0 1 2-2h3V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v7zm14 2h-3a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2H5v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3zM3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6z" />
+				</g>
+			</svg>
+		);
+	},
+	checkLine: (props: IconProps) => {
+		return (
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+				<g fill="currentColor">
+					<path d="M19.707 6.293a1 1 0 0 1 0 1.414l-10 10a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L9 15.586l9.293-9.293a1 1 0 0 1 1.414 0z" />
+				</g>
+			</svg>
+		);
+	},
 };
