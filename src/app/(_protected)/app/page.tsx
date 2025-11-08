@@ -32,8 +32,11 @@ export default async function AppPage() {
 
 function Loading() {
 	return (
-		<div className="mx-auto flex items-center justify-center py-24 md:py-32 lg:py-40">
-			<Icons.loading className="size-16 shrink-0 text-blue-500" />
+		<div className="mx-auto flex flex-col items-center justify-center gap-2 py-24 md:py-32 lg:py-40">
+			<div className="mx-auto flex justify-center">
+				<Icons.loading className="size-18 shrink-0 text-neutral-500" />
+			</div>
+			<p className="text-neutral-500">Loading projects...</p>
 		</div>
 	);
 }
