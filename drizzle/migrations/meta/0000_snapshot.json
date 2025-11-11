@@ -1,5 +1,5 @@
 {
-  "id": "071a12ec-77e6-4bb9-9f52-25ab8b67d690",
+  "id": "5a417c5c-a82d-4f80-965f-5bbcf526c109",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,19 +14,18 @@
           "primaryKey": true,
           "notNull": true
         },
-        "content": {
-          "name": "content",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "status": {
-          "name": "status",
-          "type": "notification_status",
-          "typeSchema": "public",
+        "is_read": {
+          "name": "is_read",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'unread'"
+          "default": false
         },
         "user_id": {
           "name": "user_id",
@@ -36,13 +35,6 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -91,7 +83,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -140,20 +132,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "subtitle": {
-          "name": "subtitle",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "content": {
-          "name": "content",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -166,20 +152,6 @@
           "notNull": true,
           "default": "'todo'"
         },
-        "priority": {
-          "name": "priority",
-          "type": "task_priority",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category": {
-          "name": "category",
-          "type": "task_category",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
         "project_id": {
           "name": "project_id",
           "type": "text",
@@ -190,7 +162,7 @@
           "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -264,6 +236,24 @@
           "primaryKey": false,
           "notNull": true
         },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar_size": {
+          "name": "avatar_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -297,44 +287,13 @@
     }
   },
   "enums": {
-    "public.notification_status": {
-      "name": "notification_status",
-      "schema": "public",
-      "values": [
-        "archived",
-        "unarchived",
-        "read",
-        "unread"
-      ]
-    },
-    "public.task_category": {
-      "name": "task_category",
-      "schema": "public",
-      "values": [
-        "feature",
-        "bug",
-        "docs",
-        "refactor"
-      ]
-    },
-    "public.task_priority": {
-      "name": "task_priority",
-      "schema": "public",
-      "values": [
-        "critical",
-        "high",
-        "medium",
-        "low"
-      ]
-    },
     "public.task_status": {
       "name": "task_status",
       "schema": "public",
       "values": [
-        "backlog",
         "todo",
         "in_progress",
-        "complete"
+        "done"
       ]
     }
   },

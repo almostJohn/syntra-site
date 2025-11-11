@@ -1,20 +1,17 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap rounded-lg text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+	"inline-flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
 	{
 		variants: {
 			variant: {
-				default: "bg-blue-500 text-white hover:bg-blue-600",
+				default: "bg-neutral-900 text-neutral-100 hover:bg=neutral-900/80",
 				destructive: "bg-red-500 text-white hover:bg-red-600",
-				secondary:
-					"border border-neutral-300 bg-neutral-200/60 text-neutral-900 hover:bg-neutral-200",
-				outline:
-					"border border-neutral-300 text-neutral-900 hover:bg-neutral-200",
+				secondary: "bg-neutral-100 text-neutral-900 hover:bg-neutral-100/90",
+				outline: "border border-neutral-300 hover:bg-neutral-200",
 				ghost: "hover:bg-neutral-200",
 				link: "underline-offset-4 hover:underline",
 			},

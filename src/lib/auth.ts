@@ -1,132 +1,139 @@
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
-import { env } from "@/config/env";
-import { MAX_TRUST_ACCOUNT_AGE } from "./constants";
 import type { NextRequest } from "next/server";
-import { getUserById } from "@/data/get-user.data";
+import type { CurrentUser, AuthPayload } from "@/types";
+import { db } from "@/db/sql";
+import { users as usersTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-const secret = new TextEncoder().encode(env.APP_SECRET_KEY);
-
-type Auth = {
-	userId: string;
-	username: string;
-};
-
-type AuthResponse = {
-	success: boolean;
-	message: string;
-};
-
-type CurrentUser = {
-	id: string;
-	username: string;
-	avatar: string;
-	createdAt: Date;
-	updatedAt: Date;
-};
+const secret = new TextEncoder().encode(process.env.APP_SECRET_KEY);
 
 export const auth = {
-	async signIn(payload: Auth): Promise<AuthResponse> {
+	login: async <T extends AuthPayload = AuthPayload>(payload: T) => {
 		try {
-			const token = await new SignJWT(payload)
+			const sessionToken = await new SignJWT(payload)
 				.setProtectedHeader({ alg: "HS256" })
 				.setExpirationTime("7d")
 				.setIssuedAt()
 				.sign(secret);
 
 			const cookieStore = await cookies();
-			cookieStore.set(env.APP_COOKIE_NAME, token, {
+			cookieStore.set(process.env.APP_COOKIE_NAME!, sessionToken, {
 				httpOnly: true,
 				sameSite: "lax",
-				secure: env.NODE_ENV === "production",
+				secure: process.env.NODE_ENV === "production",
 				path: "/",
-				maxAge: MAX_TRUST_ACCOUNT_AGE,
+				maxAge: 60 * 60 * 24 * 7,
 			});
 
 			return {
-				success: true,
-				message: "Sign in successful.",
+				message: "Log in successful.",
 			};
-		} catch {
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Something went wrong.";
+			console.error("[LOGIN Request Error]", error);
 			return {
-				success: false,
-				message: "There was an error signing in. Please try again.",
+				error: message,
 			};
 		}
 	},
 
-	async signOut(): Promise<AuthResponse> {
+	logout: async () => {
 		try {
 			const cookieStore = await cookies();
-			cookieStore.delete(env.APP_COOKIE_NAME);
+			cookieStore.delete(process.env.APP_COOKIE_NAME!);
 
 			return {
-				success: true,
-				message: "Sign out successful.",
+				message: "Log out successful.",
 			};
-		} catch {
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Something went wrong.";
+			console.error("[LOGOUT Request Error]", error);
 			return {
-				success: false,
-				message: "There was an error signing out. Please try again.",
+				error: message,
 			};
 		}
 	},
 
-	async check(request?: NextRequest): Promise<boolean> {
+	middlewareCheck: async (request?: NextRequest) => {
 		try {
 			let token: string | undefined;
 
 			const cookieStore = await cookies();
 
 			if (request) {
-				token = request.cookies.get(env.APP_COOKIE_NAME)?.value;
+				token = request.cookies.get(process.env.APP_COOKIE_NAME!)?.value;
 			} else {
-				token = cookieStore.get(env.APP_COOKIE_NAME)?.value;
+				token = cookieStore.get(process.env.APP_COOKIE_NAME!)?.value;
 			}
 
-			if (!token) {
-				return false;
-			}
+			if (!token) return false;
 
-			await jwtVerify<Auth>(token, secret);
+			await jwtVerify<AuthPayload>(token, secret);
 
 			return true;
-		} catch {
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Something went wrong.";
+			console.error("[MIDDLEWARE CHECK Request Error]", message);
 			return false;
 		}
 	},
 
-	async getCurrentUser(): Promise<CurrentUser | null> {
+	getCurrentUser: async () => {
 		try {
 			const cookieStore = await cookies();
 
-			const token = cookieStore.get(env.APP_COOKIE_NAME)?.value;
+			const sessionToken = cookieStore.get(process.env.APP_COOKIE_NAME!)?.value;
 
-			if (!token) {
-				return null;
+			if (!sessionToken) {
+				return {
+					data: null,
+					error: "Session token missing.",
+				};
 			}
 
-			const { payload } = await jwtVerify<Auth>(token, secret);
+			const { payload } = await jwtVerify<AuthPayload>(sessionToken, secret);
 
 			if (!payload) {
-				return null;
+				return {
+					data: null,
+					error: "Failed to parse auth payload.",
+				};
 			}
 
-			const user = await getUserById(payload.userId);
+			const [user] = await db
+				.select({
+					id: usersTable.id,
+					username: usersTable.username,
+					displayName: usersTable.displayName,
+					avatar: usersTable.avatar,
+					createdAt: usersTable.createdAt,
+				})
+				.from(usersTable)
+				.where(eq(usersTable.id, payload.userId))
+				.limit(1);
 
 			if (!user) {
-				return null;
+				return {
+					data: null,
+					error: "User not found.",
+				};
 			}
 
 			return {
-				id: user.id,
-				username: user.username,
-				avatar: user.avatar ?? "",
-				createdAt: user.createdAt,
-				updatedAt: user.updatedAt,
+				data: user as CurrentUser,
 			};
-		} catch {
-			return null;
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Something went wrong.";
+			console.error("[GET CURRENT USER Request Error]", error);
+			return {
+				data: null,
+				error: message,
+			};
 		}
 	},
 };
