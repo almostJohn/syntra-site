@@ -4,16 +4,16 @@ import {
 	type PropsWithChildren,
 	unstable_ViewTransition as ViewTransition,
 } from "react";
-import { siteConfig } from "@/config/site";
+import { siteSettings } from "@/lib/site-settings";
 import { cn } from "@/lib/utils";
 import { geist } from "@/lib/fonts";
-import { ToastProvider } from "@/context/toast-provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-	title: siteConfig.title,
-	description: siteConfig.description,
+	title: siteSettings.title,
+	description: siteSettings.description,
 	appleWebApp: {
-		title: siteConfig.name,
+		title: siteSettings.name,
 	},
 	icons: {
 		other: [
@@ -24,35 +24,36 @@ export const metadata: Metadata = {
 			},
 		],
 	},
-	applicationName: siteConfig.name,
+	applicationName: siteSettings.name,
 	openGraph: {
-		siteName: siteConfig.name,
+		siteName: siteSettings.name,
 		type: "website",
-		title: siteConfig.title,
-		description: siteConfig.description,
+		title: siteSettings.title,
+		description: siteSettings.description,
 	},
 	twitter: {
 		card: "summary_large_image",
-		creator: siteConfig.creator,
-		title: siteConfig.title,
-		description: siteConfig.description,
+		creator: siteSettings.creator,
+		title: siteSettings.title,
+		description: siteSettings.description,
 	},
-	creator: siteConfig.creator,
+	creator: siteSettings.creator,
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<ToastProvider>
-			<html lang="en" suppressHydrationWarning>
-				<body
-					className={cn(
-						`bg-neutral-100 text-neutral-900 antialiased`,
-						geist.className,
-					)}
-				>
-					<ViewTransition>{children}</ViewTransition>
-				</body>
-			</html>
-		</ToastProvider>
+		<html lang="en" suppressHydrationWarning>
+			<body
+				className={cn(
+					`min-h-svh bg-neutral-100 text-neutral-950 antialiased`,
+					geist.className,
+				)}
+			>
+				<ViewTransition>
+					{children}
+					<Toaster position="top-center" />
+				</ViewTransition>
+			</body>
+		</html>
 	);
 }

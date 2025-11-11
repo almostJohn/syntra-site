@@ -1,4 +1,20 @@
-### Notice
+# 🚀 Syntra
 
-You are allowed to copy and use this code only under the terms of the included license. This project is licensed under the MIT License and is authored by [@almostJohn](https://github.com/almostJohn).
-Any use of this code must retain proper attribution. Unauthorized or uncredited use is strictly discouraged.
+A personal kanban-style task management system built for individual productivity. Simple, focused, and designed exclusively for my own use.
+
+---
+
+## 📁 Project Structure
+
+```yaml
+├── src/ # root directory
+    ├── actions/ # server actions (POST actions only)
+    ├── app/ # pages directory
+    ├── components/ # UI components, business logic, etc
+    ├── db/ # database directory, holds schema file
+    ├── hooks/ # custom react hooks
+    ├── lib/ # utility/helpers/etc
+    ├── styles/ # holds globals.css for global styling
+    ├── middleware.ts # next.js middleware
+    ├── types.ts # holds all type declaration regarding the project
+```
