@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
 
 	if (DISABLED_ROUTES_AFTER_LOGGED_IN.includes(pathname)) {
 		if (isAuthenticated) {
-			return NextResponse.redirect(new URL("/app", request.url));
+			return NextResponse.redirect(new URL("/dashboard", request.url));
 		}
 	}
 

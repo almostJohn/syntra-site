@@ -1,10 +1,15 @@
-export type CurrentUser = {
+export type User = {
 	id: string;
 	username: string;
-	displayName: string;
+	password: string;
+	displayName: string | null;
 	avatar: string | null;
+	avatarSize: number | null;
 	createdAt: Date;
+	updatedAt: Date;
 };
+
+export type CurrentUser = Omit<User, "password" | "avatarSize" | "updatedAt">;
 
 export type AuthPayload = {
 	userId: string;
