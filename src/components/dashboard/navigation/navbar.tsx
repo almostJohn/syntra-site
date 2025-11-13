@@ -44,9 +44,9 @@ export async function Navbar({ user }: NavbarProps) {
 			<div className="flex h-18 items-center justify-between px-4 sm:px-6 md:px-8">
 				<Link
 					href="/dashboard"
-					className="text-2xl leading-tight font-bold tracking-tighter"
+					className="text-3xl leading-tight font-bold tracking-tighter"
 				>
-					Syntra
+					syntra
 				</Link>
 				<div className="flex items-center justify-end gap-3">
 					<Link
