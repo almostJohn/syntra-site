@@ -17,7 +17,7 @@ export function LoginForm() {
 		action: login,
 		initialState: {} as ActionState,
 		options: {
-			redirectTo: "/",
+			redirectTo: "/dashboard",
 		},
 	});
 

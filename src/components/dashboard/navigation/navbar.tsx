@@ -7,6 +7,7 @@ import { db } from "@/db/sql";
 import { notifications as notificationsTable } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { UserDropdown } from "../dropdown/user-dropdown";
 
 type CurrentUser = Omit<
 	User,
@@ -47,7 +48,7 @@ export async function Navbar({ user }: NavbarProps) {
 				>
 					Syntra
 				</Link>
-				<div className="flex items-center justify-end gap-2.5">
+				<div className="flex items-center justify-end gap-3">
 					<Link
 						href="/dashboard"
 						className={cn(
@@ -71,6 +72,7 @@ export async function Navbar({ user }: NavbarProps) {
 							</div>
 						)}
 					</Link>
+					<UserDropdown user={user} />
 				</div>
 			</div>
 		</header>
