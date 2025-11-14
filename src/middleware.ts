@@ -9,20 +9,20 @@ const DISABLED_ROUTES_AFTER_LOGGED_OUT = [
 ];
 
 export async function middleware(request: NextRequest) {
-	const isAuthenticated = await auth.middlewareCheck(request);
+	const isAuthorized = await auth.checkForMiddleware(request);
 
 	const { pathname } = request.nextUrl;
 
 	if (
 		DISABLED_ROUTES_AFTER_LOGGED_OUT.some((route) => pathname.startsWith(route))
 	) {
-		if (!isAuthenticated) {
+		if (!isAuthorized) {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
 	}
 
 	if (DISABLED_ROUTES_AFTER_LOGGED_IN.includes(pathname)) {
-		if (isAuthenticated) {
+		if (isAuthorized) {
 			return NextResponse.redirect(new URL("/dashboard", request.url));
 		}
 	}

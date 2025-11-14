@@ -12,13 +12,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { formatNameToInitials } from "@/lib/formatting";
 import { getAvatarURL } from "@/lib/utils";
-import type { User, ActionState } from "@/types";
+import type { ActionState, CurrentUser } from "@/types";
 import { Loader } from "lucide-react";
-
-type CurrentUser = Omit<
-	User,
-	"password" | "avatarSize" | "createdAt" | "updatedAt"
->;
 
 type UserDropdownProps = {
 	user: CurrentUser;

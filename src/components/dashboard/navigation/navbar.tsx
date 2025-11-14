@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Bell } from "lucide-react";
 import { and, eq, sql } from "drizzle-orm";
-import type { User } from "@/types";
+import type { CurrentUser } from "@/types";
 import { request } from "@/lib/request";
 import { db } from "@/db/sql";
 import { notifications as notificationsTable } from "@/db/schema";
@@ -9,18 +9,13 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserDropdown } from "../dropdown/user-dropdown";
 
-type CurrentUser = Omit<
-	User,
-	"password" | "avatarSize" | "createdAt" | "updatedAt"
->;
-
 type NavbarProps = {
 	user: CurrentUser;
 };
 
 export async function Navbar({ user }: NavbarProps) {
 	const { data: response } = await request.get({
-		action: async () => {
+		fn: async () => {
 			const [{ count }] = await db
 				.select({
 					count: sql<number>`count(*)`,

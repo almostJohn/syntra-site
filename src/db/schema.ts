@@ -31,7 +31,9 @@ export const users = pgTable("users", {
 export const projects = pgTable("projects", {
 	id: text("id").primaryKey().notNull(),
 	name: text("name").notNull(),
-	userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+	userId: text("user_id")
+		.references(() => users.id, { onDelete: "cascade" })
+		.notNull(),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()
 		.notNull(),

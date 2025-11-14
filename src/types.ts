@@ -25,3 +25,44 @@ export type ActionState = {
 	message: string | undefined;
 	type: MessageType;
 };
+
+export type Project = {
+	id: string;
+	name: string;
+	userId: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type Task = {
+	id: string;
+	name: string;
+	description: string | null;
+	status: "todo" | "in_progress" | "done";
+	projectId: string;
+	userId: string;
+	createdAt: Date;
+	updatedAt: Date;
+};
+
+export type Notification = {
+	id: string;
+	description: string;
+	isRead: boolean;
+	userId: string;
+	createdAt: Date;
+};
+
+export type Author = Pick<User, "id" | "username" | "displayName">;
+
+export type ProjectWithAuthor = Project & {
+	author: Author;
+};
+
+export type TaskWithAuthor = Task & {
+	author: Author;
+};
+
+export type NotificationWithAuthor = Notification & {
+	author: Author;
+};

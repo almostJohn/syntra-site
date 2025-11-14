@@ -57,7 +57,7 @@ export const auth = {
 		}
 	},
 
-	middlewareCheck: async (request?: NextRequest) => {
+	checkForMiddleware: async (request?: NextRequest) => {
 		try {
 			let token: string | undefined;
 

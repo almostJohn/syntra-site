@@ -49,7 +49,7 @@ export async function login(
 
 	try {
 		const { data: response } = await request.get({
-			action: async () => {
+			fn: async () => {
 				const [user] = await db
 					.select({
 						id: usersTable.id,

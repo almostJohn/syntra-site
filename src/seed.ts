@@ -17,7 +17,7 @@ config();
 		const password = process.env.APP_SEED_PASSWORD!;
 
 		const { data: response } = await request.get({
-			action: async () => {
+			fn: async () => {
 				const [user] = await db
 					.select({ id: usersTable.id, username: usersTable.username })
 					.from(usersTable)
@@ -40,7 +40,7 @@ config();
 
 		await request.post({
 			body: { username, password, displayName },
-			action: async ({ body }) => {
+			fn: async ({ body }) => {
 				const hashedPassword = await hashText(body!.password, 12);
 				await db.insert(usersTable).values({
 					id: randomUUID(),

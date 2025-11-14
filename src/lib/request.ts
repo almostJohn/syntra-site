@@ -11,7 +11,7 @@ type RequestParams<
 > = {
 	body?: TBody;
 	options?: TOptions;
-	action: (args: { body?: TBody; options?: TOptions }) => Promise<TResponse>;
+	fn: (args: { body?: TBody; options?: TOptions }) => Promise<TResponse>;
 };
 
 export const request = {
@@ -19,7 +19,7 @@ export const request = {
 		params: RequestParams<undefined, TOptions, TResponse>,
 	): Promise<ResponseResult<TResponse>> => {
 		try {
-			const data = await params.action({
+			const data = await params.fn({
 				body: undefined,
 				options: params.options as TOptions,
 			});
@@ -45,7 +45,7 @@ export const request = {
 		params: RequestParams<TBody, TOptions, TResponse>,
 	): Promise<ResponseResult<TResponse>> => {
 		try {
-			const data = await params.action({
+			const data = await params.fn({
 				body: params.body as TBody,
 				options: params.options as TOptions,
 			});
@@ -71,7 +71,7 @@ export const request = {
 		params: RequestParams<TBody, TOptions, TResponse>,
 	): Promise<ResponseResult<TResponse>> => {
 		try {
-			const data = await params.action({
+			const data = await params.fn({
 				body: params.body as TBody,
 				options: params.options as TOptions,
 			});
