@@ -10,7 +10,7 @@ import { SideNav } from "@/components/dashboard/navigation/side-nav";
 export const metadata: Metadata = {
 	title: {
 		default: "Dashboard",
-		template: "%s - Dashboard",
+		template: "%s | Dashboard",
 	},
 	description: siteSettings.description,
 	appleWebApp: {
