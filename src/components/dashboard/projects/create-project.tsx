@@ -86,7 +86,7 @@ export function CreateProject() {
 											Creating...
 										</>
 									) : (
-										"Create Project"
+										"Create"
 									)}
 								</Button>
 							</div>
