@@ -21,7 +21,7 @@ export async function Projects({ userId }: { userId: string }) {
 
 	if (response?.projects.length === 0) {
 		return (
-			<Empty className="mt-24">
+			<Empty className="mt-24 border-none">
 				<EmptyHeading>No Projects</EmptyHeading>
 				<EmptyText>Create a new project to get started.</EmptyText>
 			</Empty>
