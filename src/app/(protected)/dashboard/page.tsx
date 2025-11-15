@@ -1,5 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { Projects } from "@/components/dashboard/projects/projects";
+import { Loader } from "lucide-react";
+import { CreateProject } from "@/components/dashboard/projects/create-project";
 
 export default async function Page() {
 	const { data: currentUser } = await auth.getCurrentUser();
@@ -15,7 +19,19 @@ export default async function Page() {
 						Stay on top of your projects and manage them all in one place.
 					</p>
 				</div>
+				<CreateProject />
 			</div>
+			<Suspense fallback={<Loading />}>
+				<Projects userId={currentUser.id} />
+			</Suspense>
+		</div>
+	);
+}
+
+function Loading() {
+	return (
+		<div className="flex items-center justify-center py-20">
+			<Loader className="animate-spin text-neutral-500" />
 		</div>
 	);
 }
