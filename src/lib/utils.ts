@@ -15,8 +15,22 @@ export function enforceCasing(value: string) {
 		.replace(/[^a-z0-9-]/g, "");
 }
 
-export function getAvatarURL(base64String: string): string {
-	return `data:image/png;base64,${base64String}`;
+export function getAvatarURL(
+	base64String: string,
+	type: "image/jpeg" | "image/png" | "image/gif" | "image/webp",
+): string {
+	switch (type) {
+		case "image/jpeg":
+			return `data:image/jpeg;base64,${base64String}`;
+		case "image/png":
+			return `data:image/png;base64,${base64String}`;
+		case "image/gif":
+			return `data:image/gif;base64,${base64String}`;
+		case "image/webp":
+			return `data:image/webp;base64,${base64String}`;
+		default:
+			throw new Error("Unsupported image type");
+	}
 }
 
 export function randomUUID() {

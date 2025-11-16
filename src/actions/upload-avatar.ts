@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
-import { ActionState, MessageType } from "@/types";
+import { type ActionState, MessageType } from "@/types";
 import { request } from "@/lib/request";
 import { db } from "@/db/sql";
 import {
