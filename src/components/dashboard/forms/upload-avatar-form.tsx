@@ -41,7 +41,7 @@ export function UploadAvatarForm({ user }: UploadAvatarFormProps) {
 			<AlertDialogTrigger className="group cursor-pointer">
 				<Avatar className="size-16 rounded-full border border-neutral-300">
 					<AvatarImage
-						src={getAvatarURL(user.avatar ?? "")}
+						src={getAvatarURL(user.avatar ?? "", "image/png")}
 						alt={user.username ?? "User Avatar"}
 						className="rounded-full"
 					/>
@@ -70,7 +70,7 @@ export function UploadAvatarForm({ user }: UploadAvatarFormProps) {
 					<div className="mx-auto mb-3 flex justify-center">
 						<Avatar className="size-26 rounded-full border border-neutral-300">
 							<AvatarImage
-								src={getAvatarURL(user.avatar ?? "")}
+								src={getAvatarURL(user.avatar ?? "", "image/png")}
 								alt={user.username ?? "User Avatar"}
 								className="rounded-full"
 							/>
