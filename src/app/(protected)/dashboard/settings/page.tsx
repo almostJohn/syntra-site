@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { UploadAvatarForm } from "@/components/dashboard/forms/upload-avatar-form";
 import { UpdateUsernameForm } from "@/components/dashboard/forms/update-username-form";
 import { UpdateDisplayNameForm } from "@/components/dashboard/forms/update-display-name-form";
+import { UpdatePasswordForm } from "@/components/dashboard/forms/update-password-form";
+import { DeleteAccountForm } from "@/components/dashboard/forms/delete-account-form";
 
 export const metadata = {
 	title: "Settings",
@@ -50,34 +52,10 @@ export default async function Page() {
 				<UpdateUsernameForm user={currentUser} />
 
 				{/* Password Section */}
-				<div className="flex flex-col rounded-md border border-neutral-300 shadow-sm">
-					<div className="flex flex-col gap-4 rounded-t-md border-b border-neutral-300 bg-white p-6">
-						<h2 className="text-lg font-semibold">Password</h2>
-						<p className="text-sm">Change your account password here.</p>
-					</div>
-					<div className="mt-auto flex flex-col items-center justify-center gap-2 rounded-b-md bg-neutral-100/95 p-6 md:flex-row md:justify-between">
-						<p className="text-center text-sm text-neutral-500 md:text-left">
-							For security reasons, please choose a strong password.
-						</p>
-					</div>
-				</div>
+				<UpdatePasswordForm />
 
 				{/* Danger Zone Section */}
-				<div className="flex flex-col rounded-md border border-red-200 shadow-sm">
-					<div className="flex flex-col gap-4 rounded-t-md border-b border-red-200 bg-white p-6">
-						<h2 className="text-lg font-semibold">Delete Account</h2>
-						<p className="text-sm">
-							Permanently remove your Personal Account and all of its contents
-							from the Syntra platform. This action is not reversible, so please
-							proceed with caution.
-						</p>
-					</div>
-					<div className="mt-auto flex flex-col items-center justify-center gap-2 rounded-b-md bg-red-100 p-6 md:flex-row md:justify-between">
-						<p className="text-center text-sm text-red-700 md:text-left">
-							Be cautious when making changes here.
-						</p>
-					</div>
-				</div>
+				<DeleteAccountForm user={currentUser} />
 			</div>
 		</div>
 	);

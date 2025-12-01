@@ -52,12 +52,8 @@ export function UploadAvatarForm({ user }: UploadAvatarFormProps) {
 			</AlertDialogTrigger>
 			<AlertDialogContent className="w-full rounded-md border-neutral-300 bg-neutral-100/95 p-0 sm:max-w-xl">
 				<VisuallyHidden>
-					<AlertDialogTitle className="text-lg font-semibold">
-						Hidden Title
-					</AlertDialogTitle>
-					<AlertDialogDescription className="mt-4 mb-6">
-						Hidden Description
-					</AlertDialogDescription>
+					<AlertDialogTitle>Hidden Title</AlertDialogTitle>
+					<AlertDialogDescription>Hidden Description</AlertDialogDescription>
 				</VisuallyHidden>
 				<Form
 					action={(formData) => {
