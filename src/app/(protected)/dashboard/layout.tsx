@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Navbar } from "@/components/dashboard/navigation/navbar";
 import { SideNav } from "@/components/dashboard/navigation/side-nav";
+import { BottomNav } from "@/components/dashboard/navigation/bottom-nav";
 
 export const metadata: Metadata = {
 	title: {
@@ -47,6 +48,7 @@ export default async function Layout({ children }: PropsWithChildren) {
 						{children}
 					</div>
 				</ScrollArea>
+				<BottomNav user={currentUser} />
 			</div>
 		</div>
 	);
