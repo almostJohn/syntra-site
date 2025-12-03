@@ -45,7 +45,7 @@ export async function Navbar({ user }: NavbarProps) {
 				</Link>
 				<div className="flex items-center justify-end gap-3">
 					<Link
-						href="/dashboard"
+						href="/dashboard/notifications"
 						className={cn(
 							buttonVariants({
 								variant: "outline",
