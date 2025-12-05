@@ -1,3 +1,4 @@
+import { Notifications } from "@/components/dashboard/notifications/notifications";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -20,6 +21,7 @@ export default async function Page() {
 					View and manage your notifications here.
 				</p>
 			</div>
+			<Notifications userId={currentUser.id} />
 		</div>
 	);
 }

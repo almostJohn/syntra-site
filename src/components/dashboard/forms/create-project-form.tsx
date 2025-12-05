@@ -18,7 +18,7 @@ import {
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type { ActionState } from "@/types";
 
-export function CreateProject() {
+export function CreateProjectForm() {
 	const [interacted, setInteracted] = useState(false);
 	const { formAction, isPending } = useServerAction({
 		action: createProject,
