@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Projects } from "@/components/dashboard/projects/projects";
 import { Loader } from "lucide-react";
-import { CreateProject } from "@/components/dashboard/projects/create-project";
+import { CreateProjectForm } from "@/components/dashboard/forms/create-project-form";
 
 export default async function Page() {
 	const { data: currentUser } = await auth.getCurrentUser();
@@ -19,7 +19,7 @@ export default async function Page() {
 						Stay on top of your projects and manage them all in one place.
 					</p>
 				</div>
-				<CreateProject />
+				<CreateProjectForm />
 			</div>
 			<Suspense fallback={<Loading />}>
 				<Projects userId={currentUser.id} />

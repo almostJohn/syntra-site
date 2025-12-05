@@ -6,7 +6,7 @@ import { Bell, Folder, Settings2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type NavItemsProps = {
-	notificationCount?: number;
+	notificationCount: number;
 };
 
 export function NavItems({ notificationCount }: NavItemsProps) {
@@ -17,10 +17,10 @@ export function NavItems({ notificationCount }: NavItemsProps) {
 			<Link
 				href="/dashboard"
 				className={cn(
-					"flex items-center justify-center rounded-lg p-3 transition-colors duration-200",
+					"flex items-center justify-center rounded-md p-2 transition-colors duration-200",
 					pathname === "/dashboard"
 						? "border border-teal-500/30 bg-teal-500/10 text-teal-500"
-						: "border border-neutral-300 text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
+						: "text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
 				)}
 				title="Projects"
 				aria-label="Projects"
@@ -30,10 +30,10 @@ export function NavItems({ notificationCount }: NavItemsProps) {
 			<Link
 				href="/dashboard/settings"
 				className={cn(
-					"flex items-center justify-center rounded-lg p-3 transition-colors duration-200",
+					"flex items-center justify-center rounded-md p-2 transition-colors duration-200",
 					pathname === "/dashboard/settings"
 						? "border border-teal-500/30 bg-teal-500/10 text-teal-500"
-						: "border border-neutral-300 text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
+						: "text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
 				)}
 				title="Settings"
 				aria-label="Settings"
@@ -43,10 +43,10 @@ export function NavItems({ notificationCount }: NavItemsProps) {
 			<Link
 				href="/dashboard/notifications"
 				className={cn(
-					"relative flex items-center justify-center rounded-lg p-3 transition-colors duration-200",
+					"flex items-center justify-center rounded-md p-2 transition-colors duration-200",
 					pathname === "/dashboard/notifications"
 						? "border border-teal-500/30 bg-teal-500/10 text-teal-500"
-						: "border border-neutral-300 text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
+						: "text-neutral-500 hover:border-teal-500/30 hover:bg-teal-500/10 hover:text-teal-500",
 				)}
 				title={
 					notificationCount && notificationCount === 0
@@ -55,12 +55,14 @@ export function NavItems({ notificationCount }: NavItemsProps) {
 				}
 				aria-label="Notifications"
 			>
-				<Bell className="size-6 shrink-0" />
-				{notificationCount && notificationCount > 0 && (
-					<div className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-teal-500 text-center text-xs font-medium text-white">
-						{notificationCount}
-					</div>
-				)}
+				<div className="relative">
+					<Bell className="size-6 shrink-0" />
+					{notificationCount > 0 && (
+						<div className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-teal-500 text-center text-xs font-medium text-white">
+							{notificationCount}
+						</div>
+					)}
+				</div>
 			</Link>
 		</nav>
 	);
