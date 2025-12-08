@@ -1,6 +1,6 @@
 import type { Notification } from "@/types";
 import { formatDate } from "@/lib/formatting";
-import { CheckCheck, Clock } from "lucide-react";
+import { CheckCheck, Clock, BellDot } from "lucide-react";
 import { MarkNotificationAsRead } from "../forms/mark-notification-as-read";
 
 type NotificationItemProps = {
@@ -9,11 +9,11 @@ type NotificationItemProps = {
 
 function NotificationBadge({ isRead }: { isRead: boolean }) {
 	return isRead ? (
-		<div className="inline-flex items-center justify-center rounded-md border border-neutral-300 bg-neutral-200 px-2 py-0.5 text-xs font-semibold whitespace-nowrap shadow-sm">
+		<div className="inline-flex items-center justify-center rounded-md border border-green-300 bg-green-100 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-green-700 shadow-sm">
 			Done
 		</div>
 	) : (
-		<div className="inline-flex items-center justify-center rounded-md border border-teal-500 bg-teal-500/30 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-teal-500 shadow-sm">
+		<div className="inline-flex items-center justify-center rounded-md border border-blue-300 bg-blue-100 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-blue-700 shadow-sm">
 			New
 		</div>
 	);
@@ -25,9 +25,9 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 			<div className="flex flex-col gap-4 md:flex-row md:justify-between">
 				<div className="flex items-center gap-6">
 					{notification.isRead ? (
-						<CheckCheck className="mt-1 size-5 shrink-0 text-emerald-500" />
+						<CheckCheck className="size-5 shrink-0 text-green-500" />
 					) : (
-						<div className="mt-1 size-2 shrink-0 animate-pulse rounded-full bg-teal-500" />
+						<BellDot className="size-5 shrink-0 text-blue-500" />
 					)}
 					<div className="grid gap-2">
 						<div className="max-w-sm">
@@ -38,7 +38,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
 				</div>
 				<div className="flex flex-col gap-3">
 					{!notification.isRead && (
-						<div className="flex items-center justify-end">
+						<div className="flex items-center justify-start md:justify-end">
 							<MarkNotificationAsRead notificationId={notification.id} />
 						</div>
 					)}
