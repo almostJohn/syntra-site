@@ -9,7 +9,7 @@ import {
 	projects as projectsTable,
 } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
-import { type ActionState, MessageType } from "@/types";
+import { type ActionState, MessageType, type TaskStatus } from "@/types";
 import { request } from "@/lib/request";
 import { randomUUID } from "@/lib/utils";
 
@@ -115,6 +115,133 @@ export async function createTask(
 		return {
 			type: MessageType.Success,
 			message: "Task created successfully.",
+		};
+	} catch (error) {
+		const message =
+			error instanceof Error ? error.message : "Something went wrong.";
+		return {
+			type: MessageType.Error,
+			message,
+		};
+	}
+}
+
+export async function updateStatus(
+	oldStatus: TaskStatus,
+	newStatus: TaskStatus,
+	taskId: string,
+	projectId: string,
+): Promise<ActionState> {
+	const { data: currentUser } = await auth.getCurrentUser();
+
+	if (!currentUser) {
+		return {
+			type: MessageType.Error,
+			message: "You must be logged in to perform this action.",
+		};
+	}
+
+	try {
+		await request.post({
+			body: { oldStatus, newStatus, taskId, projectId },
+			fn: async ({ body }) => {
+				const [updatedTask] = await db
+					.update(tasksTable)
+					.set({
+						status: body!.newStatus,
+						updatedAt: new Date(),
+					})
+					.where(
+						and(
+							eq(tasksTable.id, body!.taskId),
+							eq(tasksTable.status, body!.oldStatus),
+							eq(tasksTable.projectId, body!.projectId),
+						),
+					)
+					.returning();
+
+				await db.insert(notificationsTable).values({
+					id: randomUUID(),
+					userId: currentUser.id,
+					description: `Task "${updatedTask.name}" status has been successfully updated to "${body!.newStatus}".`,
+					isRead: false,
+				});
+			},
+		});
+
+		revalidatePath("/dashboard");
+		revalidatePath("/dashboard/projects");
+		revalidatePath(`/dashboard/projects/${projectId}`);
+
+		return {
+			type: MessageType.Success,
+			message: "Task status successfully updated.",
+		};
+	} catch (error) {
+		const message =
+			error instanceof Error ? error.message : "Something went wrong.";
+		return {
+			type: MessageType.Error,
+			message,
+		};
+	}
+}
+
+export async function deleteTask(
+	taskId: string,
+	projectId: string,
+): Promise<ActionState> {
+	const { data: currentUser } = await auth.getCurrentUser();
+
+	if (!currentUser) {
+		return {
+			type: MessageType.Error,
+			message: "You must be logged in to perform this action.",
+		};
+	}
+
+	try {
+		await request.post({
+			body: { taskId, projectId },
+			fn: async ({ body }) => {
+				const [deletedTask] = await db
+					.delete(tasksTable)
+					.where(
+						and(
+							eq(tasksTable.id, body!.taskId),
+							eq(tasksTable.projectId, body!.projectId),
+							eq(tasksTable.userId, currentUser.id),
+						),
+					)
+					.returning();
+
+				const [existingProject] = await db
+					.select({ name: projectsTable.name })
+					.from(projectsTable)
+					.where(
+						and(
+							eq(projectsTable.id, body!.projectId),
+							eq(projectsTable.userId, currentUser.id),
+						),
+					)
+					.limit(1);
+
+				await db.insert(notificationsTable).values({
+					id: randomUUID(),
+					userId: currentUser.id,
+					description: `Task "${deletedTask.name}" has been successfully deleted from the project "${existingProject.name}".`,
+					isRead: false,
+				});
+			},
+		});
+
+		revalidatePath("/dashboard");
+		revalidatePath("/dashboard/projects");
+		revalidatePath(`/dashboard/projects/${projectId}`);
+
+		return {
+			type: MessageType.Success,
+			message: "Task successfully deleted.",
 		};
 	} catch (error) {
 		const message =
