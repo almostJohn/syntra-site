@@ -6,6 +6,7 @@ import { db } from "@/db/sql";
 import { eq, and, desc } from "drizzle-orm";
 import { tasks as tasksTable } from "@/db/schema";
 import { Empty, EmptyHeading, EmptyText } from "@/components/ui/empty";
+import { TaskProgressBar } from "./task-progress-bar";
 
 type KanbanProps = {
 	userId: string;
@@ -47,6 +48,19 @@ export async function Kanban({ userId, projectId }: KanbanProps) {
 
 	return (
 		<div className="flex flex-col gap-6">
+			{/* Task Progress Bar */}
+			{todoTasks && inProgressTasks && doneTasks && (
+				<TaskProgressBar
+					todo={todoTasks.length}
+					inProgress={inProgressTasks.length}
+					done={doneTasks.length}
+				/>
+			)}
+			{/* Pro tip */}
+			<p className="text-sm">
+				<strong className="text-teal-700">Pro tip:</strong> Updating a
+				task&apos;s status will automatically move it to the correct column.
+			</p>
 			{/* Boards */}
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-3">
 				<TaskBoard
@@ -55,14 +69,10 @@ export async function Kanban({ userId, projectId }: KanbanProps) {
 					taskLength={todoTasks!.length}
 				>
 					{todoTasks && todoTasks.length === 0 ? (
-						<div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-							<h2 className="text-lg font-semibold text-neutral-700">
-								No Tasks Found
-							</h2>
-							<p className="text-sm text-neutral-500">
-								Move tasks here to update their status.
-							</p>
-						</div>
+						<Empty className="border-none">
+							<EmptyHeading>No Tasks Found</EmptyHeading>
+							<EmptyText>Move tasks here to update their status.</EmptyText>
+						</Empty>
 					) : (
 						<TaskColumn>
 							{todoTasks?.map((task) => (
@@ -77,14 +87,10 @@ export async function Kanban({ userId, projectId }: KanbanProps) {
 					taskLength={inProgressTasks!.length}
 				>
 					{inProgressTasks && inProgressTasks.length === 0 ? (
-						<div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-							<h2 className="text-lg font-semibold text-neutral-700">
-								No Tasks Found
-							</h2>
-							<p className="text-sm text-neutral-500">
-								Move tasks here to update their status.
-							</p>
-						</div>
+						<Empty className="border-none">
+							<EmptyHeading>No Tasks Found</EmptyHeading>
+							<EmptyText>Move tasks here to update their status.</EmptyText>
+						</Empty>
 					) : (
 						<TaskColumn>
 							{inProgressTasks?.map((task) => (
@@ -99,14 +105,10 @@ export async function Kanban({ userId, projectId }: KanbanProps) {
 					taskLength={doneTasks!.length}
 				>
 					{doneTasks && doneTasks.length === 0 ? (
-						<div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-							<h2 className="text-lg font-semibold text-neutral-700">
-								No Tasks Found
-							</h2>
-							<p className="text-sm text-neutral-500">
-								Move tasks here to update their status.
-							</p>
-						</div>
+						<Empty className="border-none">
+							<EmptyHeading>No Tasks Found</EmptyHeading>
+							<EmptyText>Move tasks here to update their status.</EmptyText>
+						</Empty>
 					) : (
 						<TaskColumn>
 							{doneTasks?.map((task) => (
