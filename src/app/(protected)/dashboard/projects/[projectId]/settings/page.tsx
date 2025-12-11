@@ -5,11 +5,9 @@ import { request } from "@/lib/request";
 import { db } from "@/db/sql";
 import { projects as projectsTable } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
-import { Suspense } from "react";
-import { Loader } from "lucide-react";
-import { Kanban } from "@/components/dashboard/tasks/kanban";
-import { CreateTaskForm } from "@/components/dashboard/forms/create-task-form";
 import { Breadcrumbs } from "@/components/dashboard/projects/breadcrumbs";
+import { UpdateProjectNameForm } from "@/components/dashboard/forms/update-project-name-form";
+import { DeleteProjectForm } from "@/components/dashboard/forms/delete-project-form";
 
 export async function generateMetadata({
 	params,
@@ -30,7 +28,7 @@ export async function generateMetadata({
 	});
 
 	return {
-		title: response?.project.name,
+		title: `${response?.project.name} (Settings)`,
 	};
 }
 
@@ -69,23 +67,18 @@ export default async function Page({
 	return (
 		<div className="flex flex-col gap-4">
 			<Breadcrumbs projectId={projectId} />
-			<div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-				<h1 className="text-2xl font-semibold sm:text-xl">
-					{response.project.name}
-				</h1>
-				<CreateTaskForm projectId={projectId} />
+			<div className="flex flex-col gap-1">
+				<h1 className="text-2xl font-semibold sm:text-xl">Settings</h1>
+				<p className="text-base/6 text-neutral-500 sm:text-base/8">
+					Manage your project information.
+				</p>
 			</div>
-			<Suspense fallback={<Loading />}>
-				<Kanban userId={currentUser.id} projectId={projectId} />
-			</Suspense>
-		</div>
-	);
-}
-
-function Loading() {
-	return (
-		<div className="flex items-center justify-center py-20">
-			<Loader className="animate-spin text-neutral-500" />
+			<div className="mx-auto mt-3 flex w-full max-w-3xl flex-col gap-6">
+				{/* Project Name Settings */}
+				<UpdateProjectNameForm project={response.project} />
+				{/* Project Danger Zone */}
+				<DeleteProjectForm project={response.project} />
+			</div>
 		</div>
 	);
 }
