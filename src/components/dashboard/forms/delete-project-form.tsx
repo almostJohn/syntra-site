@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useServerAction } from "@/hooks/use-server-action";
-import { deleteAccount } from "@/actions/delete-account";
+import { deleteProject } from "@/actions/project-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,42 +14,44 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import type { ActionState, CurrentUser } from "@/types";
+import type { ActionState, Project } from "@/types";
 import { Form } from "@/components/ui/form";
 import { Loader } from "lucide-react";
 
-type DeleteAccountFormProps = {
-	user: CurrentUser;
+type DeleteProjectFormProps = {
+	project: Project;
 };
 
-export function DeleteAccountForm({ user }: DeleteAccountFormProps) {
+export function DeleteProjectForm({ project }: DeleteProjectFormProps) {
 	const { formAction, isPending } = useServerAction({
-		action: deleteAccount,
+		action: async () => {
+			return await deleteProject(project.id);
+		},
 		initialState: {} as ActionState,
 		options: {
-			redirectTo: "/login",
+			redirectTo: "/dashboard",
 		},
 	});
 	const [interacted, setInteracted] = useState(false);
-	const [usernameBeforeDeleting] = useState(user.username);
-	const [messageBeforeDeleting] = useState("Delete My Personal Account");
-	const [confirmUsername, setConfirmUsername] = useState("");
+	const [projectNameBeforeDeleting] = useState(project.name);
+	const [messageBeforeDeleting] = useState("Delete My Project");
+	const [confirmProjectName, setConfirmProjectName] = useState("");
 	const [confirmMessage, setConfirmMessage] = useState("");
 
 	function handleClose() {
 		setInteracted((prev) => !prev);
-		setConfirmUsername("");
+		setConfirmProjectName("");
 		setConfirmMessage("");
 	}
 
 	return (
 		<div className="flex flex-col rounded-md border border-red-200 shadow-sm">
 			<div className="flex flex-col gap-4 rounded-t-md border-b border-red-200 bg-white p-6">
-				<h2 className="text-lg font-semibold">Delete Account</h2>
+				<h2 className="text-lg font-semibold">Delete Project</h2>
 				<p className="text-sm">
-					Permanently remove your Personal Account and all of its contents from
-					the Syntra platform. This action is not reversible, so please proceed
-					with caution.
+					Permanently remove this project from your account and all of its
+					contents from the Syntra platform. This action is not reversible, so
+					please proceed with caution.
 				</p>
 			</div>
 			<div className="mt-auto flex flex-col items-center justify-center gap-2 rounded-b-md bg-red-100 p-6 md:flex-row md:justify-between">
@@ -58,7 +60,7 @@ export function DeleteAccountForm({ user }: DeleteAccountFormProps) {
 				</p>
 				<AlertDialog open={interacted} onOpenChange={setInteracted}>
 					<AlertDialogTrigger asChild>
-						<Button variant="destructive">Delete Personal Account</Button>
+						<Button variant="destructive">Delete Project</Button>
 					</AlertDialogTrigger>
 					<AlertDialogContent className="w-full rounded-md border-neutral-300 bg-neutral-100/95 p-6 sm:max-w-xl">
 						<VisuallyHidden>
@@ -68,31 +70,30 @@ export function DeleteAccountForm({ user }: DeleteAccountFormProps) {
 							</AlertDialogDescription>
 						</VisuallyHidden>
 						<div className="flex flex-col gap-4">
-							<h2 className="text-2xl font-bold">Delete Personal Account</h2>
+							<h2 className="text-2xl font-bold">Delete Project</h2>
 							<p className="text-sm">
-								Syntra will delete all of your projects, along with all of your
-								tasks, activity, and all other resources belonging to your
-								Personal Account.
+								Syntra will delete this project, along with the tasks inside it.
+								This action is irreversible. Continue with caution.
 							</p>
 							<div className="pointer-events-none inline-flex items-center rounded-sm border border-red-200 bg-red-100 px-3 py-1 text-sm font-medium text-red-700">
 								This action is irreversible. Please be certain.
 							</div>
 							<div className="flex flex-col gap-3">
 								<div className="grid gap-1">
-									<Label htmlFor="confirmUsername">
+									<Label htmlFor="confirmProjectName">
 										<p className="text-sm text-neutral-500">
-											Enter your username{" "}
+											Enter your project name{" "}
 											<strong className="text-neutral-950">
-												{usernameBeforeDeleting}
+												{projectNameBeforeDeleting}
 											</strong>{" "}
 											to continue:
 										</p>
 									</Label>
 									<Input
 										type="text"
-										id="confirmUsername"
-										value={confirmUsername}
-										onChange={(e) => setConfirmUsername(e.target.value)}
+										id="confirmProjectName"
+										value={confirmProjectName}
+										onChange={(e) => setConfirmProjectName(e.target.value)}
 										disabled={isPending}
 										required
 										autoComplete="off"
@@ -141,7 +142,7 @@ export function DeleteAccountForm({ user }: DeleteAccountFormProps) {
 											type="submit"
 											disabled={
 												isPending ||
-												confirmUsername !== usernameBeforeDeleting ||
+												confirmProjectName !== projectNameBeforeDeleting ||
 												confirmMessage !== messageBeforeDeleting
 											}
 											className="w-full"
